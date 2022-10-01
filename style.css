@@ -1,0 +1,109 @@
+/* Instellingen om fouten te helpen vinden, uncomment om aan te zetten */
+
+* {                                          /* geldt voor alles */
+    /* border: 1px dotted black;         */  /* zorg dat elke box een gestippelde rand krijgt, zodat je de afmeting goed kunt zien, letop dat dit de layout soms kan wijzigen */
+    /* background-color: rgba(0,0,0,5%); */  /* zorg dat elke box een doorzichtige donkere achtergrond krijgt, hoe meer boxen in elkaar hoe donkerder de achtergrondkleur */
+}
+
+/* Basisinstellingen voor alle pagina's, alleen aanpassen als je pro wilt worden */
+
+html, body {                      /* geldt voor html en body */
+  margin: 0px;                    /* standaard marge 0 */
+  background-color: #EEEEEE;    /* achtergrondkleur lichtgrijs */
+  color: #303030;               /* tekstkleur donkergrijs */
+}  
+
+body * {                          /* geldt voor alles in body */
+  overflow: hidden;               /* zorgt dat DIV en andere block elementen de hoogte krijgt van wat erin zit (anders is het soms 0) */
+  box-sizing: border-box;         /* zorg dat border meetelt bij de width en height van boxen */
+  margin: 0px;                    /* standaard marge 0 */
+}
+
+/* Indeling voor alle pagina's */
+
+.page {
+  width: 700px;                   /* vaste breedte van 700 pixels */
+  margin: 10px auto;              /* boven en onder 0 pixels marge, links en rechts marge gelijk verdeeld (gecentreerd) */
+}
+
+header, footer {                  /* geldt voor header en footer */
+  margin: 10px 0px;
+}
+
+main {                       
+  text-align: justify;            /* tekst uitvullen */}
+
+h1, h2, h3 {                      /* geldt voor h1 en h2 en h3 */
+  margin: 10px 0px;
+  text-align: center;             /* tekst centreren */
+} 
+
+p {
+  margin: 10px 0px;
+  text-align: justify;            /* tekst links en rechts uitvullen */
+}
+
+/* Indeling voor hoofd pagina */
+
+.kolomLinks {
+  float:left;
+  width:250px;
+  padding-right:15px;           /* afstand tussen plaatje en rechterkolom */
+}
+.kolomRechts {
+  float:left;
+  width: 450px;
+}
+.kolomStop {
+  clear:both;                   /* stop met floaten */
+}
+
+/* Opmaak voor alle pagina's */
+
+h1, h2, h3 {
+      color: skyblue;
+}
+
+.smalltext {
+    text-align: center;
+    font-size: 0.7em;
+}
+
+a {
+    color: skyblue;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/* Navigatiebalk voor alle pagina's */
+nav ul {
+    list-style-type: none;
+    margin: auto;
+    padding: 0;
+    background-color: #dddddd;
+    overflow: hidden;
+}
+
+nav ul li {
+    float: left;
+}
+
+nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+nav li a:hover {
+    background-color: #aaaaaa;
+}
+
+nav li a.active {
+    background-color: skyblue;
+}
