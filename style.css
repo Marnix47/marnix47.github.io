@@ -22,7 +22,7 @@ body * {                          /* geldt voor alles in body */
 /* Indeling voor alle pagina's */
 
 .page {
-  width: 700px;                   /* vaste breedte van 700 pixels */
+  width: 60%;                   /* vaste breedte van 700 pixels */
   margin: 10px auto;              /* boven en onder 0 pixels marge, links en rechts marge gelijk verdeeld (gecentreerd) */
 }
 
@@ -86,12 +86,25 @@ footer iframe{
 
 
 /* Navigatiebalk voor alle pagina's */
-nav ul {
-    list-style-type: none;
-    margin: auto;
-    padding: 0;
+header{
     background-color: #dddddd;
+    border-style:solid;
+    border-width: 3px;
+    border-color: ghostwhite;
+}
+nav ul {
+    float:right;
+    list-style-type: none;
+    /*margin: auto; */
+    padding: 0;
     overflow: hidden;
+    height: 100%;
+}
+
+#mainTitle{
+  float: left;
+  margin: 0px 0px 0px 10px;
+  padding-top: 5px;
 }
 
 nav ul li {
