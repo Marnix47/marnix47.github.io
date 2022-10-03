@@ -23,7 +23,8 @@ body * {                          /* geldt voor alles in body */
 
 .page {
   width: 60%;                   /* vaste breedte van 700 pixels */
-  margin: 10px auto;              /* boven en onder 0 pixels marge, links en rechts marge gelijk verdeeld (gecentreerd) */
+  margin: 10px auto;
+  min-width: 900px;              /* boven en onder 0 pixels marge, links en rechts marge gelijk verdeeld (gecentreerd) */
 }
 
 header, footer {                  /* geldt voor header en footer */
@@ -63,35 +64,34 @@ p {
 
 .welcomeBox iframe{
   width: 300px;
-  height: 400px;
+  height: 350px;
+  margin-left:10%;
   float: left;
   border-width: 0px;
 }
 
-.welcomeBox p{
-  float: right;
-}
-
 .welcomeBox{
+  margin-top:50px;
   width: 100%;
 }
 
 .welcomeTexts{
   float: right;
-  margin-top:auto;
-  margin-bottom: auto;
   display:block;
+  margin-right: 10%;
+  margin-top: 130px;
 }
 
 .welcomeText h3{
   font-size:large;
+  color: #86868b;
 }
 
 
 /* Opmaak voor alle pagina's */
 
 h1, h2, h3 {
-      color: skyblue;
+      color: #86868b;;
       font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
