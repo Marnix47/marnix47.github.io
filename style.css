@@ -9,7 +9,7 @@
 
 html, body {                      /* geldt voor html en body */
   margin: 0px;                    /* standaard marge 0 */
-  background-color: #EEEEEE;    /* achtergrondkleur lichtgrijs */
+  background-color: white;    /* achtergrondkleur lichtgrijs */
   color: #303030;               /* tekstkleur donkergrijs */
 }  
 
@@ -41,6 +41,9 @@ h1, h2, h3 {                      /* geldt voor h1 en h2 en h3 */
 p {
   margin: 10px 0px;
   text-align: justify;            /* tekst links en rechts uitvullen */
+  font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  color: #6e6e73;
 }
 
 /* Indeling voor hoofd pagina */
@@ -58,10 +61,38 @@ p {
   clear:both;                   /* stop met floaten */
 }
 
+.welcomeBox iframe{
+  width: 300px;
+  height: 400px;
+  float: left;
+  border-width: 0px;
+}
+
+.welcomeBox p{
+  float: right;
+}
+
+.welcomeBox{
+  width: 100%;
+}
+
+.welcomeTexts{
+  float: right;
+  margin-top:auto;
+  margin-bottom: auto;
+  display:block;
+}
+
+.welcomeText h3{
+  font-size:large;
+}
+
+
 /* Opmaak voor alle pagina's */
 
 h1, h2, h3 {
       color: skyblue;
+      font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
 .smalltext {
@@ -92,6 +123,7 @@ header{
     border-width: 3px;
     border-color: ghostwhite;
 }
+
 nav ul {
     float:right;
     list-style-type: none;
@@ -102,9 +134,12 @@ nav ul {
 }
 
 #mainTitle{
+  color:#1d1d1f;
   float: left;
-  margin: 0px 0px 0px 10px;
+  margin: 0px 10px 0px 10px;
   padding-top: 5px;
+  font-weight: bold;
+  font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
 nav ul li {

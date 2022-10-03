@@ -1,0 +1,27 @@
+
+@keyframes topTurn {
+    50% {transform: rotate(20deg);}
+    }
+    
+.appleLogoTop{
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-name: topTurn;
+    animation-timing-function: ease-in-out;
+    margin-left: calc(50vw - 35px);
+    width: 75px;
+    height:auto;
+    display:block;
+}
+
+.appleLogoBottom{
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    width: 244px;
+    height: auto;
+}
+
+img{
+    opacity: 20%;
+}
