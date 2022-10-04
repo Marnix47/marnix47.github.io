@@ -82,9 +82,15 @@ p {
   margin-top: 130px;
 }
 
-.welcomeText h3{
-  font-size:large;
-  color: #86868b;
+.aboutSection p{
+  width: 70%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.aboutSection{
+  margin-top: 50px;
 }
 
 
@@ -113,6 +119,51 @@ footer iframe{
   border-width: 0px;
   width: 100%;
   height: 50px;
+}
+
+.upperSection{
+  margin-top:30px;
+  margin-bottom:20px;
+}
+
+.upperSection div{
+  width: calc(50% - 20px);
+  height: 350px;
+}
+
+.lowerSection div{
+  width: calc(50% - 20px);
+  height: 350px;
+}
+
+.upperSection div img, .lowerSection div img{
+  transition: 1s;
+}
+
+.leftImage img{
+  object-fit:cover;
+  height: 100%;
+  width: 100%;
+}
+
+.rightImage img{
+  object-fit:cover;
+  height: 100%;
+  width: 100%;
+}
+
+.leftImage{
+  float:left;
+  margin-left:10px;
+}
+
+.rightImage{
+  float:right;
+  margin-right:10px;
+}
+
+.upperSection img:hover, .lowerSection img:hover{
+  scale:1.05;
 }
 
 
