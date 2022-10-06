@@ -14,7 +14,7 @@ html, body {                      /* geldt voor html en body */
 }  
 
 body * {                          /* geldt voor alles in body */
-  overflow: hidden;               /* zorgt dat DIV en andere block elementen de hoogte krijgt van wat erin zit (anders is het soms 0) */
+  overflow: hidden;              /* zorgt dat DIV en andere block elementen de hoogte krijgt van wat erin zit (anders is het soms 0) */
   box-sizing: border-box;         /* zorg dat border meetelt bij de width en height van boxen */
   margin: 0px;                    /* standaard marge 0 */
 }
@@ -22,6 +22,7 @@ body * {                          /* geldt voor alles in body */
 /* Indeling voor alle pagina's */
 
 .page {
+  transition:1s;
   width: 60%;                   /* vaste breedte van 700 pixels */
   margin: 10px auto;
   min-width: 900px;              /* boven en onder 0 pixels marge, links en rechts marge gelijk verdeeld (gecentreerd) */
@@ -49,17 +50,12 @@ p {
 
 /* Indeling voor hoofd pagina */
 
-.kolomLinks {
-  float:left;
-  width:250px;
-  padding-right:15px;           /* afstand tussen plaatje en rechterkolom */
-}
-.kolomRechts {
-  float:left;
-  width: 450px;
-}
-.kolomStop {
-  clear:both;                   /* stop met floaten */
+hr{
+  margin-top:30px;
+  margin-bottom:20px;
+  border-width:1px;
+  border-style:solid;
+  border-color:#aaaaaa;
 }
 
 .welcomeBox iframe{
@@ -91,6 +87,125 @@ p {
 
 .aboutSection{
   margin-top: 50px;
+  transition:1s;
+}
+
+.titleText h3{
+  margin-top:-10px;
+}
+
+
+
+.products .iphone, .products .ipad, .products .watch, .products .mac{
+  opacity:70%;
+  transition:.5s;
+  transition-timing-function: ease-in-out;
+}
+
+.products .iphone img{
+  height:500px;
+}
+
+.products div:hover{
+  opacity:100%;
+}
+
+.products p{
+  margin-left:10%;
+  margin-right:10%;
+  margin-bottom:20px;
+  text-align:center;
+}
+
+.products .infoBlock{
+  background-color:whitesmoke;
+  border-radius:5px;
+}
+
+.products .twoProducts{
+  margin-top:20px;
+}
+
+.products .twoProducts .ipad{
+  float:left;
+}
+
+.products .twoProducts .watch{
+  float:right;
+}
+
+.products .twoProducts .ipad, .products .twoProducts .watch{
+  width:45%;
+}
+
+.products .twoProducts .watch img{
+  height: 350px;
+  margin-bottom:35px;
+  margin-top:15px;
+
+}
+
+.products .ipad img{
+  height:400px;
+
+}
+
+.products .mac img{
+  height:500px;
+  
+  z-index: 1;
+  margin-top:-30px;
+  margin-bottom:-70px;
+  position:relative; /*anders gaat de witruimte van de afbeelding over het infoBlock heen*/
+}
+
+.products .mac .infoBlock{
+  z-index: 100;
+  position:relative;
+}
+
+.products img{
+  width:auto;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+
+
+.upperSection{
+  margin-top:30px;
+  margin-bottom:20px;
+}
+
+.upperSection div, .lowerSection div{
+  width: calc(50% - 20px);
+  height: 350px;
+  transition: 1s;
+}
+
+.upperSection div img, .lowerSection div img{
+  transition: 1s;
+}
+
+.leftImage img, .rightImage img{
+  object-fit:cover;
+  height: 100%;
+  width: 100%;
+}
+
+.leftImage{
+  float:left;
+  margin-left:10px;
+}
+
+.rightImage{
+  float:right;
+  margin-right:10px;
+}
+
+.photoSection img:hover{
+  scale:1.05;
 }
 
 
@@ -121,50 +236,7 @@ footer iframe{
   height: 50px;
 }
 
-.upperSection{
-  margin-top:30px;
-  margin-bottom:20px;
-}
 
-.upperSection div{
-  width: calc(50% - 20px);
-  height: 350px;
-}
-
-.lowerSection div{
-  width: calc(50% - 20px);
-  height: 350px;
-}
-
-.upperSection div img, .lowerSection div img{
-  transition: 1s;
-}
-
-.leftImage img{
-  object-fit:cover;
-  height: 100%;
-  width: 100%;
-}
-
-.rightImage img{
-  object-fit:cover;
-  height: 100%;
-  width: 100%;
-}
-
-.leftImage{
-  float:left;
-  margin-left:10px;
-}
-
-.rightImage{
-  float:right;
-  margin-right:10px;
-}
-
-.upperSection img:hover, .lowerSection img:hover{
-  scale:1.05;
-}
 
 
 /* Navigatiebalk voor alle pagina's */
