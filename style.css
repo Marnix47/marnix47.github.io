@@ -1,286 +1,1184 @@
-/* Instellingen om fouten te helpen vinden, uncomment om aan te zetten */
+/*variabelen (https://blog.logrocket.com/how-to-use-css-variables-like-a-pro/):*/
 
-* {                                          /* geldt voor alles */
-    /* border: 1px dotted black;         */  /* zorg dat elke box een gestippelde rand krijgt, zodat je de afmeting goed kunt zien, letop dat dit de layout soms kan wijzigen */
-    /* background-color: rgba(0,0,0,5%); */  /* zorg dat elke box een doorzichtige donkere achtergrond krijgt, hoe meer boxen in elkaar hoe donkerder de achtergrondkleur */
+:root{
+	--screen:700px;
+  	--accent-color:tomato;
+  	--font: "SF Pro Display", "Helvetica", sans-serif; /*SF Pro Display heb ik gezien in de css-rules van de website van Apple*/
+	--header-color:rgb(184, 184, 184);
+	--dark-mode-bg:dimgrey;
+	--dark-mode-txt:white;
+	--dark-mode-img:invert(.8);
 }
 
-/* Basisinstellingen voor alle pagina's, alleen aanpassen als je pro wilt worden */
+::selection{
+	background-color:salmon;
+}
 
-html, body {                      /* geldt voor html en body */
-  margin: 0px;                    /* standaard marge 0 */
-  background-color: white;    /* achtergrondkleur lichtgrijs */
-  color: #303030;               /* tekstkleur donkergrijs */
+html, body {
+	scroll-behavior:smooth;
+	margin: 0px;
+	background-color:var(--dark-mode-bg);
+	color: #303030;
 }  
 
-body * {                          /* geldt voor alles in body */
-  overflow: hidden;              /* zorgt dat DIV en andere block elementen de hoogte krijgt van wat erin zit (anders is het soms 0) */
-  box-sizing: border-box;         /* zorg dat border meetelt bij de width en height van boxen */
-  margin: 0px;                    /* standaard marge 0 */
+body * {
+	overflow: hidden;
+	box-sizing: border-box;
+	margin: 0px;
 }
 
-/* Indeling voor alle pagina's */
+iframe{
+	overflow:hidden;
+}
 
 .page {
-  transition:1s;
-  width: 60%;                   /* vaste breedte van 700 pixels */
-  margin: 10px auto;
-  min-width: 900px;              /* boven en onder 0 pixels marge, links en rechts marge gelijk verdeeld (gecentreerd) */
+	transition:1s;
+	width: 60%;
+	margin: 10px auto;
+	overflow:visible;
 }
 
-header, footer {                  /* geldt voor header en footer */
-  margin: 10px 0px;
+header, footer {
+	margin: 10px 0px;
 }
 
 main {                       
-  text-align: justify;            /* tekst uitvullen */}
+	text-align: justify;
+}
 
-h1, h2, h3 {                      /* geldt voor h1 en h2 en h3 */
-  margin: 10px 0px;
-  text-align: center;             /* tekst centreren */
+h1, h2, h3 {
+	margin: 10px 0px;
+	text-align: center;
+	color:var(--dark-mode-txt);
+    font-family: var(--font);
 } 
 
 p {
-  margin: 10px 0px;
-  text-align: justify;            /* tekst links en rechts uitvullen */
-  font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  font-weight: 400;
-  color: #6e6e73;
-}
-
-/* Indeling voor hoofd pagina */
-
-hr{
-  margin-top:30px;
-  margin-bottom:20px;
-  border-width:1px;
-  border-style:solid;
-  border-color:#aaaaaa;
-}
-
-.welcomeBox iframe{
-  width: 300px;
-  height: 350px;
-  margin-left:10%;
-  float: left;
-  border-width: 0px;
-}
-
-.welcomeBox{
-  margin-top:50px;
-  width: 100%;
-}
-
-.welcomeTexts{
-  float: right;
-  display:block;
-  margin-right: 10%;
-  margin-top: 130px;
-}
-
-.aboutSection p{
-  width: 70%;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.aboutSection{
-  margin-top: 50px;
-  transition:1s;
-}
-
-.titleText h3{
-  margin-top:-10px;
-}
-
-
-
-.products .iphone, .products .ipad, .products .watch, .products .mac{
-  opacity:70%;
-  transition:.5s;
-  transition-timing-function: ease-in-out;
-}
-
-.products .iphone img{
-  height:500px;
-}
-
-.products div:hover{
-  opacity:100%;
-}
-
-.products p{
-  margin-left:10%;
-  margin-right:10%;
-  margin-bottom:20px;
-  text-align:center;
-}
-
-.products .infoBlock{
-  background-color:whitesmoke;
-  border-radius:5px;
-}
-
-.products .twoProducts{
-  margin-top:20px;
-}
-
-.products .twoProducts .ipad{
-  float:left;
-}
-
-.products .twoProducts .watch{
-  float:right;
-}
-
-.products .twoProducts .ipad, .products .twoProducts .watch{
-  width:45%;
-}
-
-.products .twoProducts .watch img{
-  height: 350px;
-  margin-bottom:35px;
-  margin-top:15px;
-
-}
-
-.products .ipad img{
-  height:400px;
-
-}
-
-.products .mac img{
-  height:500px;
-  
-  z-index: 1;
-  margin-top:-30px;
-  margin-bottom:-70px;
-  position:relative; /*anders gaat de witruimte van de afbeelding over het infoBlock heen*/
-}
-
-.products .mac .infoBlock{
-  z-index: 100;
-  position:relative;
-}
-
-.products img{
-  width:auto;
-  display:block;
-  margin-left:auto;
-  margin-right:auto;
-}
-
-
-
-.upperSection{
-  margin-top:30px;
-  margin-bottom:20px;
-}
-
-.upperSection div, .lowerSection div{
-  width: calc(50% - 20px);
-  height: 350px;
-  transition: 1s;
-}
-
-.upperSection div img, .lowerSection div img{
-  transition: 1s;
-}
-
-.leftImage img, .rightImage img{
-  object-fit:cover;
-  height: 100%;
-  width: 100%;
-}
-
-.leftImage{
-  float:left;
-  margin-left:10px;
-}
-
-.rightImage{
-  float:right;
-  margin-right:10px;
-}
-
-.photoSection img:hover{
-  scale:1.05;
-}
-
-
-/* Opmaak voor alle pagina's */
-
-h1, h2, h3 {
-      color: #86868b;;
-      font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-}
-
-.smalltext {
-    text-align: center;
-    font-size: 0.7em;
+	margin: 10px 0px;
+	font-family: var(--font);
+	font-weight: 400;
+	color:var(--dark-mode-txt)
 }
 
 a {
-    color: skyblue;
-    text-decoration: none;
+  color: var(--accent-color);
+  text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-footer iframe{
-  border-width: 0px;
-  width: 100%;
-  height: 50px;
+.footer, footer iframe{
+	border-width: 0px;
+	width: 100%;
+	height: 50px;
+	overflow:hidden;
+}
+
+
+@media only screen and (max-width: 700px){
+	.page{
+		min-width:unset;
+	}
+}
+@media only screen and (min-width:900px){
+	.page{
+		min-width:899px;
+	}
+}
+
+@media screen and (min-width:701), (max-width:899px){
+	.page{
+		width:100%;
+	}
+}
+
+
+/*******************************
+Opmaak voor index.html
+*******************************/
+
+hr {
+	margin-top:30px;
+	margin-bottom:20px;
+	border-width:1px;
+	border-style:solid;
+	border-color:var(--accent-color);
+}
+
+.welcomeBox #logoAnimation{
+	width: 300px;
+	height: 350px;
+	margin-left:10%;
+	float: left;
+	border-width: 0px;
+}
+
+@keyframes topTurn {
+	0% {transform:rotateY(0deg);}
+  100% {transform: rotateY(360deg);}
+}
+
+    
+#logoAnimation .appleLogoTop{
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-name: topTurn;
+    animation-timing-function:linear;
+    margin-left:120px;
+	/*margin:auto; zou hier niet werken omdat hij niet in het midden van de afbeelding staat.*/
+    width: 75px;
+    height:auto;
+    display:block;
+	
+}
+
+#logoAnimation .appleLogoBottom{
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    width: 244px;
+    height: auto;
+
+}
+
+#logoAnimation img{
+	filter:var(--dark-mode-img);
+}
+
+
+.welcomeBox{
+	margin-top:50px;
+	width: 100%;
+}
+
+.welcomeTexts{
+	float: right;
+	display:block;
+	margin-right: 10%;
+	margin-top: 130px;
+}
+
+.aboutSection p{
+	width: 70%;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.aboutSection{
+	margin-top: 50px;
+	transition:1s;
+}
+
+
+.products{
+	display:grid;
+}
+
+.products .product{
+	margin:20px;
+}
+
+.products .iphone{
+	grid-row: 1 / 2;
+	grid-column: 1 / 4;
+}
+
+.products .ipad{
+	grid-row:3;
+	grid-column:1;
+}
+
+.products .watch{
+	grid-row:3;
+	grid-column:2;
+}
+
+.products .mac{
+	grid-column: 1/4;
+	grid-row:4/5;
+}
+
+@media only screen and (max-width:700px){
+	#logoAnimation{
+		margin-left:auto !important;
+		margin-right:auto;
+		float:none !important;
+	}
+
+	.welcomeTexts{
+		text-align:center;
+		width:100%;
+		margin:0;
+		padding:0;
+	}
+
+	
+	.products .iphone{
+		grid-column:1/4;
+		grid-row:1;
+	}
+	.products{
+		gap:20px;
+	}
+	.products .ipad{
+		grid-column:1/4;
+		grid-row:2;
+	}
+	.products .watch{
+		grid-column:1/4;
+		grid-row:3;
+	}
+	.products .mac{
+		grid-column:1/4;
+		grid-row:4;
+	}
+	.products img, body .products .iphone img, body .products .mac img{
+		width:80%;
+		height:auto;
+	}
+	body .products .mac.product img{
+		margin-bottom:-30px;
+	}
+
+	.products{
+		grid-template-columns:auto;
+	}
+	
+	.page{
+		width:100%
+	}
+
+	p{
+		font-size:.7rem;
+	}
+
+	.photoSection{
+		grid-template-columns: auto;
+	}
+}
+
+.products h2, .products p, .products em{
+	/*Als de pagina in dark-mode is, dan moet de tekst in de .product div nog de donkere kleur behouden omdat de achtergrond licht blijft.*/
+	color:rgb(110, 110, 115);
+}
+
+.products .product{
+	opacity:70%;
+	transition:.3s;
+	transition-timing-function: ease-in-out;
+}
+
+.products .iphone img{
+	height:500px;
+}
+
+.products div:hover{
+	opacity:100%;
+}
+
+.products p{
+	margin-left:10%;
+	margin-right:10%;
+	margin-bottom:20px;
+	text-align:center;
+}
+
+.products .infoBlock{
+	display:block;
+	background-color:whitesmoke;
+	border-radius:5px;
+	border-width:2px;
+	border-color: var(--accent-color);
+	border-style:solid;
+}
+
+.products .watch img{
+	height: 350px;
+	margin-bottom:35px;
+	margin-top:15px;
+}
+
+.products .ipad img{
+	height:400px;
+}
+
+.products .mac img{
+	height:500px;
+	z-index: 1;
+	margin-top:-30px;
+	margin-bottom:-70px;
+	position:relative;
+	/*anders gaat de witruimte van de afbeelding over het infoBlock heen*/
+}
+
+.products .mac .infoBlock{
+	z-index: 100;
+	position:relative;
+}
+
+.products img{
+	width:auto;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
 }
 
 
 
+.photoSection{
+	/*https://www.w3schools.com/css/css_grid.asp*/
+	margin-top:20px;
+	display: grid;
+	column-gap:20px;
+	row-gap:20px;
+	grid-template-columns: 49% 49%;
+}
 
-/* Navigatiebalk voor alle pagina's */
+@media only screen and (max-width:700px){
+	.photoSection{
+		grid-template-columns: auto;
+	}
+	.products .product{
+		opacity:100%;
+	}
+}
+
+
+.photoSection div{
+	height: 350px;
+	transition: 1s;
+}
+
+.photoSection img{
+	transition: 1s;
+	object-fit:cover;
+	height: 100%;
+	width: 100%;
+}
+
+.photoSection img:hover{
+	transform: scale(1.05);
+}
+
+
+/*******************************
+opmaak voor geschiedenis.html
+*******************************/
+
+.logoSlider{
+	height:1200px;
+	width:500px;
+	margin: 0 auto;
+	position:relative;
+	z-index:1;
+	margin-top:100px;
+  }
+  
+  .logoContainer{
+	height:100%;
+	width:500px;
+	margin: 0 auto;
+	animation-name:verticalSlide;
+	animation-duration:20s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+  }
+  
+  .logoContainer img{
+	object-fit:cover;
+	height:100%;
+	  width:100%;
+  }
+  
+  .logoContainer div{
+	width:500px;
+	height:300px;
+  }
+  
+  @keyframes verticalSlide{
+	20%{margin-top:0px;}
+	30%{margin-top:-300px;}
+	50%{margin-top:-300px;}
+	60%{margin-top:-600px;}
+	70%{margin-top:-600px;}
+	80%{margin-top:-900px;}
+	90%{margin-top:-900px;}
+  }
+  
+  .overlap{
+	height:max-content;
+	margin-top:-900px;
+	background-color:var(--dark-mode-bg);
+	position:relative;
+	z-index:100;
+  }
+
+img.floatLeft{
+	float:left;
+	height:200px;
+	width:300px;
+	object-fit:cover;
+	border-width:3px;
+	border-style:solid;
+	border-radius:5px;
+	border-color:var(--accent-color);
+	margin-top:100px;
+}
+
+img.floatRight{
+	float:right;
+	height:250px;
+	width:180px;
+	object-fit:cover;
+	border-width:3px;
+	border-style:solid;
+	border-radius:5px;
+	border-color:var(--accent-color);
+	margin-top:100px;
+	margin-left:20px;
+}
+
+@media only screen and (max-width: 899px){
+	img.geschiedenis{
+		display:block;
+		float:none;
+		margin:0 auto;
+	}
+	.overlap p, .overlap em{
+		font-size:.7rem;
+	}
+	.logoSlider{
+		margin-top:10px;
+	}
+}
+
+.tekst p, .tekst .emdiv{
+	margin-left:20px;
+	margin-right:20px;
+}
+
+.tekst{
+	margin-top:30px;
+	margin-bottom:30px;
+}
+
+em:not(.except)::before, em:not(.except)::after{
+	/*voor em-tags (behalve met class .except), daar voegt hij voor en achter een aanhalingsteken in. Omdat dat ook het begin of einde van een string betekent, staat er een backslash voor.*/
+	content:"\""
+}
+
+em{
+	color:var(--dark-mode-txt);
+}
+
+
+/*******************************
+opmaak voor osen.html
+*******************************/
+#sidebar{
+	width:150px;
+	background-color:var(--header-color);
+	border:solid 3px gainsboro;
+	border-radius:5px;
+	position:fixed;
+	margin-left:20px;
+	margin-top:30vh;
+}
+
+.sidebarContent li{
+	height:45px;
+	width:100%;
+	text-align:center;
+	display:block;
+}
+
+.sidebarContent ul{
+	list-style-type: none;
+	padding:0;
+}
+
+.sidebarContent a{
+	height:100%;
+	color:white;
+	font-family:var(--font);
+  text-decoration:none;
+	width:100%;
+	display:block;
+	line-height:46px;
+}
+
+.osbar{
+	position:relative;
+	float:left;
+	width:150px;
+}
+
+.oscontent{
+	position:relative;
+	float:right;
+	width:calc(100% - 200px);
+	margin-left:auto;
+	margin-right:auto;
+}
+
+
+.os{
+	margin-top:30px;
+}
+
+.banner{
+	width:600px;
+	height:350px;
+	object-fit:cover;
+	margin-left:auto;
+	margin-right:auto;
+	display:block;
+}
+
+@media only screen and (max-width: 899px){
+	.osbar{
+		display:none;
+	}
+	.oscontent{
+		float:none;
+		width:100%;
+		padding:20px;
+	}
+	.banner{
+		width: 80%;
+		height:auto;
+	}
+}
+
+
+
+/*******************************
+opmaak voor applestores.html
+*******************************/
+
+.map .mapImage{
+	height:100%;
+	width:100%;
+
+}
+.map .mapImage img{
+	height:100%;
+	width:100%;
+	object-fit:cover;
+}
+
+.map{
+	height:450px;
+	width:900px;
+	border-style:solid;
+	border-width:5px;
+	border-color:skyblue;
+	margin: 0 auto;
+	display:block;
+}
+
+#infoWindow{
+	position:absolute;
+	display:none;
+	background-color:seashell;
+	height:40px;
+	width:auto;
+	border-radius:5px;
+	padding:0 10px;
+}
+
+#nameOfCity{
+	color:#6e6e73;
+}
+
+.point{
+	width:23px;
+	height:23px;
+	background-color:dodgerblue;
+	display:block;
+	border:solid 4px white;
+	border-radius:50%;
+	z-index:100;
+	position:relative;
+	float:right;
+	transition:.3s;
+}
+
+.point:hover{
+	border-width:4px;
+	transform: scale(1.3);
+	box-shadow:0px 0px 1px 1px white;
+	cursor:pointer;
+}
+
+@media only screen and (max-width:899px){
+	.map{
+		width:100%;
+		height:max-content;
+	}
+}
+
+#newyork{
+	margin-top:-29.55%;
+	margin-right:11.2%;
+	/*260, 100*/
+}
+
+#orlando{
+	margin-top:-5.67%;
+	margin-right:21.34%;
+	/*50, 190*/
+}
+
+#dallas{
+	margin-top:-20.45%;
+	margin-right:46.07%;
+	/*180, 410*/
+}
+
+#losangeles{
+	margin-top:-18.18%;
+	margin-right:79.78%;
+	/*160, 710*/
+}
+
+#sanfrancisco{
+	margin-top:-28.09%;
+	margin-right:86.52%;
+	/*250, 770*/
+}
+
+#chicago{
+	margin-top:-32.39%;
+	margin-right:29.78%;
+	/*285, 265*/
+}
+
+#charlotte{
+	margin-top:-19.32%;
+	margin-right:22.47%;
+	/*170, 200*/
+}
+
+#saltlakecity{
+	margin-top:-31.82%;
+	margin-right:67.42%;
+	/*280, 600*/
+}
+
+#storeImage{
+	width:70%;
+	min-width:700px;
+	height:auto;
+	margin:auto auto;
+	display:none;
+	border:solid 5px var(--accent-color);
+}
+
+#storeName{
+	color:var(--accent-color);
+}
+
+
+
+/*******************************
+opmaak voor iphonetest.html
+*******************************/
+
+
+main.iphonetest{
+	height:calc(100vh - 200px);
+}
+
+button{
+	font-family:var(--font);
+	font-size:1rem;
+	border:none;
+	padding:15px 30px;
+	border-radius:5px;
+	background-color:var(--header-color);
+	display:block;
+}
+
+button#startButton{
+		font-size:2rem;
+}
+
+button:hover{
+	background-color:var(--accent-color);
+	cursor:pointer;
+}
+
+#welcomeScreen h1{
+	margin-top:100px;
+}
+
+#welcomeScreen button{
+	
+	margin:100px auto;
+}
+
+#questionScreen{
+	display:none;
+	margin-top:100px;
+}
+
+#questionScreen #question{
+	display:block;
+	margin:20px auto;
+}
+
+#questionScreen #options{
+	margin:100px auto;
+	justify-content:space-around;
+	/*https://www.internetingishard.com/html-and-css/flexbox/ */
+	display:flex;
+	float:none;
+}
+
+@media only screen and (max-width:899px){
+	#questionScreen #options{
+		justify-content:space-between;
+		flex-direction:column;
+		/*https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container */
+		height:170px;
+	}
+}
+
+#questionScreen .qButton{
+	margin:0px 20px;
+}
+
+#resultScreen{
+	margin-top:30px;
+	display:none;
+}
+
+#resultLine{
+	margin-top:50px;
+	color:var(--accent-color);
+}
+
+
+
+/*******************************
+opmaak voor over.html
+*******************************/
+#mostFrequentPage, #thisPage{
+	margin:30px;
+}
+
+#overButtons{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	column-gap:10%;
+	width:100%;
+}
+
+button{
+	transition:.2s;
+}
+
+#colorPicker, #accentPicker{
+	margin:auto;
+	height:400px;
+	width:100%;
+	border:none;
+}
+
+
+/*******************************
+opmaak voor schemeSettings.html
+*******************************/
+.content{
+	display:grid;
+	align-content:center;
+	height:100vh;
+	width:100%;
+	background-color:var(--dark-mode-bg);
+	color:var(--dark-mode-txt);
+}
+.content #overButtons{
+	margin-top:30px;
+}
+
+/*******************************
+opmaak voor search.html
+*******************************/
+
+#loaderBody{
+	display:grid;
+	align-items:center;
+	width:100%;
+	height:100vh;
+	transition:1s;
+}
+
+#macLoader{
+	animation: loaderTurn .8s infinite linear;
+	margin:auto;
+}
+
+@keyframes loaderTurn {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.highlightResult{
+	background-color:salmon;
+}
+
+#emptySearch{
+	display:none;
+}
+
+#emptySearch img{
+	display:block;
+	height:600px;
+	width:auto;
+	margin:auto;
+	filter:invert(.2);
+}
+
+#searchInput{
+	display:flex;
+	justify-content:flex-end;
+	width:100%;
+}
+
+#searchInput *{
+	float:right;
+}
+
+#searchInput #searchField{
+	height:30px;
+	width:100px;
+	font-size:15px;
+}
+
+
+/*******************************
+Opmaak voor nav-bar
+*******************************/
 header{
-    background-color: #dddddd;
-    border-style:solid;
-    border-width: 3px;
-    border-color: ghostwhite;
+	width:calc(100% + 120px);
+	padding-left:40px;
+	padding-right:40px;
+	margin-left:-60px;
+	height:71px;
+	z-index:200;
+	overflow:visible;
+	position:sticky;
+	top:0;
+	-webkit-backdrop-filter: blur(6px);
+	/*Safari kent alleen webkit in dit geval*/
+	backdrop-filter:blur(6px);
+	/*https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter*/
+	display:grid;
+
 }
 
-nav ul {
-    float:right;
-    list-style-type: none;
-    /*margin: auto; */
-    padding: 0;
-    overflow: hidden;
-    height: 100%;
+#innerHeader{
+	overflow:visible;
+	background-color: var(--header-color);
+	border-style:solid;
+	border-width: 3px;
+	border-color: gainsboro;
+	border-radius:10px;
+	height:51px;
+	width:100%;
+	margin-right:20px;
+	margin-left:auto;
+	margin-top:auto;
+}
+
+nav > ul {
+	float:right;
+	list-style-type: none;
+	padding: 0;
+	overflow: hidden;
+	height: 100%;
+}
+
+#mainTitle h1{
+	color:var(--accent-color);
+	margin: 0px 10px 0px 10px;
+	padding-top: 5px;
+	font-weight: bold;
+	font-family: var(--font) 
 }
 
 #mainTitle{
-  color:#1d1d1f;
-  float: left;
-  margin: 0px 10px 0px 10px;
-  padding-top: 5px;
-  font-weight: bold;
-  font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	float: left;
+	margin-left:10px;
+	display:flex;
+	align-items:flex-start;
+}
+
+#mainTitle img{
+	height:40px;
+	width:40px;
+	object-fit:cover;
 }
 
 nav ul li {
-    float: left;
+  	float: left;
 }
 
-nav li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+nav ul li a {
+  transition:.2s;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-family: var(--font);
+  font-size:15px;
 }
 
-nav li a:hover {
-    background-color: #aaaaaa;
+.dropdownMenu{
+	display:none;
+  background-color: var(--header-color);
+	border:solid 3px gainsboro;
+	border-radius: 0px 0px 10px 10px;
+	border-top:none;
+	padding:0;
 }
 
-nav li a.active {
-    background-color: skyblue;
+.uldropdownMenu{
+	border-radius: 0px 0px 10px 10px;
+	padding:0;
 }
+
+.dropdownMenu a{
+	display:block;
+	text-decoration:none;
+	margin:auto;
+}
+
+.dropdown:hover .dropdownMenu{
+	display: block;
+	position:relative;
+	z-index:100;
+	overflow:visible;
+}
+
+.dropdownMenu li{
+	clear:both;
+  	background-color: var(--header-color);
+	width:100%;
+}
+
+li a:hover {
+	background-color: #aaaaaa;
+	text-decoration:none;
+}
+
+li a.active, nav li a:active {
+  	background-color:var(--accent-color);
+}
+
+#navBarNarrow{
+	display:none;
+}
+
+#mobileWrapper{
+	float:left;
+}
+
+@media only screen and (max-width: 700px){
+	nav > ul > li{
+		float:none;
+	}
+
+	#navBar{
+		float:left;
+		display:none;
+		width:100%;
+	}
+	#navBar ul{
+		width:100%;
+	}
+
+	#mainTitle{
+		flex: 0 1 auto;
+		width:300px;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	#mainTitle h1{
+		display:block;
+	}
+
+	#outerCross{
+		flex: 0 1 auto;
+		margin-left: auto;
+	}
+	#search{
+		display:none;
+	}
+
+	header{
+		height:51px;
+		width:100%;
+		margin:0;
+		padding:0;
+	}
+
+	#mobileWrapper{
+		height:45px;
+		display:flex;
+		float:none;
+	}
+
+	#innerHeader{
+		width:100%;
+		margin:0;
+		border-radius:0px 0px 10px 10px;
+	}
+	.dropdown:hover .dropdownMenu{
+		display:none;
+	}
+	nav > ul > li:nth-child(5){
+		/*links- en rechtsonder moeten afgeronde hoeken krijgen bij het uitvuiwbare menu*/
+		border-radius:0px 0px 10px 10px;
+	}
+}
+
+
+#outerCross{
+	height:100%;
+	display:grid;
+	align-items:center;
+	float:right;
+	margin-right:10px;
+}
+
+#cross{
+	width:20px;
+	overflow:visible;
+}
+#cross hr{
+	background-color:var(--accent-color);
+}
+
+
+
+@media only screen and (min-width: 701px){
+	#outerCross{
+		display:none;
+	}
+}
+
+
+#cross hr:first-child{
+	margin:unset;
+	transition-timing-function: ease-in-out;
+	transition:.3s;
+}
+
+#cross hr:last-child{
+	margin-top:3px;
+	margin-bottom:unset;
+	transition-timing-function: ease-in-out;
+	transition:.3s;
+}
+
+#cross hr:first-child.AnimationOpen{
+	transition-timing-function: ease-in-out;
+	transition:.3s;
+	margin-bottom: -2px;
+	transform: rotate(45deg);
+}
+
+#cross hr:last-child.AnimationOpen{
+	transition-timing-function: ease-in-out;
+	transition:.3s;
+	margin-top: -2px;
+	transform: rotate(-45deg);
+}
+
+#search{
+	padding-left:5px;
+}
+
+#searchField{
+	width:80px;
+	border-color:var(--accent-color);
+	border-radius:4px;
+	border-style:solid;
+	margin-top:11px;
+	margin-right:3px;
+	float:left;
+	background-color:var(--header-color);
+	color:white;
+	height:25px;
+	padding-left:5px;
+}
+
+#searchField::placeholder{
+	color:#f0f0f0;
+}
+
+#vergrootglas{
+	margin-right:10px;
+}
+
+#vergrootglas *{
+	fill:none;
+	stroke-width:3px;
+	stroke:var(--dark-mode-txt);
+}
+
+svg{
+	margin-top:12px;
+}
+
+#vergrootglas:hover{
+	cursor:pointer;
+}
+#vergrootglas:hover *{
+	stroke:var(--accent-color);
+}
+
+@media (min-width:701px) and (max-width:899px){
+	#search{
+		display:none;
+	}
+	#mainTitle h1{
+		display:none;
+	}
+	header{
+		width:100%;
+		margin:0;
+		padding:0;
+	}
+	.welcomeTexts{
+		text-align:center;
+		width:100%;
+		margin:0;
+		padding:0;
+	}
+	#logoAnimation{
+		margin-left:auto !important;
+		margin-right:auto;
+		float:none !important;
+	}
+	nav > ul > li:nth-child(5){
+		/*https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-child */
+		/*dit is zodat de rechter menu-optie ook afgeronde randen heeft, net zoals de header-bar*/
+		border-radius:0px 10px 10px 0px;
+	}
+}
+
+

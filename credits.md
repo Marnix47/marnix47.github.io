@@ -1,0 +1,8 @@
+- Website template van het Emmauscollege Rotterdam https://github.com/emmauscollege/4HV-website-template
+- Met dank aan meneer Cammeraat.
+- Afbeeldingen van producten op index.html zijn van apple.com .
+- Afbeeldingen van producten op osen.html zijn van apple.com .
+- Afbeeldingen uit afbeeldingen/apple-stores komen van apple.com/retail, de kaart (kaart-amerika.jpg) van Apple Stores is van de Kaarten app van Apple.
+- De afbeelding van de iMac G3 (imacg3s.jpg) op geschiedenis.html is van Apple.
+- De informatie op geschiedenis.html komt van de Engelstalige Wikipediapagina van Apple en de biografie van Steve Jobs.
+- Bij code die geïnspireerd is op of gekopieerd van andere site's is de bron vermeld, zie voor die bronnen de bestanden.

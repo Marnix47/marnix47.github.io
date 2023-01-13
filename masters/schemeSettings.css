@@ -1,0 +1,17 @@
+.flex{
+	display:flex;
+}
+.center{
+	align-items: center;
+}
+input#colorPicker{
+	margin:auto;
+	width:100px;
+	height:50px;
+	border-radius:5px;
+}
+#colorwrapper{
+	width:100%;
+	display:grid;
+	align-items: center;
+}

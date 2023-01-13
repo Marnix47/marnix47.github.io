@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="nl" id="over">
+
+<head>
+	<link rel="stylesheet" href="style.css">
+	<!--<link rel="stylesheet" href="masters/footer-style.css">-->
+	<link rel="icon" href="afbeeldingen/logo-transparent.png">
+	<title>Over | Not A Cherry</title>
+	<meta charset="UTF-8">
+	<meta name="theme-color" content="white">
+	<script src="javascript/script.js"></script>
+	<script src="javascript/over.js"></script>
+</head>
+
+<body>
+	<div class="page">
+
+		<header id="outerHeader">
+			<div id="innerHeader">
+				<div id="mobileWrapper">
+					<a href="index.html">
+						<div id="mainTitle">
+							<img src="afbeeldingen/logo-transparent.png">
+							<h1>Not A Cherry</h1>
+						</div>
+					</a>
+
+					<div id="outerCross">
+						<div id="cross">
+							<hr>
+							<hr>
+						</div>
+					</div>
+				</div>
+				
+
+				<nav id="navBar">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="geschiedenis.html">Geschiedenis</a></li>
+						<li class="dropdown">
+							<a href="osen.html">OS'en</a>
+							<div class="dropdownMenu">
+								<ul class="uldropdownMenu">
+									<li><a href="osen.html#macos">macOS</a></li>
+									<li><a href="osen.html#ios">iOS</a></li>
+									<li><a href="osen.html#ipados">iPadOS</a></li>
+									<li><a href="osen.html#watchos">watchOS</a></li>
+								</ul>
+							</div>
+						</li>
+						<li><a href="applestores.html">Apple Stores</a></li>
+						<li><a href="iphonetest.html">iPhone Test</a></li>
+						<li id="search">
+							<input type="text" id="searchField" placeholder="zoeken..">
+							<svg width="20" height="20" id="vergrootglas">
+								<circle cx="10" cy="10" r="6" ></circle>
+								<path d="M14 14 L20 20"></path>
+							</svg>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+
+		<main>
+			<h1 id="mostFrequentPage">Je meest bezochte pagina is <a id="mfpLink"></a>, je hebt die pagina <span
+					id="hitField"></span> keer bezocht.</h1>
+			<h3 id="thisPage">Je hebt deze informatie <span id="previousRequests"></span> keer eerder opgezocht.</h3>
+			<div id="overButtons">
+				<button id="returnButton">Ik weet genoeg</button>
+				<button id="colorSchemeButton">Weergavevoorkeuren</button>
+			</div>
+			<iframe src="masters/schemeSettings.html" id="colorPicker"></iframe>
+			<iframe src="masters/accentColor.html" id="accentPicker"></iframe>
+				
+		</main>
+
+		<footer class="footer">
+			<iframe src="masters/over-footer.html"></iframe>
+		</footer>
+
+	</div>
+</body>
+
+</html>

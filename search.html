@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="probleemstyle.css">
+	<script src="javascript/script.js"></script>
+	<script src="javascript/search.js"></script>
+	<title>Zoeken | Not A Cherry</title>
+</head>
+
+<body>
+	<div class="page">
+
+		<header id="outerHeader">
+			<div id="innerHeader">
+				<div id="mobileWrapper">
+					<a href="index.html">
+						<div id="mainTitle">
+							<img src="afbeeldingen/logo-transparent.png">
+							<h1>Not A Cherry</h1>
+						</div>
+					</a>
+
+					<div id="outerCross">
+						<div id="cross">
+							<hr>
+							<hr>
+						</div>
+					</div>
+				</div>
+				
+
+				<nav id="navBar">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="geschiedenis.html">Geschiedenis</a></li>
+						<li class="dropdown">
+							<a href="osen.html">OS'en</a>
+							<div class="dropdownMenu">
+								<ul class="uldropdownMenu">
+									<li><a href="osen.html#macos">macOS</a></li>
+									<li><a href="osen.html#ios">iOS</a></li>
+									<li><a href="osen.html#ipados">iPadOS</a></li>
+									<li><a href="osen.html#watchos">watchOS</a></li>
+								</ul>
+							</div>
+						</li>
+						<li><a href="applestores.html">Apple Stores</a></li>
+						<li><a href="iphonetest.html">iPhone Test</a></li>
+						<li id="search">
+							<input type="text" id="searchField" placeholder="zoeken..">
+							<svg width="20" height="20" id="vergrootglas">
+								<circle cx="10" cy="10" r="6" ></circle>
+								<path d="M14 14 L20 20"></path>
+							</svg>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<main>
+			<div id="loaderBody">
+				<img src="afbeeldingen/macos-laden.png" id="macLoader">
+			</div>
+			<h1 id="searched">Je zocht naar '<span id="searchedField"></span>':</h1>
+			<div id="resultsOutput"></div>
+			<div id="emptySearch">
+				<img src="afbeeldingen/empty-search.png" alt="`Er valt hier niks meer te byten` in 8-bit binair">
+				<h2>Er valt hier niks meer te byten</h2>
+			</div>
+			<!--<div class="searchResult"><h2 class="resultPageName"><a href=`${pageLinks[pageIndex]}`>${pageTitles[pageIndex]}</a></h2><p class="resultContent">${content}</p></div>-->
+	
+		</main>
+	</div>
+</body>
+
+</html>

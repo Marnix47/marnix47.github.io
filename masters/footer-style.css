@@ -1,4 +1,24 @@
-.copyrightText{
-    text-align: center;
-    font-size: 0.7em;
+:root{
+	--accent-colort:tomato;
+}
+
+.copyrightText{text-align: center; font-size: 0.7em;}
+hr{background-color:var(--accent-colort); border-width:0px; height:2px;}
+
+.footer div{
+	width:max-content;
+	padding:0px 10px;
+	margin:0px auto;
+	display:flex;
+	align-items:center;
+}
+
+.footer a{
+	color:var(--accent-colort);
+}
+
+.footer a,p{
+	margin: 0 20px;
+	font-size: 0.7em;
+	font-family:"SF Pro Display", "Helvetica", sans-serif;
 }
