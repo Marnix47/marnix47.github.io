@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+	<link rel="stylesheet" href="style.css">
+	<link rel="icon" href="afbeeldingen/logo-transparent.png">
+	<title>Apple Stores | Not A Cherry</title>
+	<meta charset="UTF-8">
+	<meta name="theme-color" content="white">
+	<script src="javascript/script.js"></script>
+	<script src="javascript/applestores.js"></script>
+</head>
+
+<body>
+	<div class="page">
+
+		<header id="outerHeader">
+			<div id="innerHeader">
+				<div id="mobileWrapper">
+					<a href="index.html">
+						<div id="mainTitle">
+							<img src="afbeeldingen/logo-transparent.png">
+							<h1>Not A Cherry</h1>
+						</div>
+					</a>
+					<div id="outerCross">
+						<div id="cross">
+							<hr>
+							<hr>
+						</div>
+					</div>
+				</div>
+				
+
+				<nav id="navBar">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="geschiedenis.html">Geschiedenis</a></li>
+						<li class="dropdown">
+							<a href="osen.html">OS'en</a>
+							<div class="dropdownMenu">
+								<ul class="uldropdownMenu">
+									<li><a href="osen.html#macos">macOS</a></li>
+									<li><a href="osen.html#ios">iOS</a></li>
+									<li><a href="osen.html#ipados">iPadOS</a></li>
+									<li><a href="osen.html#watchos">watchOS</a></li>
+								</ul>
+							</div>
+						</li>
+						<li><a class="active" href="applestores.html">Apple Stores</a></li>
+						<li><a href="iphonetest.html">iPhone Test</a></li>
+						<li id="search">
+							<input type="text" id="searchField" placeholder="zoeken..">
+							<svg width="20" height="20" id="vergrootglas">
+								<circle cx="10" cy="10" r="6" ></circle>
+								<path d="M14 14 L20 20"></path>
+							</svg>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+
+		<main>
+			<div class="map">
+				<div class="mapImage">
+					<img src="afbeeldingen/kaart-amerika.jpg" alt="Kaart van de VS">
+				</div>
+				<div class="point" id="newyork"></div>
+				<div class="point" id="orlando"></div>
+				<div class="point" id="dallas"></div>
+				<div class="point" id="losangeles"></div>
+				<div class="point" id="sanfrancisco"></div>
+				<div class="point" id="chicago"></div>
+				<div class="point" id="charlotte"></div>
+				<div class="point" id="saltlakecity"></div>
+				<div id="infoWindow">
+					<h3 id="nameOfCity"></h3>
+				</div>
+			</div>
+			<div id="infoField">
+				<h1 id="city"></h1>
+				<h3 id="storeName"></h3>
+				<img id="storeImage" src="" alt="Afbeelding van de geselecteerde Store">
+			</div>
+		</main>
+
+		<footer>
+			<iframe class="footer" src="masters/footer.html"></iframe>
+		</footer>
+
+	</div>
+</body>
+
+</html>
