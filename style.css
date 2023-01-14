@@ -585,7 +585,7 @@ opmaak voor applestores.html
 	display:none;
 	background-color:seashell;
 	height:40px;
-	width:auto;
+	width:max-content;
 	border-radius:5px;
 	padding:0 10px;
 }
@@ -673,10 +673,19 @@ opmaak voor applestores.html
 	width:70%;
 	min-width:700px;
 	height:auto;
-	margin:auto auto;
+	margin:auto;
 	display:none;
 	border:solid 5px var(--accent-color);
 }
+@media only screen and (max-width:700px){
+	#storeImage{
+		width:100%;
+		min-width:unset;
+	}
+}
+/***********************************************************************************************************
+************************************************************************************************************
+***********************************************************************************************************/
 
 #storeName{
 	color:var(--accent-color);

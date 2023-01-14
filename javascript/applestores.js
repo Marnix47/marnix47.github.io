@@ -37,7 +37,7 @@ window.onload = function() {
 
 	function renderInfoWindow(cityName) {
 		var Yposition = cityName.offsetTop - 50 + "px"
-		var Xposition = cityName.offsetLeft + "px"
+		var Xposition = cityName.offsetLeft - 30 + "px"
 		infoWindow.style.top = Yposition
 		infoWindow.style.left = Xposition
 		//Ik weet dat de InfoWindow niet meeschuift als de vw verandert, maar dat maakt niet uit omdat je de vw niet kan aanpassen als je met je muis boven een element zit.
@@ -54,6 +54,7 @@ window.onload = function() {
 		storeName.innerHTML = storeNameHandler(cityName)
 		storeImage.src = imageHandler(cityName)
 		storeImage.alt = cityNameHandler(cityName)
+		storeImage.title = cityNameHandler(cityName)
 		storeImage.style.display = "block"
 	}
 
