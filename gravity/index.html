@@ -7,6 +7,26 @@
     <link href="manifest.json" rel="manifest" crossorigin="use-credentials">
     <link href="style.css" rel="stylesheet" type="text/css" />
     <title>Game</title>
+    <style>
+      .p5Canvas {
+      /* zorg dat canvas niet groter wordt dan window
+         en behoud breedte x hoogte verhouding van 1280x720 
+       */  
+      max-width: min(100vh*1280/720, 100vw);
+      max-height: min(100vw*720/1280, 100vh);
+      
+      /* zet canvas in het midden
+       */ 
+      display:block;
+      margin: auto;
+    }
+    
+    html, body {
+      /* verwijder marge tussen canvas en rand van window
+       */ 
+      margin: 0px;
+    }
+  </style>
   </head>
   <body>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.min.js"></script>
