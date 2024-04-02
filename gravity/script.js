@@ -5,17 +5,22 @@ const dt = .0001;
 
 var iterationsPerFrame = 5e2 / (dt * 1000);
 
-const Situation = 2;
+const Situation = parseInt(new URLSearchParams(document.location.search).get("s"));
 
 var lastMousePressedCoord = {x: null, y: null};
 var deviation = {x: 0, y: 0};
 var dDeviation = {x: 0, y: 0};
 
 var pointMasses;
-
+var earthOrbit = [];
 var slider;
 
 let c;
+var id = 0;
+function assignId(){
+    id++;
+    return id
+}
 
 function setup(){
     // // console.log(getDistance({x:0, y:0}, {x:4, y:3}));
@@ -75,6 +80,7 @@ class PointMass{
         this.p = p0;
         this.po = p0;
         this.vo = v0;
+        this.id = assignId();
         // console.log(v0 , p0)
         console.log({...this})
     }
@@ -174,6 +180,17 @@ function draw(){
         iterate();
     }
     for(m of pointMasses){
+        if(true){
+            // console.log("draw")
+            fill("white");
+            earthOrbit.push({...m.p});
+            if(earthOrbit.length > 100000){
+                earthOrbit.shift();
+            }
+            for(position of earthOrbit){
+                circle(position.x + deviation.x + dDeviation.x, position.y + deviation.y + dDeviation.y, 3);
+            }
+        }
         m.teken();
         circle(m.p.x + deviation.x + dDeviation.x, m.p.y + deviation.y + dDeviation.y, 2 * m.Radius)
         stroke("red");
@@ -183,7 +200,10 @@ function draw(){
         line(m.p.x + deviation.x + dDeviation.x, m.p.y + deviation.y + dDeviation.y, m.p.x + m.a.x * 150 + deviation.x + dDeviation.x, m.p.y + m.a.y * 150 + deviation.y + dDeviation.y)
 
         noStroke();
+        
+        
     }
+    
     if(Situation == 1){
         if(frameCount == 300){
             pointMasses.push(new PointMass(10, 100, {x:2, y:-5}, {x:100, y:300}));
