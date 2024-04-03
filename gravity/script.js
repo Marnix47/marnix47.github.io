@@ -14,6 +14,7 @@ var dDeviation = {x: 0, y: 0};
 var pointMasses;
 var earthOrbit = [];
 var slider;
+var checkbox;
 
 let c;
 var id = 0;
@@ -59,11 +60,22 @@ function setup(){
                 new PointMass(30, 1, {x:0,y:0}, {x:200, y:540}),
             ];
             iterationsPerFrame *= 10;
+        break;
+        case 3:
+            pointMasses = [
+                new PointMass(30, 200, {x:0, y:2}, {x:810, y:540}),
+                new PointMass(30, 200, {x:0, y:-2}, {x:1110, y:540}),
+                new PointMass(20, 1e-10, {x:0, y:-2 * Math.sqrt(10)}, {x:460, y:540}),
+
+
+            ]
     }
     console.log(pointMasses)
     c = createCanvas(1920, 1080);
     slider = createSlider(10, 300, 50, 10);
     slider.position(1920 - 50, 50)
+    checkbox = createCheckbox("trace", false);
+    checkbox.position(1920 - 50, 100);
 }
 
 class PointMass{
@@ -187,8 +199,10 @@ function draw(){
             if(earthOrbit.length > 100000){
                 earthOrbit.shift();
             }
-            for(position of earthOrbit){
-                circle(position.x + deviation.x + dDeviation.x, position.y + deviation.y + dDeviation.y, 3);
+            if(checkbox.checked()){
+                for(position of earthOrbit){
+                    circle(position.x + deviation.x + dDeviation.x, position.y + deviation.y + dDeviation.y, 3);
+                }
             }
         }
         m.teken();
@@ -207,7 +221,7 @@ function draw(){
     }
     
     if(Situation == 1){
-        if(frameCount == 300){
+        if(frameCount == 420){
             pointMasses.push(new PointMass(10, 100, {x:2, y:-5}, {x:100, y:300}));
         }
     }
