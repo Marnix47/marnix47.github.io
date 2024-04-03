@@ -210,15 +210,19 @@ function draw(){
         strokeWeight(5);
         stroke("yellow");
         line(m.p.x + deviation.x + dDeviation.x, m.p.y + deviation.y + dDeviation.y, m.p.x + m.a.x * 150 + deviation.x + dDeviation.x, m.p.y + m.a.y * 150 + deviation.y + dDeviation.y);
-        stroke("red");
-        strokeWeight(5);
-        line(m.p.x + deviation.x + dDeviation.x, m.p.y + deviation.y + dDeviation.y, m.p.x + m.v.x * 15 + deviation.x + dDeviation.x, m.p.y + m.v.y * 15 + deviation.y + dDeviation.y);
+        
         noStroke();
         
 
         noStroke();
         
         
+    }
+    fill("red");
+    for(m of pointMasses){
+        stroke("red");
+        strokeWeight(5);
+        line(m.p.x + deviation.x + dDeviation.x, m.p.y + deviation.y + dDeviation.y, m.p.x + m.v.x * 15 + deviation.x + dDeviation.x, m.p.y + m.v.y * 15 + deviation.y + dDeviation.y);
     }
     
     if(Situation == 1){
