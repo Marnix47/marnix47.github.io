@@ -1,7 +1,7 @@
 // const G = 6.67e-11;
 var G = 50; //can be changed through slider
 // const PI = Math.PI;
-const dt = .01;
+const dt = .0001;
 
 var iterationsPerFrame = 5e2 / (dt * 1000);
 
