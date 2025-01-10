@@ -1,12 +1,11 @@
 class Wave {
     //de voorkant van het golffront gaat omhoog door de evenwichtsstand, een sinusbeweging.
 
-    center; //p5.Vector
     orientation; //[radialen], hoek van het rechte golffront t.o.v. de x-as
     speed; //absolute snelheid, [m/s]
     period; //periode, [s]
     waveLength; //golflengte, [m], berekend uit periode en speed
-    duration; //tijd die een willekeurig punt in de golf zou zitten, [s]. Stel de duration is 2s, en T is 1s, dan bestaat dit uit twee hele golflengtes.
+    //deprecated: duration; //tijd die een willekeurig punt in de golf zou zitten, [s]. Stel de duration is 2s, en T is 1s, dan bestaat dit uit twee hele golflengtes.
     velocity; //p5.Vector, loodrecht op orientation, berekend uit orientation en speed
     totalLength; //totale lengte van het golffront, [m]
     drawBuffer; //p5.Graphics, externe buffer om de golf op te tekenen.
@@ -14,14 +13,13 @@ class Wave {
     id;
 
 
-    constructor(x, y, orientation, speed, period, duration){
+    constructor(x, y, orientation, speed, period){
         this.frontPosition = createVector(x, y);
         this.orientation = orientation;
         this.velocity = createVector(Math.sin(orientation), Math.cos(orientation)).setMag(speed);
         this.period = period;
-        this.duration = duration;
         this.waveLength = speed * period;
-        this.totalLength = speed * duration;
+        this.totalLength = this.waveLength;
         this.drawBuffer = createGraphics(createVector(width, height).mag(), 500); //width: diagonaal van het scherm, height: 500 px
         this.bufferIsDefined = false;
         this.speed = speed;
@@ -30,18 +28,21 @@ class Wave {
 
     move(dt /*tijdstap, [s]*/){
         this.frontPosition.add(this.velocity.copy().mult(dt));
-        // console.log(this.frontPosition);
-        // console.log(this.frontPosition.x, this.frontPosition.y);
     }
 
     draw(){
-        if(!this.bufferIsDefined){
-            this.defineBuffer();
-            this.bufferIsDefined = true;
-        }
-        circle(this.frontPosition.x, this.frontPosition.y, 20);
-        // imageMode(CENTER);
-        image(this.drawBuffer, 0, 500);
+        //TODO: lijnen van maken. Huidige vorm voegt niks toe.
+        // if(!this.bufferIsDefined){
+        //     this.defineBuffer();
+        //     this.bufferIsDefined = true;
+        // }
+        // circle(this.frontPosition.x, this.frontPosition.y, 20);
+        // image(this.drawBuffer, 0, 500);
+
+        //l: y = ax + b, met a = tan(orientation) en b = y - ax ingevuld voor frontPosition
+        let a = Math.tan(this.orientation + Math.PI/2);
+        let b = this.frontPosition.y - this.frontPosition.x * a;
+        line(-10 * b/a, 0, 0, b * 10);
 
     }
 
@@ -54,7 +55,6 @@ class Wave {
             this.drawBuffer.strokeWeight(1);
             //omhoog door de evenwichtsstand -> fase = 0
             const phase = ((i / 100) / this.waveLength) % 1;
-            // console.log(phase);
             let alpha = Math.sin(phase * 2 * Math.PI) * 127 + 127
             
             // baseColor.setBlue(Math.sin(phase * 2 * Math.PI) * 127 + 127); 
@@ -109,5 +109,15 @@ class Wave {
             return false;
         }
         return true;
+    }
+
+    calcTimeUntillArrival(hydrophone){
+        //implementatie van de formule van de afstand van een punt tot een lijn van de vorm ax + by = c:
+        //d(P,l) = |a * x_P + b * y_P - c| / sqrt(a^2 + b^2)
+        const a = Math.sin(this.orientation);
+        const b = Math.cos(this.orientation);
+        const c = this.frontPosition.x * a + this.frontPosition.y * b;
+        const dist = (Math.abs(a * hydrophone.position.x + b * hydrophone.position.y - c) / Math.sqrt(a**2 + b**2));
+        return dist / this.speed + frameStart/1000;
     }
 }

@@ -3,12 +3,17 @@ class Hydrophone {
     totalMemory; //van klasse signalMemory
     graphBuffer;
     delay;
+    index; //n'de hydrofoon
+    vertices; //Array, hoekpunten van de driehoek die de hydrofoon representeert
 
-    constructor(x, y){
+    constructor(x, y, index){
         this.position = createVector(x,y);
         this.totalMemory = new TotalMemory(this);
         this.graphBuffer = createGraphics(500,100);
         this.delay = 0;
+        this.index = index;
+        //driehoek: hoogte = 20px, breedte = 20px
+        this.vertices = [10 * x, 10 * y + 20, 10 * x - 10, 10 * y, 10 * x + 10, 10 * y];
     }
 
     update(){
@@ -16,7 +21,8 @@ class Hydrophone {
         // this.memory.update(golf.calcDisplacementAtPoint(this.position));
     }
     draw(){
-        circle(this.position.x, this.position.y, 20);
+        // circle(this.position.x, this.position.y, 20);
+        triangle(...this.vertices);
     }
 
     renderBuffer(){
@@ -28,16 +34,17 @@ class Hydrophone {
         let values = new Array(500).fill(0);
         this.totalMemory.entries.forEach(entry => {
             for(var t = 0; t < 500; t++){
-                values[t] += entry.displacement((performance.now() - t)/1000);
+                values[t] += entry.displacement((frameStart - t)/1000, delayObject.delay * this.index);
             }
         })
-        strokeWeight(2);
-        stroke("red");
+        this.graphBuffer.strokeWeight(3);
+        this.graphBuffer.stroke("red");
         for(var t = 0; t < 499; t++){
             this.graphBuffer.line(500 - t, 50 - 50 * values[t], 499-t, 50 - 50 * values[t + 1]);
         }
 
-        image(this.graphBuffer,0,0);
+        // image(this.graphBuffer,0,this.index * 100);
+        graphPanel.drawGraphBuffer(this.graphBuffer, this.index);
 
         
     }

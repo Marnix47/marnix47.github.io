@@ -5,12 +5,13 @@ class WaveMemory{
     stopCondition; //setTimeout()
     waveId;
 
-    constructor(period, id, hydrophone){
-        this.start = performance.now()/1000; //de tijd van eerste detectie is 'nu'
-        this.period = period;
+    constructor(wave, hydrophone){
+        // this.start = performance.now()/1000 + .5; //de tijd van eerste detectie is 'nu'
+        this.start = wave.calcTimeUntillArrival(hydrophone);
+        this.period = wave.period;
         this.oscillator = new p5.Oscillator();
         this.stopCondition;
-        this.waveId = id;
+        this.waveId = wave.id;
         this.hydrophone = hydrophone;
     }
 
@@ -24,17 +25,20 @@ class WaveMemory{
         this.oscillator.stop();
     }
     
-    displacement(t){
-        // if(performance.now() % 1000 > 900){
-        //     return Math.sin(5*t);
-
-        // } else {
-        //     return 0;
-        // }
-        return Math.sin(20*t);
-        if(t < this.start || t > this.start + this.period){
+    displacement(t /*[s]*/, delay /*[s]*/){
+        if(t + delay > this.start + this.period + 5){
+            this.hydrophone.totalMemory.removeWave();
+            if(this.hydrophone.index === hydrophones.length - 1){
+                //als dit de laatste hydrofoon is, zal de golf verder niet meer opgevangen worden
+                //dus kan de golf helemaal verwijderd worden.
+                waves.shift();
+            }
             return 0;
         }
-        return Math.sin(2 * Math.PI * (t - this.start) / period);
+
+        if(t + delay < this.start || t + delay > this.start + this.period){
+            return 0;
+        }
+        return Math.sin(2 * Math.PI * (t - delay - this.start) / this.period);
     }
 }
