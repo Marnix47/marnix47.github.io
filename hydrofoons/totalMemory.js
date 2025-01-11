@@ -23,7 +23,4 @@ class TotalMemory {
     addWave(wave /*Wave-object*/){
         this.entries.push(new WaveMemory(wave, this.hydrophone));
     }
-
-
-
 }

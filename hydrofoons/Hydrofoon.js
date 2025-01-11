@@ -5,6 +5,8 @@ class Hydrophone {
     delay;
     index; //n'de hydrofoon
     vertices; //Array, hoekpunten van de driehoek die de hydrofoon representeert
+    height; //hoogte van de driehoek
+    width; //breedte van de driehoek
 
     constructor(x, y, index){
         this.position = createVector(x,y);
@@ -12,17 +14,14 @@ class Hydrophone {
         this.graphBuffer = createGraphics(500,100);
         this.delay = 0;
         this.index = index;
-        //driehoek: hoogte = 20px, breedte = 20px
-        this.vertices = [10 * x, 10 * y + 20, 10 * x - 10, 10 * y, 10 * x + 10, 10 * y];
+        //driehoek: hoogte = 40px, breedte = 40px
+        this.height = 60;
+        this.width = 60;
+        this.vertices = [scale * x, scale * y + this.height, scale * x - this.width / 2, scale * y, scale * x + this.width/2, scale * y];
     }
 
-    update(){
-        // console.log(golf.calcDisplacementAtPoint(this.position));
-        // this.memory.update(golf.calcDisplacementAtPoint(this.position));
-    }
     draw(){
-        // circle(this.position.x, this.position.y, 20);
-        triangle(...this.vertices);
+        Hydrophone.drawInstance(this.position.x, this.position.y, this.width, this.height, this.index, true, false);
     }
 
     renderBuffer(){
@@ -35,6 +34,9 @@ class Hydrophone {
         this.totalMemory.entries.forEach(entry => {
             for(var t = 0; t < 500; t++){
                 values[t] += entry.displacement((frameStart - t)/1000, delayObject.delay * this.index);
+                if(t == 499 || t == 0){
+                    console.log(t, delayObject.delay);
+                }
             }
         })
         this.graphBuffer.strokeWeight(3);
@@ -42,20 +44,32 @@ class Hydrophone {
         for(var t = 0; t < 499; t++){
             this.graphBuffer.line(500 - t, 50 - 50 * values[t], 499-t, 50 - 50 * values[t + 1]);
         }
-
-        // image(this.graphBuffer,0,this.index * 100);
-        graphPanel.drawGraphBuffer(this.graphBuffer, this.index);
-
-        
     }
 
-    /*
-    elke hydrofoon houdt bij op welke tijdstippen een golf binnengekomen is, en welke frequentie die golf heeft.
-    elke golf is in werkelijkheid precies 1 golflengte lang
-    na het verstrijken van de delay wordt die golf gedurende 0.5s afgespeeld als geluid
+}
 
-    in de totale functie wordt de artificiële versterking gebaseerd op de hoogte van de max. uitwijking van de totale golffunctie,
-     t.o.v. wat die in het ideale geval zou zijn
-    
-    */
+Hydrophone.drawInstance = function(x, y, width, height, index, drawCircle, interpretAsPx, txt = ""){
+    textAlign(CENTER, CENTER);
+    fill(255);
+    strokeWeight(2);
+    stroke(0);
+    var vertices;
+    if(interpretAsPx){
+        vertices = [x, y + height,x - width / 2, y, x + width/2, y];
+    } else {
+        vertices = [scale * x, scale * y + height, scale * x - width / 2, scale * y, scale * x + width/2, scale * y];
+
+    }
+    triangle(...vertices);
+    strokeWeight(1);
+    textSize(txt == "" ? 20 : 30);
+    if(drawCircle){
+        circle(x * scale, y * scale, 6);
+    }
+    fill(0);
+    if(interpretAsPx){
+        text(txt == "" ? `H${index + 1}` : txt, x, y + height/2 - 11);
+    } else {
+        text(txt == "" ? `H${index + 1}` : txt, x * scale, y * scale + height/2 - 11);
+    }
 }

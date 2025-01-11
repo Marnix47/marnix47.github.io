@@ -1,12 +1,12 @@
 class GraphPanel {
-    leftX = 1300;
+    leftX = 1250;
     rightX = 1920;
     graphBuffer;
 
-    constructor(leftX = 300, rightX = 1920){
+    constructor(leftX = 1250, rightX = 1920){
         this.leftX = leftX
         this.rightX = rightX;
-        this.graphBuffer = createGraphics(500, 300);
+        this.graphBuffer = createGraphics(500, 340);
     }
 
     drawGraphBuffer(buffer, index){
@@ -23,7 +23,7 @@ class GraphPanel {
         hydrophones.forEach(x => {
             x.totalMemory.entries.forEach(entry => {
                 for(var t = 0; t < 500; t++){
-                    values[t] += entry.displacement((frameStart - t)/1000, delayObject.delay * x.index);
+                    values[t] += entry.displacement((frameStart - t)/1000, delayObject.delay * x.index, x);
                 }
             })
         })
@@ -31,10 +31,34 @@ class GraphPanel {
         this.graphBuffer.strokeWeight(3);
         this.graphBuffer.stroke("red");
         for(var t = 0; t < 499; t++){
-            this.graphBuffer.line(500 - t, 150 - 50 * values[t], 499-t, 150 - 50 * values[t + 1]);
+            this.graphBuffer.line(500 - t, 170 - 50 * values[t], 499-t, 170 - 50 * values[t + 1]);
         }
 
-        image(this.graphBuffer, this.leftX, 600);
+        image(this.graphBuffer, this.leftX + 100, 610);
+        Hydrophone.drawInstance(this.leftX + 50, 750, hydrophones[0].height, hydrophones[0].width, 0, false, true, "Σ")
+    }
+
+    drawGraphBuffers(){
+        //tekent de grafieken van alle individuele hydrofoons
+        hydrophones.forEach(x => {
+            // console.log(this.leftX, x.index * 100 + 20);
+            Hydrophone.drawInstance(this.leftX + 50, x.index * 100 + 20, x.width, x.height, x.index, false, true);
+            image(x.graphBuffer, this.leftX + 100, x.index * 100);
+        })
+    }
+
+    draw(){
+        //moet aangeroepen worden nadat de golven zijn getekend
+        noStroke();
+        fill("white");
+        rect(this.leftX, 0, this.rightX - this.leftX, 1080);
+        stroke("black");
+        strokeWeight(5);
+        stroke("lightblue");
+        line(this.leftX, 0, this.leftX, 1080);
+        this.drawGraphBuffers();
+        this.drawTotalGraph();
+        fill(0);
     }
 
 }

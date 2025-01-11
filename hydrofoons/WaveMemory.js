@@ -25,8 +25,8 @@ class WaveMemory{
         this.oscillator.stop();
     }
     
-    displacement(t /*[s]*/, delay /*[s]*/){
-        if(t + delay > this.start + this.period + 5){
+    displacement(t /*[s]*/, delay /*[s]*/, hydrophone = hydrophones[0]){
+        if(t + delay > this.start + this.period + 8){
             this.hydrophone.totalMemory.removeWave();
             if(this.hydrophone.index === hydrophones.length - 1){
                 //als dit de laatste hydrofoon is, zal de golf verder niet meer opgevangen worden
@@ -35,10 +35,13 @@ class WaveMemory{
             }
             return 0;
         }
+        let time = t + delay;
 
-        if(t + delay < this.start || t + delay > this.start + this.period){
+        if(time < this.start || time > this.start + this.period){
             return 0;
         }
-        return Math.sin(2 * Math.PI * (t - delay - this.start) / this.period);
+        // return Math.sin(2 * Math.PI * (t + delay - this.start) / this.period);
+        return Math.sin(2 * Math.PI * (this.start - t - delay) / this.period);
+
     }
 }
