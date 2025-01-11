@@ -42,8 +42,14 @@ class GraphPanel {
         //tekent de grafieken van alle individuele hydrofoons
         hydrophones.forEach(x => {
             // console.log(this.leftX, x.index * 100 + 20);
-            Hydrophone.drawInstance(this.leftX + 50, x.index * 100 + 20, x.width, x.height, x.index, false, true);
+            textAlign(CENTER, BOTTOM);
+            fill(0);
+            stroke(0);
+            strokeWeight(1);
+            text(`+${Math.round((hydrophones.length - 1 - x.index) * delayObject.delay * 1000)} ms`, this.leftX + 50, x.index * 100 + 25);
+            Hydrophone.drawInstance(this.leftX + 50, x.index * 100 + 30, x.width, x.height, x.index, false, true);
             image(x.graphBuffer, this.leftX + 100, x.index * 100);
+            textAlign(LEFT, BOTTOM);
         })
     }
 

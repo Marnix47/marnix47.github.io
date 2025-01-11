@@ -34,9 +34,6 @@ class Hydrophone {
         this.totalMemory.entries.forEach(entry => {
             for(var t = 0; t < 500; t++){
                 values[t] += entry.displacement((frameStart - t)/1000, delayObject.delay * this.index);
-                if(t == 499 || t == 0){
-                    console.log(t, delayObject.delay);
-                }
             }
         })
         this.graphBuffer.strokeWeight(3);

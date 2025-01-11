@@ -15,7 +15,7 @@ class Delay {
         this.topLeftDelay = createVector(50, 750);
         this.topLeftAngle = createVector(50, 670);
 
-        this.roughSlider = createSlider(0, 110, 0, 1);
+        this.roughSlider = createSlider(0, 100, 0, 1);
         this.roughSlider.size(200);
         this.roughSlider.position(this.topLeftDelay.x + 15, this.topLeftDelay.y + 40);
         this.preciseSlider = createSlider(-10, 10, 0, 0.05);
@@ -51,6 +51,7 @@ class Delay {
     }
 
     calcAngle(delay /*[s]*/){
+        //geeft de hoek in rad die bij een gegeven delay hoort
         const data = this.data;
         const interpolate = d3.scaleLinear()
         .domain(data.map(d => d.dt))
@@ -74,6 +75,7 @@ class Delay {
         fill(0);
         textSize(17);
         text(`Ruwe Delay: ${(this.roughSlider.value()).toString(10)} ms`, 15, 27);
+        text(`Precieze Delay: ${(this.preciseSlider.value()).toString(10)} ms`, 15, 77)
         text(`Totale Delay: ${this.roughSlider.value() + this.preciseSlider.value()} ms`, 15, 127);
         text(`∠θ = ${Math.round(1000 * this.calcAngle(this.delay)/Math.PI)/1000}π rad = ${Math.round(100 * this.calcAngle(this.delay) * 180 / Math.PI)/100}°`, 15, 157);
 
@@ -92,7 +94,7 @@ class Delay {
         stroke(0);
         fill(0);
         textSize(17);
-        text(`Ingestelde θ = ${Math.round(1000 * this.parseAngleSlider() * Math.PI / 180)/1000}π rad = ${Math.round(100 * this.parseAngleSlider())/100}°`, 15, 27);
+        text(`Ingestelde θ = ${Math.round(1000 * this.parseAngleSlider() / 180)/1000}π rad = ${Math.round(100 * this.parseAngleSlider())/100}°`, 15, 27);
 
         pop();
     }
