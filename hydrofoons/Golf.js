@@ -7,7 +7,6 @@ class Wave {
     waveLength; //golflengte, [m], berekend uit periode en speed
     velocity; //p5.Vector, loodrecht op orientation, berekend uit orientation en speed
     totalLength; //totale lengte van het golffront, [m]
-    id; 
 
 
     constructor(x, y, orientation, speed, period){
@@ -18,7 +17,6 @@ class Wave {
         this.waveLength = speed * period;
         this.totalLength = this.waveLength;
         this.speed = speed;
-        this.id = getNewId();
     }
 
     move(dt /*tijdstap, [s]*/){

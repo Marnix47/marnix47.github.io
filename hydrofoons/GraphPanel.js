@@ -1,4 +1,5 @@
 class GraphPanel {
+    //klasse die de rechterkant van het scherm regelt
     leftX = 1250;
     rightX = 1920;
     graphBuffer;
@@ -41,7 +42,6 @@ class GraphPanel {
     drawGraphBuffers(){
         //tekent de grafieken van alle individuele hydrofoons
         hydrophones.forEach(x => {
-            // console.log(this.leftX, x.index * 100 + 20);
             textAlign(CENTER, BOTTOM);
             fill(0);
             stroke(0);
@@ -54,6 +54,7 @@ class GraphPanel {
     }
 
     draw(){
+        //algemene tekenfunctie van het rechterdeel van het scherm
         //moet aangeroepen worden nadat de golven zijn getekend
         noStroke();
         fill("white");

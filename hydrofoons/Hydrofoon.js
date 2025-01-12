@@ -1,8 +1,7 @@
 class Hydrophone {
     position; //p5.Vector, positie
-    totalMemory; //van klasse signalMemory
-    graphBuffer;
-    delay;
+    totalMemory; //van klasse TotalMemory
+    graphBuffer; //p5.Graphics, slaat de getekende grafiek op
     index; //n'de hydrofoon
     vertices; //Array, hoekpunten van de driehoek die de hydrofoon representeert
     height; //hoogte van de driehoek
@@ -12,9 +11,8 @@ class Hydrophone {
         this.position = createVector(x,y);
         this.totalMemory = new TotalMemory(this);
         this.graphBuffer = createGraphics(500,100);
-        this.delay = 0;
         this.index = index;
-        //driehoek: hoogte = 40px, breedte = 40px
+        //driehoek: hoogte = 60px, breedte = 60px
         this.height = 60;
         this.width = 60;
         this.vertices = [scale * x, scale * y + this.height, scale * x - this.width / 2, scale * y, scale * x + this.width/2, scale * y];
@@ -46,6 +44,7 @@ class Hydrophone {
 }
 
 Hydrophone.drawInstance = function(x, y, width, height, index, drawCircle, interpretAsPx, txt = ""){
+    //tekent de driehoek die een hydrofoon voorstelt
     textAlign(CENTER, CENTER);
     fill(255);
     strokeWeight(2);
