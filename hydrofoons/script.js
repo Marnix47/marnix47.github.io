@@ -1,5 +1,6 @@
-//scale x10 -> 1 px was 1m, 1px wordt 10cm
+//scale x100 -> 1 px was 1m, 1px wordt 1cm
 const scale = 100;
+const amountOfHydrophones = 6;
 
 var interval;
 var hydrofoon1;
@@ -8,11 +9,16 @@ var hydrophones = [];
 var graphPanel;
 var waves = [];
 var delayObject;
+var angleVisualiser;
 var sound;
 var confirmButton;
-// var soundFrameWindow;
 var lastInterval = performance.now();
 const soundChannel = new BroadcastChannel("sound-channel");
+soundChannel.addEventListener("message", event => {
+    if(event.data === "request"){
+        soundChannel.postMessage(updateSound());
+    }
+})
 
 var soundUpdateInterval;
 
@@ -24,25 +30,26 @@ function setup(){
     delayObject = new Delay();
     graphPanel = new GraphPanel();
     sound = new Sound();
+    angleVisualiser = new AngleVisualiser();
     soundUpdateInterval = setInterval(updateSound, 500);
     confirmButton = createButton("Geluid aanzetten");
     confirmButton.position(width/2, height/2);
+    confirmButton.size(150, 30);
+    confirmButton.position(graphPanel.leftX - 170, 10);
+
     confirmButton.mousePressed(function(){
         if(sound.context.state !== "suspended"){
-            confirmButton.label = "Geluid aanzetten";
+            confirmButton.html("Geluid aanzetten")
             sound.context.suspend();
         } else {
-            confirmButton.label = "Geluid uitzetten";
+            confirmButton.html("Geluid uitzetten");
             sound.context.resume();
         }
     });
-    for(var i = 0; i < 6; i++){
+
+    for(var i = 0; i < amountOfHydrophones; i++){
         hydrophones.push(new Hydrophone(1 * (i + 1), 2, i));
     }
-
-    // soundFrameWindow = document.querySelector("iframe").contentWindow;
-
-
 }
 
 function draw(){
@@ -61,76 +68,33 @@ function draw(){
         x.renderBuffer();
     })
     waves.forEach(x => x.draw())
+    angleVisualiser.draw(delayObject.calcAngle(delayObject.delay));
     delayObject.drawSliderDialogues();
     graphPanel.draw();
     
 }
 
-// function mousePressed(){
-//     osci.start();
-//     osci2.start();
-//     console.log("pressed");
-// }
 
 function runSetup(){
     for(var i = 0; i < 4; i++){
-        // hydrofoon1.update();
-        // hydrofoon2.update();
-        // golf.move(0.001);
         waves.forEach(x => x.move(0.001));
     }
 }
 
 function updateSound(){
-    console.log(performance.now() - lastInterval);
     lastInterval = performance.now();
     //array genereren...
     var values = new Array(sound.sampleRate/2).fill(0);
-    // for(var t = 0; t < sound.requiredArrayLength500ms; t++){
-
-    // }
-    if(!audioIsAllowedToRun()){
-
-    }
-
     hydrophones.forEach(x => {
         x.totalMemory.entries.forEach(entry => {
             for(var t = 0; t < sound.sampleRate/2; t++){
-                values[t] += entry.displacement((frameStart - t * 500 / sound.sampleRate)/500 , delayObject.delay * x.index, false);
+                values[t] += entry.displacement((frameStart/1000 - t/4 / (sound.sampleRate/2)) , delayObject.delay * x.index, false);
             }
         })
     })
-    values.map(x => x/hydrophones.length);
-    //max. amplitude voor de functie is 1, die was eerst 6
-    // sound.playArray1000ms(values);
-    // soundFrameWindow.postMessage(values);
-    soundChannel.postMessage(values);
+    values.map(x => (x/hydrophones.length) ** 2);
+    //max. amplitude voor de functie 'playArray500ms' is 1, die is daar nu aan aangepast
+    sound.playArray500ms(values);
 
 }
-
-
-//gemaakt met AI: https://www.phind.com/search?cache=yoguz9uof5r6euu1r3ldm9ko
-function audioIsAllowedToRun() {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    return audioCtx.state === 'running' || audioCtx.state === 'suspended';
-}
-
-let id_count = 0;
-function getNewId(){
-    id_count++;
-    return id_count;
-}
-
-
-// window.onload = function(){
-//     document.getElementsByTagName("body")[0].addEventListener("click", (event) => {
-//         var os = new p5.Oscillator();
-//         os.freq(100);
-//         os.amp(.05);
-//         os.start();
-//         osci.start();
-//         // console.log("clicked");
-//     })
-// }
 

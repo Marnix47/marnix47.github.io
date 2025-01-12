@@ -7,20 +7,13 @@ class TotalMemory {
         this.hydrophone = hydrophone;
     }
 
-    containsWave(id){
-        this.entries.forEach(x => {
-            if(x.id == id){
-                return true;
-            }
-        })
-        return false;
-    }
 
     removeWave(){
         this.entries.shift();
     }
 
     addWave(wave /*Wave-object*/){
+        //voegt een WaveMemory-object toe aan het totale geheugen van de hydrofoon
         this.entries.push(new WaveMemory(wave, this.hydrophone));
     }
 }

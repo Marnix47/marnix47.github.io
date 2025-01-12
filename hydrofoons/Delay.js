@@ -6,7 +6,6 @@ class Delay {
     angleSlider; //p5.Element, HTML slider
     topLeftAngle; //p5.Vector, positie van linker bovenhoek van de angle dialogue
     topLeftDelay; //p5.Vector, positie van linker bovenhoek van de delay dialogue
-    angleValue;
     data = [];
     
     constructor(){
@@ -21,37 +20,32 @@ class Delay {
         this.preciseSlider = createSlider(-10, 10, 0, 0.05);
         this.preciseSlider.size(200);
         this.preciseSlider.position(this.topLeftDelay.x + 15, this.topLeftDelay.y + 90);
-        
-        // this.angleSlider = createSlider(5, 175, 0, 1);
-        // this.angleSlider.position(0,0);
-        // this.angleSlider.size(200);
-        
 
         this.data = [
-            // {dt: 5, a: Math.PI/60}, //300
-            {dt: 10, a: Math.PI/30}, //300
-            {dt: 20, a: Math.PI/15}, //300
-            // {dt: 25, a: Math.PI/12}, //300
-            {dt: 30, a: Math.PI/10}, //300
-            // {dt: 35, a: 41 * Math.PI/360}, //307,317
-            {dt: 40, a: Math.PI/8}, //320
-            // {dt: 45, a: 4 * Math.PI/27}, //303,75
-            {dt: 50, a: Math.PI/6}, //300
-            {dt: 60, a: Math.PI/5}, //300
-            {dt: 70, a: Math.PI/4}, //280
-            {dt: 80, a: 3 * Math.PI/10}, //266,67
-            {dt: 85, a: Math.PI/3} //270
+            {dt: 10, a: Math.PI/30},
+            {dt: 20, a: Math.PI/15},
+            {dt: 30, a: Math.PI/10},
+            {dt: 40, a: Math.PI/8},
+            {dt: 50, a: Math.PI/6},
+            {dt: 60, a: Math.PI/5},
+            {dt: 70, a: Math.PI/4},
+            {dt: 80, a: 3 * Math.PI/10},
+            {dt: 85, a: Math.PI/3}
         ];
 
         this.angleSlider = createSlider(1, this.data.length, 7, 1);
         this.angleSlider.position(this.topLeftAngle.x + 15, this.topLeftAngle.y + 40);
         this.angleSlider.size(150);
-        this.angleValue = this.parseAngleSlider();
     
     }
 
     calcAngle(delay /*[s]*/){
-        //geeft de hoek in rad die bij een gegeven delay hoort
+        //geeft de hoek in rad die bij een gegeven delay hoort,
+        //d.m.v. interpoleren van bekende waarden. 
+        //door afrondingsfouten e.d. is dit nodig.
+        //benadering door lineaire interpolatie is voor dit model goed genoeg
+
+        //gebruik gemaakt van de library d3.js:
         const data = this.data;
         const interpolate = d3.scaleLinear()
         .domain(data.map(d => d.dt))
@@ -94,7 +88,7 @@ class Delay {
         stroke(0);
         fill(0);
         textSize(17);
-        text(`Ingestelde θ = ${Math.round(1000 * this.parseAngleSlider() / 180)/1000}π rad = ${Math.round(100 * this.parseAngleSlider())/100}°`, 15, 27);
+        text(`∠golven = ${Math.round(1000 * this.parseAngleSlider() / 180)/1000}π rad = ${Math.round(100 * this.parseAngleSlider())/100}°`, 15, 27);
 
         pop();
     }
@@ -105,9 +99,8 @@ class Delay {
     }
 
     parseAngleSlider(){
-        //de onderstaande waardes zijn in te stellen als hoek.
+        //de waardes uit 'this.data' zijn in te stellen als hoek.
         //de slider is een getal van 1 t/m 10, dat de index aangeeft van het getal.
-        //var values = [3, 6, 12, 18, 22.5, 30, 36, 45, 54, 60];
         var values = this.data.map(x => x.a * 180 / Math.PI); 
         return values[this.angleSlider.value() - 1];
     }
