@@ -34,6 +34,8 @@ class Sound {
 
         source.connect(this.context.destination);
 
+        source.detune.value = 2400;
+
         source.start();
         
     }
@@ -58,6 +60,7 @@ class Sound {
         const source = this.context.createBufferSource();
 
         source.buffer = buffer;
+
 
         source.connect(this.context.destination);
 
