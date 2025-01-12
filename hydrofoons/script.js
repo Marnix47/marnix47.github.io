@@ -13,12 +13,6 @@ var angleVisualiser;
 var sound;
 var confirmButton;
 var lastInterval = performance.now();
-const soundChannel = new BroadcastChannel("sound-channel");
-soundChannel.addEventListener("message", event => {
-    if(event.data === "request"){
-        soundChannel.postMessage(updateSound());
-    }
-})
 
 var soundUpdateInterval;
 
@@ -32,7 +26,7 @@ function setup(){
     sound = new Sound();
     angleVisualiser = new AngleVisualiser();
     soundUpdateInterval = setInterval(updateSound, 500);
-    confirmButton = createButton("Geluid aanzetten");
+    confirmButton = createButton(sound.context.state == "suspended"? "Geluid aanzetten" : "Geluid uitzetten");
     confirmButton.position(width/2, height/2);
     confirmButton.size(150, 30);
     confirmButton.position(graphPanel.leftX - 170, 10);
