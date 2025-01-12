@@ -4,7 +4,7 @@
         <title>Hydrofoons</title>
         <script src="https://cdn.jsdelivr.net/npm/p5@1.11.2/lib/p5.min.js"></script>
         <script src="https://d3js.org/d3.v7.min.js"></script>
-        <script src="p5.sound.js"></script>
+        <!-- <script src="p5.sound.js"></script> -->
         <script src="Golf.js"></script>
         <script src="WaveMemory.js"></script>
         <script src="totalMemory.js"></script>
@@ -12,7 +12,11 @@
         <script src="SignalMemory.js"></script>
         <script src="Delay.js"></script>
         <script src="GraphPanel.js"></script>
+        <script src="Sound.js"></script>
         <script src="script.js"></script>
+        <!--In de main omgeving wordt het geluid verstoord door p5 (als de tab op de achtergrond speelt gaat het gewoon goed),
+        als het geluid in een extern frame gespeeld wordt werkt het wel.-->
+        <!-- <iframe id="external-sound" src="sound.html"></iframe> -->
 
     </head>
     <body>

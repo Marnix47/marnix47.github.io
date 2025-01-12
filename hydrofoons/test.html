@@ -2,27 +2,61 @@
 <html>
     <head>
         <script>
-            function analyzeData(data) {
-                const sampleRate = 44100; // Standaardmuestersnelheid voor audio
-                const windowSize = 2048;
-                const hopSize = windowSize / 2;
-
-                const spectrum = new Float32Array(windowSize);
-                const analyser = new AudioContext().createAnalyser();
-                const buffer = new Uint8Array(windowSize);
-
-                analyser.fftSize = windowSize;
-                analyser.buffer = audioContext.createBuffer(data.length, sampleRate, sampleRate);
-
-                for (let i = 0; i < data.length; i++) {
-                    analyser.putFloatAtChannel(data[i] * 32767, 0, i);
+            const ctx = new AudioContext({sampleRate: 3000});
+            // ctx.sampleRate = 500;
+            function play500ms(){
+                let array = new Array(500).fill(0);
+                for(var i = 0; i < 500; i++){
+                    array[i] = Math.sin(2 * Math.PI * i / 100);
+                    if(i > 200){
+                        array[i] = 0;
+                    }
                 }
 
-                analyser.getByteFrequencyData(buffer);
+                const buffer = ctx.createBuffer(
+                    2,
+                    ctx.sampleRate * 1,
+                    ctx.sampleRate,
+                );
 
-                // Hier zou je de buffer moeten analyseren om de beste frequentie te vinden
-                // voor jouw geluidssignalen
+
+                const bufferingArray = buffer.getChannelData(0);
+                console.log(buffer.length);
+                console.log(ctx.state);
+                for(var i = 0; i < buffer.length; i++){
+                    bufferingArray[i] = Math.sin(2 * Math.PI * i / 10);
+                    if(i > 200){
+                        bufferingArray[i] = 0;
+                        // bufferingArray[i] = Math.sin(2 * Math.PI * i / 20);
+
+                    }
+                }
+                const source = ctx.createBufferSource();
+
+                source.buffer = buffer;
+
+                source.connect(ctx.destination);
+
+                source.start();
+                
             }
+            window.onload = function(){
+                const button = document.getElementById("1");
+                button.addEventListener("click", event => {
+                    // source.start();
+                    // source.stop(buffer.length/ctx.sampleRate);
+                    ctx.resume();
+                })
+            }
+
+            setInterval(play500ms, 500);
+            
+
+            
+            // source.start();
+
+
+            
         </script>
     </head>
     <body>

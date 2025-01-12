@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="Sound.js"></script>
+        <script>
+            var lastReceived = performance.now();
+            const soundChannel = new BroadcastChannel("sound-channel");
+            soundChannel.addEventListener("message", event => {
+                // console.log(event.data);
+                sound.playArray500ms(event.data);
+                console.log(performance.now() - lastReceived);
+                lastReceived = performance.now();
+            })
+            var sound = new Sound();
+            // window.addEventListener("message", event => {
+            //     sound.playArray1000ms(event.data);
+            // })
+
+            function toggleSound(){
+                if(sound.context.state == "suspended"){
+                    sound.context.resume();
+                } else {
+                    sound.context.suspend();
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <button id="b" style="top:0;left:0;" onclick="toggleSound()">Toggle geluid</button>
+    </body>
+</html>

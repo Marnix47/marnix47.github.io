@@ -8,30 +8,40 @@ var hydrophones = [];
 var graphPanel;
 var waves = [];
 var delayObject;
+var sound;
+var confirmButton;
+// var soundFrameWindow;
+var lastInterval = performance.now();
+const soundChannel = new BroadcastChannel("sound-channel");
+
+var soundUpdateInterval;
 
 var frameStart = performance.now();
-// var osc;
-// const osc = new window.p5.Oscillator()
-var osci = new p5.Oscillator(100);
-osci.amp(0)
-var osci2 = new p5.Oscillator(100);
-osci2.amp(0)
+
 function setup(){
     createCanvas(1920, 1080);
     interval = setInterval(runSetup, 4);
     delayObject = new Delay();
     graphPanel = new GraphPanel();
+    sound = new Sound();
+    soundUpdateInterval = setInterval(updateSound, 500);
+    confirmButton = createButton("Geluid aanzetten");
+    confirmButton.position(width/2, height/2);
+    confirmButton.mousePressed(function(){
+        if(sound.context.state !== "suspended"){
+            confirmButton.label = "Geluid aanzetten";
+            sound.context.suspend();
+        } else {
+            confirmButton.label = "Geluid uitzetten";
+            sound.context.resume();
+        }
+    });
     for(var i = 0; i < 6; i++){
         hydrophones.push(new Hydrophone(1 * (i + 1), 2, i));
     }
 
-    // osc = new p5.Oscillator();
-    // osc.amp(.05);
-    // osc.freq(100);
-    // osc2 = new p5.Oscillator(100);
-    // osc2.amp(0.05);
-    // osc2.start();
-    // osc.start();
+    // soundFrameWindow = document.querySelector("iframe").contentWindow;
+
 
 }
 
@@ -53,8 +63,6 @@ function draw(){
     waves.forEach(x => x.draw())
     delayObject.drawSliderDialogues();
     graphPanel.draw();
-
-    
     
 }
 
@@ -71,6 +79,33 @@ function runSetup(){
         // golf.move(0.001);
         waves.forEach(x => x.move(0.001));
     }
+}
+
+function updateSound(){
+    console.log(performance.now() - lastInterval);
+    lastInterval = performance.now();
+    //array genereren...
+    var values = new Array(sound.sampleRate/2).fill(0);
+    // for(var t = 0; t < sound.requiredArrayLength500ms; t++){
+
+    // }
+    if(!audioIsAllowedToRun()){
+
+    }
+
+    hydrophones.forEach(x => {
+        x.totalMemory.entries.forEach(entry => {
+            for(var t = 0; t < sound.sampleRate/2; t++){
+                values[t] += entry.displacement((frameStart - t * 500 / sound.sampleRate)/500 , delayObject.delay * x.index, false);
+            }
+        })
+    })
+    values.map(x => x/hydrophones.length);
+    //max. amplitude voor de functie is 1, die was eerst 6
+    // sound.playArray1000ms(values);
+    // soundFrameWindow.postMessage(values);
+    soundChannel.postMessage(values);
+
 }
 
 

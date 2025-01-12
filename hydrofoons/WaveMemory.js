@@ -1,7 +1,6 @@
 class WaveMemory{
     start; //[s], starttijd
     period; //[s], periode van de golf
-    oscillator; //p5.Oscillator, geluidsobject
     stopCondition; //setTimeout()
     waveId;
 
@@ -9,7 +8,6 @@ class WaveMemory{
         // this.start = performance.now()/1000 + .5; //de tijd van eerste detectie is 'nu'
         this.start = wave.calcTimeUntillArrival(hydrophone);
         this.period = wave.period;
-        this.oscillator = new p5.Oscillator();
         this.stopCondition;
         this.waveId = wave.id;
         this.hydrophone = hydrophone;
@@ -25,8 +23,8 @@ class WaveMemory{
         this.oscillator.stop();
     }
     
-    displacement(t /*[s]*/, delay /*[s]*/, hydrophone = hydrophones[0]){
-        if(t + delay > this.start + this.period + 8){
+    displacement(t /*[s]*/, delay /*[s]*/, countForRemoval = true){
+        if(countForRemoval && t + delay > this.start + this.period + 8){
             this.hydrophone.totalMemory.removeWave();
             if(this.hydrophone.index === hydrophones.length - 1){
                 //als dit de laatste hydrofoon is, zal de golf verder niet meer opgevangen worden
