@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigenère Cipher Explorer</title>
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --secondary-color: #FF4081;
+            --background-color: #f5f5f5;
+            --card-background: #ffffff;
+            --text-color: #333333;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #666;
+            font-style: italic;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(33,150,243,0.2);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .slider-container {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .slider-label {
+            font-weight: 500;
+            color: #555;
+            margin-right: 1rem;
+        }
+
+        .shift-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #ddd;
+            outline: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .shift-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .shift-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .shift-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .shift-slider::-moz-range-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .shift-slider::-moz-range-track {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #ddd;
+        }
+
+        .shift-value {
+            min-width: 60px;
+            text-align: center;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #1976D2;
+            transform: scale(1.05);
+        }
+
+        .alphabet-display {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .alphabet-row {
+            display: grid;
+            grid-template-columns: repeat(26, 1fr);
+            gap: 0.5rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-family: monospace;
+            letter-spacing: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alphabet-row::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: var(--primary-color);
+        }
+
+        #shifted-alphabet::before {
+            background-color: var(--secondary-color);
+        }
+
+        .letter-pair {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 0.5rem;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .letter-pair:hover {
+            transform: scale(1.05);
+        }
+
+        .original-letter {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .shifted-letter {
+            color: var(--secondary-color);
+            font-weight: normal;
+        }
+
+        .arrow {
+            font-size: 0.8rem;
+            color: #666;
+            margin: 0.2rem 0;
+        }
+
+        .matrix-display {
+            display: grid;
+            grid-template-columns: repeat(27, 1fr);
+            gap: 0.5rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-family: monospace;
+            letter-spacing: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .matrix-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 0.5rem;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .matrix-cell:hover {
+            transform: scale(1.05);
+        }
+
+        .matrix-label {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .matrix-shift {
+            color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Vigenère Cipher Explorer</h1>
+            <p class="subtitle">Encrypt and decrypt messages with a polyalphabetic cipher</p>
+        </header>
+
+        <!-- Input Section -->
+        <div class="card">
+            <h2>Enter Your Message</h2>
+            <textarea id="input-text" placeholder="Type your secret message here..."></textarea>
+            <div class="controls">
+                <div class="slider-container">
+                    <span class="slider-label">Key Length:</span>
+                    <input type="range" id="key-length" min="1" max="26" value="5" class="shift-slider">
+                    <span id="key-length-value" class="shift-value">5</span>
+                </div>
+                <button onclick="toggleMode()">Switch Mode</button>
+            </div>
+        </div>
+
+        <!-- Key Input Section -->
+        <div class="card">
+            <h2>Enter Your Key</h2>
+            <div class="key-input-container">
+                <input type="text" id="key-input" maxlength="26" placeholder="Enter your encryption key...">
+            </div>
+        </div>
+
+        <!-- Matrix Display -->
+        <div class="card">
+            <h2>Encryption Matrix</h2>
+            <div class="matrix-display" id="matrix-display"></div>
+        </div>
+
+        <!-- Visual Representation -->
+        <div class="card alphabet-display">
+            <div class="alphabet-row" id="shifted-alphabet"></div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="card">
+            <h2>Result</h2>
+            <textarea id="output-text" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        let isEncryptMode = true;
+
+        function createMatrix() {
+            const matrix = document.getElementById('matrix-display');
+            matrix.innerHTML = '';
+            
+            // Add column headers
+            const headerCell = document.createElement('div');
+            headerCell.className = 'matrix-cell';
+            headerCell.textContent = ' ';
+            matrix.appendChild(headerCell);
+            
+            for (let i = 0; i < 26; i++) {
+                const headerCell = document.createElement('div');
+                headerCell.className = 'matrix-cell matrix-label';
+                headerCell.textContent = String.fromCharCode(65 + i);
+                matrix.appendChild(headerCell);
+            }
+            
+            // Create matrix rows
+            for (let i = 0; i < 26; i++) {
+                const rowStart = String.fromCharCode(65 + i);
+                const rowCell = document.createElement('div');
+                rowCell.className = 'matrix-cell matrix-label';
+                rowCell.textContent = rowStart;
+                matrix.appendChild(rowCell);
+                
+                for (let j = 0; j < 26; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'matrix-cell';
+                    cell.innerHTML = `
+                        <span class="matrix-shift">${String.fromCharCode(65 + ((i + j) % 26))}</span>
+                    `;
+                    matrix.appendChild(cell);
+                }
+            }
+        }
+
+        function createAlphabetRow(elementId, key) {
+            const original = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const row = document.getElementById(elementId);
+            row.innerHTML = '';
+            
+            for (let i = 0; i < 26; i++) {
+                const originalLetter = original[i];
+                let shiftedLetter = originalLetter;
+                
+                if (key) {
+                    const keyIndex = i % key.length;
+                    const keyChar = key[keyIndex].toUpperCase();
+                    const keyShift = keyChar.charCodeAt(0) - 65;
+                    const shiftedCode = (original.charCodeAt(i) + keyShift) % 26;
+                    shiftedLetter = String.fromCharCode(shiftedCode + 65);
+                }
+                
+                const pair = document.createElement('div');
+                pair.className = 'letter-pair';
+                
+                pair.innerHTML = `
+                    <span class="original-letter">${originalLetter}</span>
+                    <span class="arrow">↓</span>
+                    <span class="shifted-letter">${shiftedLetter}</span>
+                `;
+                
+                row.appendChild(pair);
+            }
+        }
+
+        function updateAlphabets() {
+            const key = document.getElementById('key-input').value.toUpperCase();
+            createAlphabetRow('shifted-alphabet', key);
+        }
+
+        function processText(text, key) {
+            let result = '';
+            
+            // Adjust key for decryption mode
+            const actualKey = isEncryptMode ? key : key.split('').reverse().join('');
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                
+                if (char.match(/[a-zA-Z]/)) {
+                    const keyChar = actualKey[i % actualKey.length];
+                    const keyShift = keyChar.toUpperCase().charCodeAt(0) - 65;
+                    
+                    const base = char.toUpperCase() === char ? 'A'.charCodeAt(0) : 'a'.charCodeAt(0);
+                    let newCharCode = char.charCodeAt(0) + keyShift;
+                    
+                    // Handle wrapping around the alphabet
+                    if (newCharCode > base + 25) {
+                        newCharCode -= 26;
+                    } else if (newCharCode < base) {
+                        newCharCode += 26;
+                    }
+                    
+                    result += String.fromCharCode(newCharCode);
+                } else {
+                    result += char;
+                }
+            }
+            
+            return result;
+        }
+
+        function updateOutput() {
+            const inputText = document.getElementById('input-text').value;
+            const key = document.getElementById('key-input').value;
+            
+            if (!key) {
+                document.getElementById('output-text').value = 'Please enter a key first';
+                return;
+            }
+            
+            const result = processText(inputText, key);
+            document.getElementById('output-text').value = result;
+        }
+
+        function toggleMode() {
+            isEncryptMode = !isEncryptMode;
+            const button = document.querySelector('.controls button');
+            button.textContent = isEncryptMode ? 'Switch to Decrypt Mode' : 'Switch to Encrypt Mode';
+            updateOutput();
+        }
+
+        // Add event listeners
+        document.getElementById('input-text').addEventListener('input', updateOutput);
+        document.getElementById('key-input').addEventListener('input', () => {
+            updateOutput();
+            updateAlphabets();
+        });
+
+        // Initial setup
+        createMatrix();
+    </script>
+</body>
+</html>
