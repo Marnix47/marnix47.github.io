@@ -1,0 +1,25 @@
+.station-container {
+  display: flex;
+  flex-wrap: wrap;        /* allows wrapping on small screens */
+  gap: 0.5rem;            /* spacing between buttons */
+}
+
+.station-btn {
+  padding: 0.6rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f7f7f7;
+  cursor: pointer;
+  white-space: nowrap;    /* prevents text from breaking */
+  transition: background 0.2s;
+}
+
+.station-btn:hover {
+  background: #e6e6e6;
+}
+
+.station-btn.selected {
+  background: #0059ff;
+  color: white;
+  border-color: #0040c1;
+}

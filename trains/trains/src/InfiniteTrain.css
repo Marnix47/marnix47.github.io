@@ -1,0 +1,25 @@
+.train-wrapper {
+  width: 100%;
+  overflow: hidden;
+  background: #e6f0ff; /* optional sky color */
+}
+
+.train-track {
+  display: flex;
+  width: max-content;
+  animation: moveTrain 8s linear infinite;
+}
+
+.train {
+  height: 50px; /* adjust to your liking */
+  flex-shrink: 0;
+}
+
+@keyframes moveTrain {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
