@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./StationSelector.css";
 
-export default function StationSelector() {
+export default function StationSelector({onChange}) {
     const [selected, setSelected] = useState("RTD");
     const stations = [
         {fullName: "Rotterdam C.", code: "RTD"},
@@ -15,7 +15,7 @@ export default function StationSelector() {
                     key={station.code}
                     className={`station-btn ${selected === station.code ? "selected" : ""
                         }`}
-                    onClick={() => setSelected(station.code)}
+                    onClick={() => {setSelected(station.code); onChange(station.code);}}
                 >
                     {station.fullName}
                 </button>

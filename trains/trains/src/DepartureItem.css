@@ -1,0 +1,91 @@
+.DepartureItemHeaderName {
+    font-weight:bold;
+}
+
+.DepartureItem{
+    padding-right:7px;
+    padding-left:7px;
+    width:calc(100% - 14px);
+    max-width:386px;
+    min-height:150px;
+    height:min-content;
+    background-color:aliceblue;
+    /* display:flex; */
+    /* flex-direction:column; */
+    /* align-items:flex-start; */
+}
+
+.DepartureItemHeader{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+}
+
+.DepartureItemHeader * {
+    /* margin-left:7px; */
+    /* margin-right:7px; */
+    font-size:18px;
+}
+
+.DeparturePlatform {
+    margin-right: 7px;
+    padding-right:7px;
+}
+
+.DepartureItemHeaderRight {
+    display:flex;
+    justify-content:right;
+    /* margin-right:7px;
+    padding-right:7px; */
+}
+
+.DeparturePlatform {
+    margin-left:7px;
+}
+
+.DepartureItemCrowdedness {
+    height:15px;
+    width:15px;
+    border-radius:50%;
+    background-color:green;
+    margin-top:5px;
+}
+
+.DepartureItemArrivalDelay, .DepartureItemDepartureDelay {
+    color:red;
+}
+
+.DepartureItemTimesWrapper {
+    height:min-content;
+    width:60px;
+    min-width:60px;
+    max-width:60px;
+    display:flex;
+    align-items:flex-start;
+    flex-direction:column;
+    justify-content:left;
+}
+
+.DepartureItemTimesWrapper p {
+    margin:0px;
+    padding:0px;
+    /* margin-left:5px; */
+    font-size:14px;
+}
+
+* {
+    margin-top:0;
+    margin-bottom:0;
+    padding:0;
+}
+
+.DepartureItemMiddle {
+    display:flex;
+    flex-direction:row;
+    justify-content:left;
+}
+
+.DepartureInfo{
+    font-size:14px;
+}

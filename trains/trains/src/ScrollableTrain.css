@@ -1,0 +1,22 @@
+.train-scroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 0;
+  white-space: nowrap;
+}
+
+.train-row {
+  display: flex;
+  gap: 0; /* units connect seamlessly */
+}
+
+.train-unit-wrapper {
+  display: inline-flex;
+  align-items: center;
+}
+
+.train-unit-image {
+  height: 40px;          /* adjust as needed */
+  flex-shrink: 0;
+  margin-right: -4px;    /* slight overlap to “connect” units */
+}
