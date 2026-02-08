@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./StationSelector.css";
 
 export default function StationSelector({onChange}) {
-    const [selected, setSelected] = useState("RTD");
+    const [selected, setSelected] = useState("NWK");
     const stations = [
         {fullName: "Rotterdam C.", code: "RTD"},
         {fullName: "Nieuwerkerk", code: "NWK"},

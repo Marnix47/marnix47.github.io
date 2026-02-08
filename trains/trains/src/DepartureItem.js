@@ -71,8 +71,8 @@ export default function DepartureItem({partialData, thisStationCode}){
             <div className="DepartureItemHeader">
                 <p className="DepartureItemHeaderName" style={{color:!partialData.cancelled ? "black" : "lightgray"}}>{partialData.direction}</p>
                 <div className="DepartureItemHeaderRight">
-                    {partialData.recognizableDestionation && (<div className="ViaRecognizable">
-                        <p className="ViaRecognizableText">{partialData.recognizableDestionation.name}</p>
+                    {partialData.recognizableDestination && (<div className="ViaRecognizable">
+                        <p className="ViaRecognizableText">Via {partialData.recognizableDestination.name}</p>
                     </div>)}
 
                     <div className="DepartureItemCrowdedness" style={{backgroundColor: journeyThisStationData ? getCrowdColor(journeyThisStationData.crowdForecast): "gray"}}>

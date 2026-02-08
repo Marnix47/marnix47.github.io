@@ -33,6 +33,19 @@
     padding-right:7px;
 }
 
+.ViaRecognizable{
+    border-radius:10px;
+    border-width:2px;
+    border-color:dodgerblue;
+    border-style:solid;
+    padding:2px;
+    margin-right:5px;
+}
+
+p.ViaRecognizableText{
+    font-size:14px;
+}
+
 .DepartureItemHeaderRight {
     display:flex;
     justify-content:right;
@@ -58,9 +71,9 @@
 
 .DepartureItemTimesWrapper {
     height:min-content;
-    width:60px;
-    min-width:60px;
-    max-width:60px;
+    width:70px;
+    min-width:70px;
+    max-width:70px;
     display:flex;
     align-items:flex-start;
     flex-direction:column;
@@ -78,6 +91,7 @@
     margin-top:0;
     margin-bottom:0;
     padding:0;
+    font-family: Tahoma, Verdana, sans-serif;
 }
 
 .DepartureItemMiddle {
