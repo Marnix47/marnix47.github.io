@@ -18,11 +18,16 @@ export default function DepartureItem({partialData, thisStationCode}){
         console.info("Departure item fetched");
         const parsed = JSON.parse(d.target.response).payload;
         setData(parsed);
+        if(partialData.origin == "Uitgeest") console.log(parsed);
+        if(partialData.direction == "Uitgeest") console.log(parsed);
         const thisStationData = parsed.stops.find(x => x.id === thisStationCode || x.id === thisStationCode + "_0");
         if(!thisStationData){
             console.error("NO SPECIFIC STATION DATA FOR JOURNEY");
         } else {
             setJourneyThisStationData(thisStationData.departures[0]);
+            if(thisStationData.departures.length == 0){
+                setJourneyThisStationData(thisStationData.arrivals[0]);
+            }
             setJourneyThisStationArrival(thisStationData.arrivals[0]);
             setJourneyStock(thisStationData.actualStock);
         }
@@ -60,7 +65,12 @@ export default function DepartureItem({partialData, thisStationCode}){
         }
         if(partialData.messages.length == 0){
             if(partialData.cancelled) return "Cancelled";
-            return "Via " + partialData.routeStations.map(x => x.mediumName).join(", ");
+            if(partialData.routeStations != undefined){
+                return "Via " + partialData.routeStations.map(x => x.mediumName).join(", ");
+            } else {
+                return "Arrival"
+            }
+            // return "Test"
         } else {
             return partialData.messages.map(x => x.message).join(" - ");
         }
@@ -69,7 +79,7 @@ export default function DepartureItem({partialData, thisStationCode}){
     return (
         <div className="DepartureItem">
             <div className="DepartureItemHeader">
-                <p className="DepartureItemHeaderName" style={{color:!partialData.cancelled ? "black" : "lightgray"}}>{partialData.direction}</p>
+                <p className="DepartureItemHeaderName" style={{color:!partialData.cancelled ? "black" : "lightgray"}}>{partialData.direction ? partialData.direction : (partialData.origin + " (Arrival)")}</p>
                 <div className="DepartureItemHeaderRight">
                     {partialData.recognizableDestination && (<div className="ViaRecognizable">
                         <p className="ViaRecognizableText">Via {partialData.recognizableDestination.name}</p>
@@ -90,18 +100,23 @@ export default function DepartureItem({partialData, thisStationCode}){
             </div>
             <div className="DepartureItemMiddle">
                 <div className="DepartureItemTimesWrapper">
-                    {journeyThisStationArrival && (<p className="DepartureItemArrivalTimes">
-                        A: {getTimeOfDay(journeyThisStationArrival.plannedTime)}
-                    </p>)}
-                    {(journeyThisStationArrival && journeyThisStationArrival.delayInSeconds != 0) && (<p className="DepartureItemArrivalDelay">
-                        +{getDelayString(journeyThisStationArrival.delayInSeconds)}
-                    </p>)}
-                    {journeyThisStationData && (<p className="DepartureItemDepartureTimes">
-                        D: {getTimeOfDay(journeyThisStationData.plannedTime)}
-                    </p>)}
-                    {(journeyThisStationData && journeyThisStationData.delayInSeconds != 0) && (<p className="DepartureItemDepartureDelay">
-                        +{getDelayString(journeyThisStationData.delayInSeconds)}
-                    </p>)}
+                    <div className="DepartureItemArrivalTime" style={{color:(journeyThisStationArrival?.delayInSeconds != undefined) ? "black" : "lightgray"}}>
+                        {(journeyThisStationArrival) && (<p className="DepartureItemArrivalTimes">
+                            A: {getTimeOfDay(journeyThisStationArrival.plannedTime)}
+                        </p>)}
+                        {(journeyThisStationArrival?.delayInSeconds) ? (<p className="DepartureItemArrivalDelay">
+                            +{getDelayString(journeyThisStationArrival.delayInSeconds)}
+                        </p>): null}
+                    </div>
+                    <div className="DepartureItemDepartureTime" style={{color:(journeyThisStationData?.delayInSeconds != undefined) ? "black" : "lightgray"}}>
+                        {journeyThisStationData && (<p className="DepartureItemDepartureTimes">
+                            D: {getTimeOfDay(journeyThisStationData.plannedTime)}
+                        </p>)}
+                        {(journeyThisStationData?.delayInSeconds) ? (<p className="DepartureItemDepartureDelay">
+                            +{getDelayString(journeyThisStationData.delayInSeconds)}
+                        </p>):null}
+                    </div>
+
                 </div>
                 <p className="DepartureInfo" style={{color:partialData.cancelled ? "red" : "darkslategray"}}>
                     {getDepartureInfo()}
