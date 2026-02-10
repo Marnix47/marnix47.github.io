@@ -10,6 +10,7 @@ export default function DepartureItem({partialData, thisStationCode}){
     const [journeyThisStationData, setJourneyThisStationData] = useState(undefined);
     const [journeyThisStationArrival, setJourneyThisStationArrival] = useState(undefined);
     const [journeyStock, setJourneyStock] = useState(undefined);
+    const [isArrival, setIsArrival] = useState(false);
     useEffect(() => {
         getJourney(partialData.product.number, onFetched);
     }, [partialData.product.number]);
@@ -26,7 +27,10 @@ export default function DepartureItem({partialData, thisStationCode}){
         } else {
             setJourneyThisStationData(thisStationData.departures[0]);
             if(thisStationData.departures.length == 0){
+                setIsArrival(true);
                 setJourneyThisStationData(thisStationData.arrivals[0]);
+            } else {
+                setIsArrival(false);
             }
             setJourneyThisStationArrival(thisStationData.arrivals[0]);
             setJourneyStock(thisStationData.actualStock);
@@ -100,7 +104,7 @@ export default function DepartureItem({partialData, thisStationCode}){
             </div>
             <div className="DepartureItemMiddle">
                 <div className="DepartureItemTimesWrapper">
-                    <div className="DepartureItemArrivalTime" style={{color:(journeyThisStationArrival?.delayInSeconds != undefined) ? "black" : "lightgray"}}>
+                    <div className="DepartureItemArrivalTime" style={{color:(journeyThisStationArrival?.delayInSeconds != undefined) ? "darkblue" : "lightgray"}}>
                         {(journeyThisStationArrival) && (<p className="DepartureItemArrivalTimes">
                             A: {getTimeOfDay(journeyThisStationArrival.plannedTime)}
                         </p>)}
@@ -108,11 +112,11 @@ export default function DepartureItem({partialData, thisStationCode}){
                             +{getDelayString(journeyThisStationArrival.delayInSeconds)}
                         </p>): null}
                     </div>
-                    <div className="DepartureItemDepartureTime" style={{color:(journeyThisStationData?.delayInSeconds != undefined) ? "black" : "lightgray"}}>
-                        {journeyThisStationData && (<p className="DepartureItemDepartureTimes">
+                    <div className="DepartureItemDepartureTime" style={{color:(journeyThisStationData?.delayInSeconds != undefined) ? "darkblue" : "lightgray"}}>
+                        {(journeyThisStationData && !isArrival) && (<p className="DepartureItemDepartureTimes">
                             D: {getTimeOfDay(journeyThisStationData.plannedTime)}
                         </p>)}
-                        {(journeyThisStationData?.delayInSeconds) ? (<p className="DepartureItemDepartureDelay">
+                        {(journeyThisStationData?.delayInSeconds && !isArrival) ? (<p className="DepartureItemDepartureDelay">
                             +{getDelayString(journeyThisStationData.delayInSeconds)}
                         </p>):null}
                     </div>
@@ -125,6 +129,7 @@ export default function DepartureItem({partialData, thisStationCode}){
             <div className="DepartureItemBottom">
                 {journeyThisStationData && journeyStock && (<ScrollableTrain units={journeyStock.trainParts}/>)}
             </div>
+            
             
         </div>
     )

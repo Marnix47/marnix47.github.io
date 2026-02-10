@@ -19,8 +19,8 @@ export default function Departures(){
         console.log(JSON.parse(data.target.response).payload.departures);
         const parsed = JSON.parse(data.target.response).payload.departures;
         combinedData = parsed.concat(combinedData);
-        // getArrivals(selectedStation, renderArrivals);
-        renderCombinedData();
+        getArrivals(selectedStation, renderArrivals);
+        // renderCombinedData();
     }
 
     function renderArrivals(data){
