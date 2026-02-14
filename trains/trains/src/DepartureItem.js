@@ -86,6 +86,14 @@ export default function DepartureItem({partialData, thisStationCode}){
         }
     }
 
+    function getInfoColor(){
+        if(partialData.cancelled || partialData.messages[0]?.style == "WARNING"){
+            return "red";
+        } else {
+            return "darkslategray"
+        }
+    }
+
     return (
         <div className="DepartureItem">
             <div className="DepartureItemHeader">
@@ -128,7 +136,7 @@ export default function DepartureItem({partialData, thisStationCode}){
                     </div>
 
                 </div>
-                <p className="DepartureInfo" style={{color:partialData.cancelled ? "red" : "darkslategray"}}>
+                <p className="DepartureInfo" style={{color:getInfoColor()}}>
                     {getDepartureInfo()}
                 </p>
             </div>

@@ -36,8 +36,18 @@ export function TrainStop({journeyData}){
         return Math.floor(seconds/60) + ":" + secondsCount;
     }
 
+    function stationIsCancelled(){
+        if(data.departures.length == 0){
+            return data.arrivals[0]?.cancelled;
+        }
+        if(data.arrivals.length == 0){
+            return data.departures[0]?.cancelled;
+        }
+        return data.arrivals[0].cancelled && data.departures[0].cancelled;
+    }
+
     return (
-        <div className="TrainStop">
+        <div className={data.status + (stationIsCancelled() ? " CANCELLED" : "") + " TrainStop"}>
             <div className="TrainStopTimes">
                 <div className="ArrivalTime" style={{color:"darkblue"}}>
                     {(arrivalData) && (<p className="ArrivalTime">
@@ -64,10 +74,12 @@ export function TrainStop({journeyData}){
 
                 </div>
                 <div className={data.status + " TrainStopBarOrigin"}>
-
+                    <div className="SideCircle"></div>
+                    <div className="ShortLine"></div>
                 </div>
                 <div className={data.status + " TrainStopBarDestination"}>
-
+                    <div className="ShortLine"></div>
+                    <div className="SideCircle"></div>
                 </div>
             </div>
             <div className="TrainStopCrowdedness" style={{backgroundColor: getCrowdColor(departureData?.crowdForecast)}}></div>
