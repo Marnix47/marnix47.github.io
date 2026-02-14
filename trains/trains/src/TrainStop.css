@@ -1,0 +1,80 @@
+p.StationName.PASSING {
+    font-size:14px;
+    color:lightsteelblue;
+}
+
+p.StationName.STOP, p.StationName.ORIGIN, p.StationName.DESTINATION{
+    font-size:16px;
+    color:black;
+}
+
+p.StationName.ORIGIN, p.StationName.DESTINATION {
+    font-weight:bold;
+}
+
+.TrainStopProgressBar {
+    height:100%;
+    width:10px;
+}
+
+.TrainStopBarHorizontal {
+    display:none;
+}
+
+.TrainStopBarHorizontal.STOP{
+    display:block;
+    width:3px;
+    height:100%;
+}
+
+.TrainStopBarOrigin {
+    display:none;
+}
+
+.TrainStopBarOrigin.ORIGIN {
+    display:block;
+}
+
+.TrainStopBarDestination {
+    display: none;
+}
+
+.TrainStopBarDestination.DESTINATION {
+    display:block;
+}
+
+.TrainStopBarHorizontal {
+    width:4px;
+    color:cornflowerblue;
+    height:100%;
+}
+
+.TrainStopTimes {
+    width:50px;
+}
+
+.TrainStopTimes p {
+    font-size:12px;
+    font-weight:bold;
+}
+
+p.DepartureDelay, p.ArrivalDelay {
+    color:red;
+}
+
+.TrainStop {
+    min-height:40px;
+    display:flex;
+    justify-content:left;
+    flex-direction:row;
+    align-items:center;
+    border-top:1px solid black;
+}
+
+.TrainStopCrowdedness {
+    height:15px;
+    width:15px;
+    border-radius:50%;
+    background-color:green;
+    margin-right:5px;
+}

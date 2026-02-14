@@ -1,6 +1,7 @@
 import "./DepartureItem.css";
 import { useEffect, useRef, useState } from "react";
 import { getJourney } from "./ServerUtils";
+import JourneyStops from "./JourneyStops";
 import ScrollableTrain from "./ScrollableTrain.js";
 
 export default function DepartureItem({partialData, thisStationCode}){
@@ -11,6 +12,7 @@ export default function DepartureItem({partialData, thisStationCode}){
     const [journeyThisStationArrival, setJourneyThisStationArrival] = useState(undefined);
     const [journeyStock, setJourneyStock] = useState(undefined);
     const [isArrival, setIsArrival] = useState(false);
+    const [showStops, setShowStops] = useState(false);
     useEffect(() => {
         getJourney(partialData.product.number, onFetched);
     }, [partialData.product.number]);
@@ -35,6 +37,10 @@ export default function DepartureItem({partialData, thisStationCode}){
             setJourneyThisStationArrival(thisStationData.arrivals[0]);
             setJourneyStock(thisStationData.actualStock);
         }
+    }
+
+    function toggleShowStops(){
+        setShowStops(!showStops);
     }
 
     function getCrowdColor(crowd){
@@ -83,7 +89,7 @@ export default function DepartureItem({partialData, thisStationCode}){
     return (
         <div className="DepartureItem">
             <div className="DepartureItemHeader">
-                <p className="DepartureItemHeaderName" style={{color:!partialData.cancelled ? "black" : "lightgray"}}>{partialData.direction ? partialData.direction : (partialData.origin + " (Arrival)")}</p>
+                <p className="DepartureItemHeaderName" onClick={toggleShowStops} style={{color:!partialData.cancelled ? "black" : "lightgray"}}>{partialData.direction ? partialData.direction : (partialData.origin + " (Arrival)")}</p>
                 <div className="DepartureItemHeaderRight">
                     {partialData.recognizableDestination && (<div className="ViaRecognizable">
                         <p className="ViaRecognizableText">Via {partialData.recognizableDestination.name}</p>
@@ -129,6 +135,7 @@ export default function DepartureItem({partialData, thisStationCode}){
             <div className="DepartureItemBottom">
                 {journeyThisStationData && journeyStock && (<ScrollableTrain units={journeyStock.trainParts}/>)}
             </div>
+            {showStops ? (<JourneyStops journeyData={data?.stops}/>): null}
             
             
         </div>
