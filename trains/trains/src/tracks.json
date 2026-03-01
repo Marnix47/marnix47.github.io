@@ -1,0 +1,222 @@
+{
+    "stations": {
+        "NWK": {
+            "tracks": {
+                "2" : {
+                    "length": 209.5,
+                    "baseDirection": [
+                        "RTD", "RTN", "RTA", "CPS"
+                    ],
+                    "otherDirection": [
+                        "GD", "GDG", "WD", "ASD", "ASA", "UT", "UTG" 
+                    ],
+                    "objects" : [
+                        {
+                            "type": "overkapping",
+                            "startPosition": 79.5,
+                            "endPosition": 110.4
+                        },
+                        {
+                            "type": "trap",
+                            "position": 81
+                        },
+                        {
+                            "type": "lift",
+                            "position": 87.5
+                        },
+                        {
+                            "type": "overkapping",
+                            "startPosition": 124.8,
+                            "endPosition": 130.8
+                        },
+                        {
+                            "type": "trap",
+                            "position": 141.6
+                        },
+                        {
+                            "type": "overkapping",
+                            "startPosition": 153.9,
+                            "endPosition": 159.9
+                        },
+                        {
+                            "type": "bovenleiding",
+                            "position": 28.4
+                        },
+                        {
+                            "type": "bovenleiding",
+                            "position": 96.1
+                        },
+                        {
+                            "type": "bovenleiding",
+                            "position": 162.5
+                        },
+                        {
+                            "type": "reclame",
+                            "position":37.4
+                        },
+                        {
+                            "type": "reclame",
+                            "position": 67.2
+                        },
+                        {
+                            "type": "bankje",
+                            "position": 69.5
+                        },
+                        {
+                            "type": "bankje",
+                            "position": 72.5
+                        }
+                    ],
+                    "bakborden": {
+                        "baseDirection": [
+                            {
+                                "type": "bakbord",
+                                "detail": "100",
+                                "position": 2.5
+                            },
+                            {
+                                "type": "bakbord",
+                                "detail": "6",
+                                "position": 44.5
+                            },
+                            {
+                                "type": "bakbord",
+                                "detail": "4",
+                                "position": 79.5
+                            }
+                        ],
+                        "otherDirection": [
+                            {
+                                "type": "bakbord",
+                                "detail": "3",
+                                "position": 151.7
+                            },
+                            {
+                                "type": "bakbord",
+                                "detail": "4",
+                                "position": 165.3
+                            },
+                            {
+                                "type": "bakbord",
+                                "detail": "6",
+                                "position": 199.8
+                            },
+                            {
+                                "type": "bakbord",
+                                "detail": "100",
+                                "position": 208.3
+                            }
+                        ]
+                    }
+                },
+                "1" : {
+                    "length": 209.5,
+                    "baseDirection": [
+                        "RTD", "RTN", "RTA", "CPS"
+                    ],
+                    "otherDirection": [
+                        "GD", "GDG", "WD", "ASD", "ASA", "UT", "UTG" 
+                    ],
+                    "objects" : [
+                        {
+                            "type": "overkapping",
+                            "startPosition": 79.5,
+                            "endPosition": 110.4
+                        },
+                        {
+                            "type": "trap",
+                            "position": 81
+                        },
+                        {
+                            "type": "lift",
+                            "position": 87.5
+                        },
+                        {
+                            "type": "overkapping",
+                            "startPosition": 124.8,
+                            "endPosition": 130.8
+                        },
+                        {
+                            "type": "trap",
+                            "position": 141.6
+                        },
+                        {
+                            "type": "overkapping",
+                            "startPosition": 153.9,
+                            "endPosition": 159.9
+                        },
+                        {
+                            "type": "bovenleiding",
+                            "position": 27.4
+                        },
+                        {
+                            "type": "bovenleiding",
+                            "position": 95.1
+                        },
+                        {
+                            "type": "bovenleiding",
+                            "position": 161.5
+                        },
+                        {
+                            "type": "reclame",
+                            "position":51.7
+                        },
+                        {
+                            "type": "reclame",
+                            "position": 66.9
+                        },
+                        {
+                            "type": "bankje",
+                            "position": 72
+                        },
+                        {
+                            "type": "bankje",
+                            "position": 76
+                        }
+                    ],
+                    "bakborden": {
+                        "baseDirection": [
+                            {
+                                "type": "bakbord",
+                                "detail": "100",
+                                "position": 1.5
+                            },
+                            {
+                                "type": "bakbord",
+                                "detail": "6",
+                                "position": 43.5
+                            },
+                            {
+                                "type": "bakbord",
+                                "detail": "4",
+                                "position": 78.5
+                            }
+                        ],
+                        "otherDirection": [
+                            {
+                                "type": "bakbord",
+                                "detail": "3",
+                                "position": 150.7
+                            },
+                            {
+                                "type": "bakbord",
+                                "detail": "4",
+                                "position": 164.3
+                            },
+                            {
+                                "type": "bakbord",
+                                "detail": "6",
+                                "position": 198.8
+                            },
+                            {
+                                "type": "bakbord",
+                                "detail": "100",
+                                "position": 207.3
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

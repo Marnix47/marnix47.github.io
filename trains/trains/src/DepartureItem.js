@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { getJourney } from "./ServerUtils";
 import JourneyStops from "./JourneyStops";
 import ScrollableTrain from "./ScrollableTrain.js";
+import TrainOnPlatform from "./TrainOnPlatform.js";
 
 export default function DepartureItem({partialData, thisStationCode}){
     const [data, setData] = useState(null);
@@ -15,6 +16,7 @@ export default function DepartureItem({partialData, thisStationCode}){
     const [showStops, setShowStops] = useState(false);
     useEffect(() => {
         getJourney(partialData.product.number, onFetched);
+        setShowStops(false);
     }, [partialData.product.number]);
 
     function onFetched(d){
@@ -26,6 +28,7 @@ export default function DepartureItem({partialData, thisStationCode}){
         const thisStationData = parsed.stops.find(x => x.id === thisStationCode || x.id === thisStationCode + "_0");
         if(!thisStationData){
             console.error("NO SPECIFIC STATION DATA FOR JOURNEY");
+            throw new Exception();
         } else {
             setJourneyThisStationData(thisStationData.departures[0]);
             if(thisStationData.departures.length == 0){
@@ -141,7 +144,18 @@ export default function DepartureItem({partialData, thisStationCode}){
                 </p>
             </div>
             <div className="DepartureItemBottom">
-                {journeyThisStationData && journeyStock && (<ScrollableTrain units={journeyStock.trainParts}/>)}
+                {/* {journeyThisStationData && journeyStock && (<ScrollableTrain units={journeyStock.trainParts}/>)} */}
+                {
+                    (() => {
+                        if(thisStationCode == "NWK"){
+                            return journeyThisStationData && journeyStock && (<TrainOnPlatform trainData={ data.stops.find(x => x.id === thisStationCode || x.id === thisStationCode + "_0")}/>)
+                        } else {
+                            return journeyThisStationData && journeyStock && (<ScrollableTrain units={journeyStock.trainParts}/>)
+                        }
+                    })()
+                    
+                }
+                {/* {journeyThisStationData && journeyStock && (<TrainOnPlatform trainData={ data.stops.find(x => x.id === thisStationCode || x.id === thisStationCode + "_0")}/>)} */}
             </div>
             {showStops ? (<JourneyStops journeyData={data?.stops}/>): null}
             

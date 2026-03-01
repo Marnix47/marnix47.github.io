@@ -9,7 +9,7 @@ export default function ScrollableTrain({units}){
                     <img
                     src={unit.image.uri}
                     alt={unit.stockIdentifier}
-                    className="train-unit-image"
+                    className="train-unit-image-no-platform-data"
                     />
                 </div>
                 ))}

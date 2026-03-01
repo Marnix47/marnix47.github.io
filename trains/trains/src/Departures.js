@@ -34,7 +34,7 @@ export default function Departures(){
 
     function renderCombinedData(){
         combinedData.sort((a, b) => (a.plannedDateTime > b.plannedDateTime) - .5);
-        setDepartureItems(combinedData.map((x,i) => (<div key={i}><DepartureItem partialData = {x} thisStationCode = {selectedStation}/></div>)));
+        setDepartureItems(combinedData.map((x,i) => (<div key={x.product.number}><DepartureItem partialData = {x} thisStationCode = {selectedStation}/></div>)));
     }
 
     return (

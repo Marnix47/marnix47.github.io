@@ -1,0 +1,64 @@
+.TrainOnPlatform {
+    width: 100%;
+    height: 82px;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.platform-wrapper {
+    height: 100%;
+    /* overflow-x:scroll; */
+    /* width:100%; */
+}
+
+.train-wrapper {
+    width: min-content;
+    height: 40px;
+    display: flex;
+    gap: 0;
+    /* units connect seamlessly */
+}
+
+.train-unit-image {
+    width: 100%;
+    height: auto;
+    /* adjust as needed */
+    flex-shrink: 0;
+    margin-right: -4px;
+    /* slight overlap to “connect” units */
+}
+
+.train-unit-wrapper {
+    display: inline-flex;
+    align-items: center;
+}
+
+.overkapping-wrapper {
+    height:2px;
+    width:100%;
+    overflow-x:hidden;
+    position: relative;
+    margin-bottom:2px;
+
+}
+
+.overkapping-object {
+    height:2px;
+    background-color:darkcyan;
+    position:absolute;
+}
+
+.objects-wrapper {
+    height: 30px;
+    min-width:min-content;
+    width:100%;
+    overflow-x: hidden;
+    position: relative
+}
+
+.platform-object {
+    position:absolute;
+    width:5px;
+}

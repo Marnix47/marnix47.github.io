@@ -15,7 +15,7 @@
   align-items: center;
 }
 
-.train-unit-image {
+.train-unit-image-no-platform-data {
   height: 40px;          /* adjust as needed */
   flex-shrink: 0;
   margin-right: -4px;    /* slight overlap to “connect” units */
