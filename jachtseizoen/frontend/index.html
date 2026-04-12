@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>Jachtseizoen</title>
+        <style>
+            #map { height: 500px; width:100%}
+        </style>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        
+    </head>
+    <body>
+        <div id="map"></div>
+    </body>
+    <script>
+        var map = L.map('map').setView([51.505, -0.09], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+            maxZoom: 20,
+            attribution: '&copy; OpenStreetMap France & OpenStreetMap contributors'
+        }).addTo(map);
+
+        let userMarker = null;
+
+    navigator.geolocation.watchPosition((pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+
+        if (!userMarker) {
+            // Create the marker once
+            userMarker = L.marker([lat, lng]).addTo(map);
+        } else {
+            // Update marker position without moving the map
+            userMarker.setLatLng([lat, lng]);
+        }
+    }, 
+    (err) => {
+        console.error("Location error:", err);
+    }, 
+    {
+        enableHighAccuracy: true
+    });
+    </script>
+</html>
