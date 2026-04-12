@@ -1,7 +1,5 @@
-export class GameDO extends DurableObject {
+export class GameDO {
   constructor(state, env) {
-    super(state, env);
-
     this.state = state;
     this.env = env;
 
@@ -14,7 +12,6 @@ export class GameDO extends DurableObject {
   }
 
   async fetch(request) {
-    // WebSocket upgrade
     if (request.headers.get("Upgrade") === "websocket") {
       const [client, server] = Object.values(new WebSocketPair());
       server.accept();
@@ -28,12 +25,10 @@ export class GameDO extends DurableObject {
       server.addEventListener("message", async (evt) => {
         const msg = evt.data;
 
-        // You implement your own game logic later.
-        // For now, we simply store the JSON string.
+        // Your game logic later; for now just store JSON string
         this.gameState = msg;
         await this.state.storage.put("state", this.gameState);
 
-        // Broadcast to all connected clients
         for (const ws of this.sockets) {
           try { ws.send(msg); } catch {}
         }
