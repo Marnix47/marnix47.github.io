@@ -1,0 +1,12 @@
+name = "jachtseizoen-backend"
+main = "src/worker.js"
+compatibility_date = "2024-01-01"
+
+[durable_objects]
+bindings = [
+  { name = "GAME_DO", class_name = "GameDO" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["GameDO"]
