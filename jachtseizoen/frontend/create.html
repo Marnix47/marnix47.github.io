@@ -1,0 +1,54 @@
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <link rel="stylesheet" href="./style.css">
+    <title>Jachtseizoen - Game maken</title>
+</head>
+<body>
+    <div>
+        <div id="phaseOneWrapper">
+            <p>Hoe lang?</p>
+            <input id="durationSlider" value="30" min="10" max="60" step="5" type="range">
+            <p><span id="durationText">30</span> minuten</p>
+
+            <p>Locatie interval?</p>
+            <input id="intervalSlider" value="180" min="30" max="600" step="30" type="range">
+            <p><span id="intervalText">3</span> minuten</p>
+            <p>Uitlooptijd</p>
+            <input id="uitloopTijdSlider" type="range" value="2" min="0.5" max="4" step="0.5">
+            <p><span id="uitloopText">2</span> minuten</p>
+            <button id="phaseOneButton">Volgende</button>
+        </div>
+        <div id="phaseTwoWrapper">
+            <p>Verhoogd interval?</p>
+            <input id="verhoogdIntervalCheckbox" value="false" type="checkbox">
+            <div id="verhoogdInterval" style="display:none">
+                <p>Laatste <span id="laatstexMinutenText">5</span> minuten</p>
+                <input id="intervalAfterxMinutesSlider" value="5" min="3" max="20" step="1" type="range">
+
+                <p>Elke <span id="laatsteIntervalText">2</span> minuten</p>
+                <input id="laatsteIntervalSlider" value="120" min="30" max="300" step="30" type="range">
+            </div>
+            <br>
+            <input id="playerName" placeholder="Jouw naam">
+            <button id="phaseTwoButton">Volgende</button>
+        </div>
+        <div id="phaseThreeWrapper">
+            <div id="ringSelectionWrapper">
+                <div id="mapWrapper">
+                    <div id="map-create"></div>
+                </div>
+                <label>Fixeren:</label><input id="fixatePrimaryCircle" type="checkbox"><label>Radius:</label><input id="primaryCircleRadiusSlider" type="range" min="100" max = "1000" value="300" step="10"><label id="primaryRadiusLabel">300m</label>
+                <br>
+                <label>Fixeren:</label><input id="fixateSecondaryCircle" type="checkbox" checked><label>Na</label><input id="secondaryCircleTimeSlider" type="range" min="0" max="60" value="20" step="1"><label><span id="secondaryCircleTimeText"></span> minuten wordt radius</label><input id="secondaryCircleRadiusSlider" type="range" min="100" max = "1000" value="200" step="10"><label id="secondaryRadiusLabel">200m</label>
+            </div>
+            <button id="createGameButton">Game maken</button>
+        </div>
+    </div>
+</body>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="./StorageHandler.js"></script>
+<script src="./create.js"></script>
+</html>

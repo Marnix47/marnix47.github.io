@@ -1,0 +1,58 @@
+.playerIcon{
+    width:min-content;
+    height:min-content;
+    padding: 5px 2px 5px 2px;
+    border-style:solid;
+    border-width:2px;
+    border-color:white;
+    background-color:lightgreen;
+}
+
+.playerIcon p{
+    font-family:sans-serif;
+    color:seagreen;
+}
+
+.playerIcon.zoeker{
+    background-color:lightskyblue;
+}
+
+.playerIcon.oldLocation{
+    border-color:lightcoral;
+}
+
+
+
+#welcome-wrapper{
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    
+}
+
+
+
+#verhoogdInterval {
+    border-style:solid;
+    border-width:2px;
+    border-color:black;
+    border-radius:5px;
+}
+
+#map-create {
+    width:500px;
+    height:500px;
+}
+
+#primaryCircleRadiusSlider {
+    accent-color:red;
+}
+
+#phaseTwoWrapper, #phaseThreeWrapper {
+    max-height:0;
+    overflow:hidden;
+}
+
+#phaseOneWrapper {
+    overflow:hidden;
+}

@@ -1,0 +1,27 @@
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jachtseizoen</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="welcome-wrapper">
+        <a href="./create.html"><button id="createbutton">Nieuwe game maken</button></a>
+
+    </div>
+</body>
+<script src="./StorageHandler.js"></script>
+<script>
+    let lastGame = StorageHandler.getGame();
+    console.log(lastGame);
+    if(lastGame && (lastGame.date > Date.now() || !lastGame.started)){
+        //join current game
+        if(window.confirm(`Er is een mogelijk actieve game (id: ${lastGame.gameid}) gedetecteerd, wil je die joinen?`)){
+            window.location.replace("/jachtseizoen/frontend/ready.html?gameId=" + lastgame.gameId);
+        } else {
+            StorageHandler.removeGame();
+        }
+    }
+</script>
+</html>

@@ -4,9 +4,10 @@ compatibility_date = "2024-01-01"
 
 [durable_objects]
 bindings = [
-  { name = "GAME_DO", class_name = "GameDO" }
+  { name = "GAME_DO", class_name = "GameDO" },
+  { name = "ID_GENERATOR", class_name = "IdGenerator"}
 ]
 
 [[migrations]]
 tag = "v1"
-new_sqlite_classes = ["GameDO"]
+new_classes = ["GameDO", "IdGenerator"]
