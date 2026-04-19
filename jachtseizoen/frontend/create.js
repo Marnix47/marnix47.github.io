@@ -7,9 +7,7 @@ const laatsteIntervalSlider = document.querySelector("#laatsteIntervalSlider")
 const playerNameInput = document.querySelector("#playerName");
 const secondaryCircleTimeSlider = document.querySelector("#secondaryCircleTimeSlider");
 
-const testURL = "https://fictional-space-umbrella-9g79794jj9rc76qw-8787.app.github.dev/";
-const productionURL = "";
-const apiURL = testURL;
+
 
 
 const firstPhaseInputs = [
@@ -40,6 +38,7 @@ document.querySelector("#intervalSlider").addEventListener("input", (event) => {
 });
 
 uitloopTijdSlider.addEventListener("input", (event) => {
+    console.log(event.target.value);
     document.querySelector("#uitloopText").innerHTML = event.target.value;
 })
 
@@ -135,13 +134,14 @@ document.querySelector("#createGameButton").addEventListener("click", async (eve
     //         after: seconds;
     //     };
     // }
-    obj.duration = parseInt(durationSlider.value) * 60;
-    obj.interval = parseInt(intervalSlider.value);
-    obj.uitloop = parseInt(uitloopTijdSlider.value) * 60;
+    obj.duration = durationSlider.value * 60;
+    obj.interval = Number(intervalSlider.value);
+    console.log(uitloopTijdSlider.value);
+    obj.uitloop = uitloopTijdSlider.value * 60;
     if(verhoogdIntervalCheckbox.checked){
         obj.lowerIntervalAfter = {
-            interval: parseInt(laatsteIntervalSlider.value),
-            after: parseInt(intervalAfterxMinutesSlider.value) * 60
+            interval: laatsteIntervalSlider.value,
+            after: intervalAfterxMinutesSlider.value * 60
         };
     } else {
         obj.lowerIntervalAfter = null;
@@ -156,7 +156,7 @@ document.querySelector("#createGameButton").addEventListener("click", async (eve
         lat: secondaryCircle.getLatLng().lat,
         lng: secondaryCircle.getLatLng().lng,
         radius: parseInt(secondaryCircle.getRadius()),
-        after: parseInt(secondaryCircleTimeSlider.value) * 60
+        after: secondaryCircleTimeSlider.value * 60
     };
 
     console.log(obj);

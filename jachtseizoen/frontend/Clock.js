@@ -1,6 +1,11 @@
 class Clock {
     timeouts = [];
     intervals = [];
+    uitloopUntil = null;
+    uitloopInterval = null;
+    locationIntervals = [];
+    locationTimerUpdateInterval = null;
+    locationIntervalZoeker = null;
 
     constructor(){
 
@@ -31,6 +36,77 @@ class Clock {
      */
     static dateDifference(date1, date2){
         return Math.abs(date1.valueOf() - date2.valueOf());
+    }
+
+    /**
+     * 
+     * @param {ms} until 
+     * @param {Function} endHandler handler when uitloop is over.
+     */
+    setUitloopUpdate(until, endHandler){
+        this.uitloopUntil = until;
+        console.log(endHandler);
+        this.uitloopInterval = setInterval(() => {
+            if(this.uitloopUntil <= Date.now()){
+                console.log(endHandler);
+                clearInterval(this.uitloopInterval);
+                endHandler();
+            }
+            let diff = Math.floor((this.uitloopUntil - Date.now())/1000);
+            let seconds = diff % 60;
+            if(seconds < 10){
+                seconds = "0" + String(seconds);
+            }
+            document.querySelector("#uitloopTimer").innerHTML = `${Math.floor(diff/60)}:${seconds}`;
+        }, 1000);
+    }
+
+    /**
+     * 
+     * @param {Date[]} dates Will only set timeouts for dates in the future
+     * @param {Function} handler function handling location update, timestamp is passed as only param
+     */
+    addLocationIntervals(dates, handler){
+        for(let date of dates){
+            if(date < Date.now()) continue;
+            this.locationIntervals.push(setTimeout(handler, date - Date.now(), date));
+            console.log(date - Date.now());
+        }
+        console.log(this.locationIntervals);
+    }
+
+    addLocationIntervalZoeker(handler, time = 10000){
+        this.locationIntervalZoeker = setInterval(handler, time);
+        // handler();
+    }
+
+    /**
+     * Clears all location update timeouts
+     */
+    clearLocationIntervals(){
+        for(let id of this.locationIntervals){
+            clearTimeout(id);
+        }
+    }
+
+    setLocationUpdateTimerInterval(){
+        this.locationTimerUpdateInterval = setInterval(() => {
+            let diff = dataManager.getNextTimeStamp() - Date.now();
+            diff = Math.floor(diff/1000);
+            // console.log(dataManager.getNextTimeStamp(), diff, Clock.formatCountDown(diff));
+            document.querySelector("#nextLocationUpdateTimer").innerHTML = Clock.formatCountDown(diff);
+        }, 1000);
+    }
+
+    /**
+     * Formats seconds into (m)m:ss
+     * @param {seconds} seconds 
+     */
+    static formatCountDown(seconds){
+        let minutes = Math.floor(seconds/60);
+        seconds %= 60;
+        if(seconds < 10) seconds = "0" + String(seconds);
+        return `${minutes}:${seconds}`;
     }
 
     

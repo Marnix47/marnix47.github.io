@@ -18,6 +18,7 @@ export default {
         }
         if (url.pathname.startsWith("/ws/")) {
             const gameId = url.pathname.split("/")[2];
+            console.log(gameId);
             return handleWS(request, env, gameId);
         }
 
@@ -29,36 +30,52 @@ export default {
             }
         }
 
+        if(url.pathname.startsWith("/newplayer")){
+            try {
+                return handleNewPlayer(request, env);
+            } catch {
+                return new Response("", {status: 500, headers:HEADERS})
+            }
+        }
+
         return new Response("OK");
     }
 };
 
-/**
- * 
- * @param {*} request 
- * @param {*} env 
- * @param {*} gameId 
- * @returns 
- */
+// /**
+//  * 
+//  * @param {*} request 
+//  * @param {*} env 
+//  * @param {*} gameId 
+//  * @returns 
+//  */
+// async function handleWS(request, env, gameId) {
+//     if (request.headers.get("Upgrade") !== "websocket") {
+//         return new Response("Expected WebSocket", { status: 426 });
+//     }
+
+//     const pair = new WebSocketPair();
+//     const [client, server] = Object.values(pair);
+
+//     const id = env.GAME_DO.idFromName(gameId);
+//     const stub = env.GAME_DO.get(id);
+
+//     // Forward the WebSocket to the Durable Object
+//     await stub.fetch("https://internal/ws", {
+//         method: "POST",
+//         body: server,
+//         headers: { "Upgrade": "websocket" }
+//     });
+
+//     return new Response(null, { status: 101, webSocket: client });
+// }
+
 async function handleWS(request, env, gameId) {
-    if (request.headers.get("Upgrade") !== "websocket") {
-        return new Response("Expected WebSocket", { status: 426 });
-    }
-
-    const pair = new WebSocketPair();
-    const [client, server] = Object.values(pair);
-
     const id = env.GAME_DO.idFromName(gameId);
     const stub = env.GAME_DO.get(id);
 
-    // Forward the WebSocket to the Durable Object
-    await stub.fetch("https://internal/ws", {
-        method: "POST",
-        body: server,
-        headers: { "Upgrade": "websocket" }
-    });
-
-    return new Response(null, { status: 101, webSocket: client });
+    // Forward the ORIGINAL request
+    return stub.fetch(request);
 }
 
 /**
@@ -81,6 +98,17 @@ async function handleNewGame(request, env) {
     return initializeGameDO(JSON.parse(await request.text()), env);
 }
 
+async function handleNewPlayer(request, env){
+    const req = JSON.parse(await request.text());
+    const DOid = env.GAME_DO.idFromName(parseInt(req.id));
+    const stub = env.GAME_DO.get(DOid);
+
+    const resp = await stub.fetch("https://internal.com/new-player/" + req.name, {
+        method: "POST"
+    });
+    return resp;
+}
+
 /**
     * 
     * @param {{duration: seconds, interval: seconds, uitloop: seconds, lowerIntervalAfter: {interval: seconds, after: seconds}, player: string, primaryCircle: {lat: Long, lng: Long, radius: meters}, secondaryCircle: {lat: Long, lng: Long, radius: meters, after: seconds}}} data
@@ -91,7 +119,6 @@ async function handleNewGame(request, env) {
 */
 async function initializeGameDO(data, env) {
     const gameId = await generateId(env);
-    console.log(gameId);
     const DOid = env.GAME_DO.idFromName(gameId);
     const stub = env.GAME_DO.get(DOid);
 

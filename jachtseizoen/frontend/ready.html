@@ -3,14 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
     <title>Document</title>
 </head>
 <body>
-    
+    <div id="qrcode"></div>
+    <div id="playerRepeater"></div>
+    <button id="playButton">Start</button>
+    <div style="display:none" id="dummyWrapper">
+        <div id="dummyNode" class="playerNode">
+            <p class="playerName"></p>
+            <p class="playerRole">Speler</p>
+            <button class="switchRoleButton">Maak zoeker</button>
+        </div>
+    </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="./Connection.js"></script>
+<script src="./StorageHandler.js"></script>
+<script src="./DataManager.js"></script>
+<script src="./ready.js"></script>
 <script>
-    //FIRST CHECK IF GAME HAS ALREADY STARTED. IF YES -> LOAD index.html INSTEAD
+    //FIRST CHECK IF GAME HAS ALREADY STARTED. IF YES -> LOAD play.html INSTEAD
     //THEN CHECK IF GAME HAS EXPIRED. IF YES -> CLEAR LOCALSTORAGE AND LOAD welcome.html INSTEAD
 </script>
 </html>

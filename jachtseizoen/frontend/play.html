@@ -1,0 +1,63 @@
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jachtseizoen</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="./style.css">
+    <meta name="theme-color" content="lightgreen">    
+</head>
+<body>
+    <div id="uitloopWrapper">
+        <div id="uitloopTextWrapper">
+            <h1>Uitloop:</h1>
+            <h1 id="uitloopTimer"></h1>
+        </div>
+    </div>
+    <div id="gameWrapper">
+        <div id="header">
+            <h3>Volgende locatie over:</h3>
+            <h3 id="nextLocationUpdateTimer">0:00</h3>
+        </div>
+        <div id="map" style="height:500px; width:var(--vw)"></div>
+    </div>
+</body>
+<script>
+    const USERLOCATION = {lat:null, lng:null};
+    var map = L.map('map').setView([51.942, 4.522], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+        maxZoom: 20,
+        attribution: '&copy; OpenStreetMap France & OpenStreetMap contributors'
+    }).addTo(map);
+
+    let userMarker = null;
+
+    navigator.geolocation.watchPosition((pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        USERLOCATION.lat = lat;
+        USERLOCATION.lng = lng;
+
+        if (!userMarker) {
+            // Create the marker once
+            userMarker = L.marker([lat, lng]).addTo(map);
+        } else {
+            // Update marker position without moving the map
+            userMarker.setLatLng([lat, lng]);
+        }
+    }, 
+    (err) => {
+        console.error("Location error:", err);
+    }, 
+    {
+        enableHighAccuracy: true
+    });
+</script>
+<script src="StorageHandler.js"></script>
+<script src="Connection.js"></script>
+<script src="Clock.js"></script>
+<script src="DataManager.js"></script>
+<script src="MapService.js"></script>
+<script src="play.js"></script>
+</html>

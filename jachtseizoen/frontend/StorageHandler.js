@@ -1,6 +1,10 @@
+const testURL = "https://fictional-space-umbrella-9g79794jj9rc76qw-8787.app.github.dev/";
+const productionURL = "";
+const apiURL = testURL;
+
 class StorageHandler {
     static GAMEKEY = "gameid"
-    /**
+    /**s
      * 
      * @param {Number} gameid 
      * @param {String} playerid name/id of player

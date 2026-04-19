@@ -1,3 +1,19 @@
+:not(#map) p,
+:not(#map) h1,
+:not(#map) h3{
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+/* :not(#map) div {
+    overflow:hidden;
+} */
+
+html, body {
+    margin:0;
+    padding:0;
+    background-color: lightgreen;
+}
+
 .playerIcon{
     width:min-content;
     height:min-content;
@@ -11,6 +27,8 @@
 .playerIcon p{
     font-family:sans-serif;
     color:seagreen;
+    margin-top:0px;
+    margin-bottom:0px;
 }
 
 .playerIcon.zoeker{
@@ -19,6 +37,10 @@
 
 .playerIcon.oldLocation{
     border-color:lightcoral;
+}
+
+.playerIcon.freshLocation {
+    border-color:white;
 }
 
 
@@ -44,15 +66,42 @@
     height:500px;
 }
 
-#primaryCircleRadiusSlider {
-    accent-color:red;
+
+
+#uitloopWrapper {
+    display:flex;
+    position:absolute;
+    width:100%;
+    height:100%;
+    justify-content:center;
+    align-items: center;
 }
 
-#phaseTwoWrapper, #phaseThreeWrapper {
-    max-height:0;
-    overflow:hidden;
+#uitloopTextWrapper {
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    display:flex;
+    height:min-content;
+    width:min-content;
 }
 
-#phaseOneWrapper {
+/* #gameWrapper {
     overflow:hidden;
+} */
+
+#gameWrapper #header{
+    display:flex;
+    width:var(--vw);
+    height:40px;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background-color:lightgreen;
+}
+
+#gameWrapper #header h3{
+    margin-left:10px;
+    margin-right:10px;
 }
