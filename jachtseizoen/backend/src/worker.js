@@ -1,5 +1,7 @@
-import { GameDO } from "./game-do.js";
-import { IdGenerator } from "./IdGenerator.js";
+// import { GameDO } from "./game-do.js";
+// import { IdGenerator } from "./IdGenerator.js";
+export { GameDO } from "./game-do.js";
+export { IdGenerator } from "./IdGenerator.js";
 
 const HEADERS = {
     "Access-Control-Allow-Origin": "*",
@@ -130,4 +132,4 @@ async function initializeGameDO(data, env) {
     return resp;
 }
 
-export { GameDO , IdGenerator};
+// export { GameDO , IdGenerator};
