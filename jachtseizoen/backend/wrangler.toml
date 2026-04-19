@@ -10,4 +10,8 @@ bindings = [
 
 [[migrations]]
 tag = "v1"
-new_classes = ["GameDO", "IdGenerator"]
+new_classes = ["GameDO"]
+
+[[migrations]]
+tag = "v2"
+new_classes = ["IdGenerator"]

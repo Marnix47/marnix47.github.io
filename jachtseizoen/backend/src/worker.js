@@ -2,6 +2,7 @@
 // import { IdGenerator } from "./IdGenerator.js";
 export { GameDO } from "./game-do.js";
 export { IdGenerator } from "./IdGenerator.js";
+///workspaces/marnix47.github.io/jachtseizoen/backend/src/IdGenerator.js
 
 const HEADERS = {
     "Access-Control-Allow-Origin": "*",
