@@ -140,13 +140,13 @@ document.querySelector("#createGameButton").addEventListener("click", async (eve
     obj.uitloop = uitloopTijdSlider.value * 60;
     if(verhoogdIntervalCheckbox.checked){
         obj.lowerIntervalAfter = {
-            interval: laatsteIntervalSlider.value,
+            interval: parseInt(laatsteIntervalSlider.value),
             after: intervalAfterxMinutesSlider.value * 60
         };
     } else {
         obj.lowerIntervalAfter = null;
     }
-    obj.player = playerNameInput.value;
+    obj.player = playerNameInput.value.replaceAll(/\s/g, ""); //take out all white space
     obj.primaryCircle = {
         lat: primaryCircle.getLatLng().lat,
         lng: primaryCircle.getLatLng().lng,

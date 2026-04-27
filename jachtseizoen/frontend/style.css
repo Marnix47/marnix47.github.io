@@ -1,107 +1,245 @@
 :not(#map) p,
 :not(#map) h1,
-:not(#map) h3{
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+:not(#map) h3 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 /* :not(#map) div {
     overflow:hidden;
 } */
 
-html, body {
-    margin:0;
-    padding:0;
+html,
+body {
+    margin: 0;
+    padding: 0;
     background-color: lightgreen;
 }
 
-.playerIcon{
-    width:min-content;
-    height:min-content;
+.playerIcon {
+    width: min-content;
+    height: min-content;
     padding: 5px 2px 5px 2px;
-    border-style:solid;
-    border-width:2px;
-    border-color:white;
-    background-color:lightgreen;
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+    background-color: lightgreen;
 }
 
-.playerIcon p{
-    font-family:sans-serif;
-    color:seagreen;
-    margin-top:0px;
-    margin-bottom:0px;
+.playerIcon p {
+    font-family: sans-serif;
+    color: seagreen;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
-.playerIcon.zoeker{
-    background-color:lightskyblue;
+.playerIcon.zoeker {
+    background-color: lightskyblue;
 }
 
-.playerIcon.oldLocation{
-    border-color:lightcoral;
+.playerIcon.oldLocation {
+    border-color: lightcoral;
 }
 
 .playerIcon.freshLocation {
-    border-color:white;
+    border-color: white;
 }
 
 
 
-#welcome-wrapper{
-    display:flex;
-    align-items:center;
+#welcome-wrapper {
+    display: flex;
+    align-items: center;
     justify-content: center;
-    
+
 }
 
 
 
 #verhoogdInterval {
-    border-style:solid;
-    border-width:2px;
-    border-color:black;
-    border-radius:5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    border-radius: 5px;
 }
 
 #map-create {
-    width:500px;
-    height:500px;
+    width: 500px;
+    height: 500px;
 }
 
 
 
 #uitloopWrapper {
-    display:flex;
-    position:absolute;
-    width:100%;
-    height:100%;
-    justify-content:center;
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
     align-items: center;
 }
 
 #uitloopTextWrapper {
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    display:flex;
-    height:min-content;
-    width:min-content;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: min-content;
+    width: min-content;
 }
 
 /* #gameWrapper {
     overflow:hidden;
 } */
 
-#gameWrapper #header{
-    display:flex;
-    width:var(--vw);
-    height:40px;
-    flex-direction:row;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    background-color:lightgreen;
+#gameWrapper #header {
+    display: flex;
+    flex-direction: column;
+    height: min-content;
+    width: var(--vw);
+    justify-content: center;
+    align-items: center;
 }
 
-#gameWrapper #header h3{
-    margin-left:10px;
-    margin-right:10px;
+#gameWrapper #header h3 {
+    margin-top: 5px;
+    margin-bottom: 0;
 }
+
+#gameWrapper #header div {
+    display: flex;
+    width: var(--vw);
+    height: 30px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background-color: lightgreen;
+}
+
+#gameWrapper #header h3 {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.playerListNode {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    height:40px;
+    width:100%;
+    border-radius: 5px;
+    border-width:0px;
+    margin:10px;
+    width:calc(var(--vw) - 20px);
+    background-color:linen;
+}
+
+.playerListNode p {
+    margin:0;
+}
+
+.playerListNodeInfoWrapper {
+    display:flex;
+    flex-direction:row;
+    justify-content:left;
+    align-items:center;
+    height:100%;
+    margin-left:20px;
+    min-width:100px;
+    max-width:100px;
+}
+
+.playerListNodeActionsWrapper {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height:100%;
+    min-width:100px;
+    max-width:100px;
+    margin-right:20px;
+}
+
+.playerListNodeName {
+    font-size: 16px;
+    font-weight:bold;
+}
+
+.playerListNodeName
+
+
+.user-location {
+    position: relative;
+    width: 18px;
+    height: 18px;
+}
+
+/* The Blue Dot */
+.user-location-dot {
+    width: 16px;
+    height: 16px;
+    background-color: #007AFF; /* Apple Blue */
+    border: 3px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+/* The Pulse Effect (Optional but adds that 'live' feel) */
+.user-location-dot::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #007AFF;
+    border-radius: 50%;
+    z-index: -1;
+    animation: location-pulse 4s infinite ease-out;
+}
+
+/* The Heading Cone */
+.user-location-heading {
+    position: absolute;
+    top: 50%; /* Start from the center of the dot */
+    left: 50%;
+    width: 40px;  /* Width of the beam */
+    height: 40px; /* Length of the beam */
+    
+    /* Create a tapered cone using a radial gradient */
+    background: radial-gradient(
+        circle at 50% 100%, 
+        rgba(0, 122, 255, 1) 0%, 
+        rgba(0, 122, 255, 0) 70%
+    );
+    
+    /* Clip it into a triangle/cone shape */
+    clip-path: polygon(50% 100%, 20% 0%, 80% 0%);
+    
+    /* The JS handles translateX(-50%) and rotate(). 
+       We set the transform-origin to the bottom center 
+       so it rotates around the location dot.
+    */
+    transform-origin: 50% 100%;
+    margin-top: -40px; /* Offset it so the tip stays on the dot */
+    z-index: 1;
+}
+
+@keyframes location-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    30% {
+        transform: scale(3);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+

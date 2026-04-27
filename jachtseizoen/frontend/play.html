@@ -6,9 +6,15 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <link rel="stylesheet" href="./style.css">
-    <meta name="theme-color" content="lightgreen">    
+    <meta name="theme-color" content="lightgreen">
+    <!-- // Source - https://stackoverflow.com/q/4117377
+    // Posted by Peter Szabo, modified by community. See post 'Timeline' for change history
+    // Retrieved 2026-04-27, License - CC BY-SA 3.0 -->
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" /><meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
 <body>
+    <button id="allow-compass-button">Kompas aanzetten</button>
     <div id="uitloopWrapper">
         <div id="uitloopTextWrapper">
             <h1>Uitloop:</h1>
@@ -17,10 +23,34 @@
     </div>
     <div id="gameWrapper">
         <div id="header">
-            <h3>Volgende locatie over:</h3>
-            <h3 id="nextLocationUpdateTimer">0:00</h3>
+            <h3 id="gameCountdown">0:00</h3>
+            <div id="nextLocationHeader">
+                <h3>Volgende locatie over:</h3>
+                <h3 id="nextLocationUpdateTimer">0:00</h3>
+            </div>
+            <div id="nextShrinkHeader">
+                <h3>Veld wordt kleiner over:</h3>
+                <h3 id="nextShrinkTimer">0:00</h3>
+            </div>
         </div>
         <div id="map" style="height:500px; width:var(--vw)"></div>
+        <div id="playerListWrapper">
+            <div id="playerList">
+                <div style="display:none" class="dummyWrapper">
+                    <div id="dummyPlayerListNode" class="playerListNode">
+                        <div class="playerListNodeInfoWrapper">
+                            <p class="playerListNodeName"></p>
+                            
+                        </div>
+                        <p class="playerListNodeRole"></p>
+                        <div class="playerListNodeActionsWrapper">
+                            <button class="playerListNodeCaughtButton">Gepakt</button>
+                            <p class="playerListNodeCaughtText">Gepakt</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 <script>
@@ -32,19 +62,80 @@
     }).addTo(map);
 
     let userMarker = null;
+    let primaryMapCircle;
+    let secondaryMapCircle;
+    let compassHeading = null;
+
+    // window.addEventListener("touchstart", () => {
+    //     // alert(window.__askedCompassPermission);
+    //     if (window.__askedCompassPermission) return;
+    //     window.__askedCompassPermission = true;
+    //     if (typeof DeviceOrientationEvent.requestPermission === "function") {
+    //         DeviceOrientationEvent.requestPermission().then((result) => {
+    //             alert(result);
+    //         });
+    //     } else {
+    //         alert("ANDROID");
+    //     }
+                                                                                                                
+    // }, {once:true, passive:false})
+
+    if(typeof DeviceOrientationEvent.requestPermission !== "function"){
+        document.querySelector("#allow-compass-button").style.display = "none";
+    }
+
+    document.getElementById("allow-compass-button").addEventListener("click", () => {
+        document.querySelector("#allow-compass-button").style.display = "none";
+        if (typeof DeviceOrientationEvent.requestPermission === "function") {
+            DeviceOrientationEvent.requestPermission().then((result) => {
+                // alert(result);
+                window.addEventListener("deviceorientation", (event) => {
+                    document.querySelector("#allow-compass-button").style.display = "none";
+                    if (event.webkitCompassHeading !== undefined) {
+                        // iOS
+                        compassHeading = event.webkitCompassHeading;
+                    } else if (event.alpha !== null) {
+                        // Android
+                        compassHeading = (360 - event.alpha) % 360;
+                    }
+                });
+            });
+        }
+    });
+
+    window.addEventListener("deviceorientation", (event) => {
+        document.querySelector("#allow-compass-button").style.display = "none";
+        if (event.webkitCompassHeading !== undefined) {
+            // iOS
+            compassHeading = event.webkitCompassHeading;
+        } else if (event.alpha !== null) {
+            // Android
+            compassHeading = (360 - event.alpha) % 360;
+        }
+    });
 
     navigator.geolocation.watchPosition((pos) => {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
+        const heading = compassHeading;
         USERLOCATION.lat = lat;
         USERLOCATION.lng = lng;
 
-        if (!userMarker) {
-            // Create the marker once
-            userMarker = L.marker([lat, lng]).addTo(map);
+        // if (!userMarker) {
+        //     // Create the marker once
+        //     userMarker = L.marker([lat, lng]).addTo(map);
+        // } else {
+        //     // Update marker position without moving the map
+        //     userMarker.setLatLng([lat, lng]);
+        // }
+        if(!userMarker){
+            userMarker = L.marker([lat, lng], {
+                icon: makeUserIcon(heading),
+                zIndexOffset: 9999
+            }).addTo(map);
         } else {
-            // Update marker position without moving the map
             userMarker.setLatLng([lat, lng]);
+            userMarker.setIcon(makeUserIcon(heading));
         }
     }, 
     (err) => {
@@ -53,6 +144,24 @@
     {
         enableHighAccuracy: true
     });
+
+    function makeUserIcon(heading) {
+        const cone = heading !== null
+            ? `<div class="user-location-heading" style="transform: translateX(-50%) rotate(${heading}deg);"></div>`
+            : "";
+
+        return L.divIcon({
+            className: "",
+            html: `
+            <div class="user-location">
+                ${cone}
+                <div class="user-location-dot"></div>
+            </div>
+            `,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+    }
 </script>
 <script src="StorageHandler.js"></script>
 <script src="Connection.js"></script>

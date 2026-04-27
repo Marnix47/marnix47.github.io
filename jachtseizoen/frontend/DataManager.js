@@ -4,7 +4,7 @@ class DataManager {
     lastData; //parsed JSON from last message, or {} if no message has been received
     playerid = null; //null iff player hasn't been created yet
     lastPlayerData = null; //like lastData, but only containing the last known parsed JSON from this player. Null iff no data obtained yet.
-
+    playerNodes = new Map(); //maps playerid to HTML node in List
     
     /**
      * 
@@ -28,8 +28,23 @@ class DataManager {
         this.lastData = data.content;
         console.log(data.content);
         this.lastPlayerData = data.content.persons[this.playerid];
-        if(data.msgType == "location-update"){
+        if(data.msgType == "location-update" || data.msgType == "caught"){
             mapService.renderPlayers();
+            this.updatePlayerUI();
+        }
+        if(data.msgType == "caught"){
+            this.updatePlayerUI();
+            if(data.speler == this.playerid){
+                clock.clearLocationIntervals();
+                clock.setLocationUpdateTimerInterval();
+            }
+            window.alert(`${data.speler} is gepakt door ${data.zoeker}.`);
+        }
+        if(data.msgType == "request-caught" && data.target == this.playerid){
+            if(window.confirm(`Bevestig dat ${data.origin} je heeft gepakt.`)){
+                this.connection.send(JSON.stringify({msgType:"caught", content: {origin: this.playerid, target: data.origin}}));
+            }
+            return;
         }
         if(data.msgType == "first"){
             //SET ALL LOCATIONUPDATETIMESTAMPS IN CLOCK
@@ -51,11 +66,36 @@ class DataManager {
             }
 
             if(data.content.uitloop * 1000 + data.content.start > Date.now()){
-                console.log("SETTING UITLOOP");
+                // console.log("SETTING UITLOOP");
                 clock.setUitloopUpdate(data.content.uitloop * 1000 + data.content.start, this.uitloopEndHandler.bind(this));
             } else {
                 this.uitloopEndHandler();
             }
+            let primaryCircleCoords = this.lastData.RingTimeStamps[0];
+            if(!this.lastData.RingTimeStamps[1] || this.lastData.RingTimeStamps[1].date > Date.now()){
+                primaryMapCircle = L.circle([primaryCircleCoords.lat, primaryCircleCoords.lng], {
+                    radius: primaryCircleCoords.rad,
+                    color: "red",
+                    fillOpacity: .2
+                }).addTo(map);
+            }
+            
+            if(this.lastData.RingTimeStamps.length > 1){
+                let secondaryCircleCoords = this.lastData.RingTimeStamps[1];
+                secondaryMapCircle = L.circle([secondaryCircleCoords.lat, secondaryCircleCoords.lng], {
+                    radius: secondaryCircleCoords.rad,
+                    color: "lightskyblue",
+                    fillOpacity: .25
+                }).addTo(map);
+                clock.setShrinkInterval(() => {
+                    document.querySelector("#nextShrinkHeader").style.display = "none";
+                    primaryMapCircle?.remove();
+                });
+            } else {
+                document.querySelector("#nextShrinkHeader").style.display = "none";
+            }
+            clock.setCountdownInterval();
+            this.updatePlayerUI();
             //TODO: call handler for moving to play phase
         }
 
@@ -107,9 +147,12 @@ class DataManager {
     }
 
     uitloopEndHandler(){
+        // console.log("DISABLING UITLOOP WRAPPER");
         document.querySelector("#gameWrapper").style.maxHeight = "unset";
         document.querySelector("#map").style.maxHeight = "unset";
-        document.querySelector("#uitloopWrapper").display = "none";
+        document.querySelector("#uitloopWrapper").style.display = "none";
+        document.querySelector("#uitloopWrapper").style.maxHeight = 0;
+
         mapService.renderPlayers();
     }
 
@@ -139,6 +182,78 @@ class DataManager {
         //     console.warn("LOCATION ERROR");
         //     setTimeout(this.locationUpdateHandler, 5000, date);
         // });
+    }
+
+    updatePlayerUI(){
+        let playerData = this.lastData.persons;
+        for(let [player, value] of Object.entries(playerData)){
+            if(!this.playerNodes.has(player)){
+                let n = this.createPlayerNode(value);
+                document.querySelector("#playerList").appendChild(n);
+                console.log(n);
+                document.querySelector("#playerList").appendChild(n);
+            } else {
+                this.updatePlayerNode(this.playerNodes.get(player), value);
+            }
+        }
+    }
+
+    createPlayerNode(playerInfo){
+        let n = document.querySelector("#dummyPlayerListNode").cloneNode(true);
+        n.querySelector(".playerListNodeName").innerHTML = playerInfo.id;
+        n.querySelector(".playerListNodeRole").innerHTML = playerInfo.role;
+        let caughtButtonDisplay = this.lastData.persons[this.playerid].role == "zoeker"
+            && playerInfo.role == "speler";
+        let caughtTextDisplay = playerInfo.caughtAfter !== null;
+        /**
+         * @param {Boolean} q
+         */
+        let displayValue = q => q ? "inline" : "none";
+
+        n.querySelector(".playerListNodeCaughtButton").addEventListener("click", (event) => {
+            console.log("CLICKED");
+            let target = event.target.parentNode.parentNode.querySelector(".playerListNodeName").innerHTML;
+            connection.send(JSON.stringify({msgType: "request-caught", content: {target: target, origin: this.playerid}}));
+        });
+
+        n.querySelector(".playerListNodeCaughtButton").style.display = displayValue(caughtButtonDisplay);
+        n.querySelector(".playerListNodeCaughtText").style.display = displayValue(caughtTextDisplay);
+        n.classList.add(playerInfo.role);
+        
+        this.playerNodes.set(playerInfo.id, n);
+        return n;
+    }
+
+    updatePlayerNode(n, playerInfo){
+        n.querySelector(".playerListNodeRole").innerHTML = playerInfo.role;
+        let caughtButtonDisplay = this.lastData.persons[this.playerid].role == "zoeker"
+            && playerInfo.role == "speler";
+        let caughtTextDisplay = playerInfo.caughtAfter !== null;
+        /**
+         * @param {Boolean} q
+         */
+        let displayValue = q => q ? "unset" : "none";
+
+        n.querySelector(".playerListNodeCaughtButton").style.display = displayValue(caughtButtonDisplay);
+        n.querySelector(".playerListNodeCaughtText").style.display = displayValue(caughtTextDisplay);
+        
+        if(!n.classList.contains(playerInfo.role)){
+            n.classList.replace(oppositeRole(playerInfo.role), playerInfo.role);
+        }
+    }
+
+    handleGameOver(){
+        window.alert("Het spel is afgelopen");
+        window.location.replace("/jachtseizoen/backend/welcome.html");
+    }
+
+    /**
+     * 
+     * @param {"zoeker"|"speler"} current 
+     * @returns {"zoeker"|"speler"}
+     */
+    static oppositeRole(current){
+        return current == "zoeker" ? "speler" : "zoeker"
     }
 
 }

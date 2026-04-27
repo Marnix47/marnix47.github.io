@@ -6,6 +6,8 @@ class Clock {
     locationIntervals = [];
     locationTimerUpdateInterval = null;
     locationIntervalZoeker = null;
+    countdownInterval = null;
+    shrinkInterval = null;
 
     constructor(){
 
@@ -32,7 +34,7 @@ class Clock {
      * Returns the positive difference in ms between two dates
      * @param {Date} date1 
      * @param {Date} date2 
-     * @returns {Number} //difference in ms
+     * @returns {Number} difference in ms
      */
     static dateDifference(date1, date2){
         return Math.abs(date1.valueOf() - date2.valueOf());
@@ -46,6 +48,7 @@ class Clock {
     setUitloopUpdate(until, endHandler){
         this.uitloopUntil = until;
         console.log(endHandler);
+        if(this.uitloopInterval) clearInterval(this.uitloopInterval);
         this.uitloopInterval = setInterval(() => {
             if(this.uitloopUntil <= Date.now()){
                 console.log(endHandler);
@@ -67,6 +70,7 @@ class Clock {
      * @param {Function} handler function handling location update, timestamp is passed as only param
      */
     addLocationIntervals(dates, handler){
+        this.clearLocationIntervals();
         for(let date of dates){
             if(date < Date.now()) continue;
             this.locationIntervals.push(setTimeout(handler, date - Date.now(), date));
@@ -90,11 +94,42 @@ class Clock {
     }
 
     setLocationUpdateTimerInterval(){
+        if(this.locationTimerUpdateInterval) clearInterval(this.locationTimerUpdateInterval);
         this.locationTimerUpdateInterval = setInterval(() => {
+            if(dataManager.getNextTimeStamp() == null){
+                clearInterval(this.locationTimerUpdateInterval);
+                document.querySelector("#nextLocationHeader").style.display = "none";
+                return;
+            }
             let diff = dataManager.getNextTimeStamp() - Date.now();
             diff = Math.floor(diff/1000);
             // console.log(dataManager.getNextTimeStamp(), diff, Clock.formatCountDown(diff));
             document.querySelector("#nextLocationUpdateTimer").innerHTML = Clock.formatCountDown(diff);
+        }, 1000);
+    }
+
+    setCountdownInterval(){
+        if(this.countdownInterval) clearInterval(this.countdownInterval);
+        this.countdownInterval = setInterval(() => {
+            if(Date.now() >= dataManager.lastData.end){
+                clearInterval(this.countdownInterval);
+                dataManager.handleGameOver();
+            }
+            let time = Math.floor((dataManager.lastData.end - Date.now())/1000)
+            document.querySelector("#gameCountdown").innerHTML = Clock.formatCountDown(time);
+        }, 1000);
+    }
+
+    setShrinkInterval(handler){
+        if(this.shrinkInterval) clearInterval(this.shrinkInterval);
+        this.shrinkInterval = setInterval(() => {
+            let time = Math.floor((dataManager.lastData.RingTimeStamps[1].date - Date.now())/1000);
+            // console.log(time);
+            if(time <= 0){
+                clearInterval(this.shrinkInterval);
+                handler();
+            }
+            document.querySelector("#nextShrinkTimer").innerHTML = Clock.formatCountDown(time);
         }, 1000);
     }
 

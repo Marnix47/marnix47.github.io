@@ -70,7 +70,7 @@ export class GameDO {
         server.accept();
         this.sockets.add(server);
 
-        console.log("TRYING TO SEND FIRST");
+        // console.log("TRYING TO SEND FIRST");
         server.send(JSON.stringify({msgType:"first", content: this.gameState}));
 
         server.addEventListener("close", () => {
@@ -90,13 +90,13 @@ export class GameDO {
                 console.log("Invalid JSON from WS");
                 return;
             }
-            console.log(parsed);
+            // console.log(parsed);
 
             if(parsed.msgType == "handshake"){
                 server.send(JSON.stringify({msgType:"handshake", content:{}}));
             }
             if(parsed.msgType == "change-role"){
-                console.log(parsed);
+                // console.log(parsed);
                 this.gameState.persons[parsed.content.playerid].role = parsed.content.newRole;
                 await this.saveGameState(this.gameState);
                 this.broadcastNewState("change-role");
@@ -120,6 +120,23 @@ export class GameDO {
                 await this.saveGameState(this.gameState);
                 console.log(this.gameState.persons[parsed.content.playerid])
                 this.broadcastNewState("location-update");
+            }
+            if(parsed.msgType == "request-caught"){
+                console.log(parsed);
+                for(const ws of this.sockets){
+                    ws.send(JSON.stringify({msgType:"request-caught", content: this.gameState, target:parsed.content.target, origin: parsed.content.origin}));
+                }
+            }
+            if(parsed.msgType == "caught"){
+                this.gameState.persons[parsed.content.origin].caughtAfter = Date.now() - this.gameState.start - this.gameState.uitloop * 1000;
+                this.gameState.persons[parsed.content.origin].caughtBy = parsed.content.origin;
+                this.gameState.persons[parsed.content.origin].role = "zoeker";
+                await this.saveGameState(this.gameState);
+                // this.broadcastNewState("caught");
+                let a = 1;;;
+                for(const ws of this.sockets){
+                    ws.send(JSON.stringify({msgType:"caught", content: this.gameState, speler:parsed.content.origin, zoeker: parsed.content.target}));
+                }
             }
 
             // await this.saveGameState(parsed);
@@ -180,7 +197,6 @@ export class GameDO {
         }
 
         const newState = this.buildGameStateFromInput(input, id);
-        // console.log(newState);
         await this.saveGameState(newState);
 
         return new Response(id.toString(), { status: 200, headers: HEADERS });
@@ -202,7 +218,8 @@ export class GameDO {
             id: input.player,
             lastKnownLocation: null,
             role: "speler",
-            caughtAfter: null
+            caughtAfter: null,
+            caughtBy: null
         };
         obj.creator = input.player;
 
@@ -271,7 +288,6 @@ export class GameDO {
     async startGameState(){
         this.gameState.start = Date.now();
         this.gameState.end = Date.now() + this.gameState.duration * 1000;
-        console.log("CHECKPOINT");
         let lowerAfter = this.gameState.lowerIntervalAfter?.after;
         if(!lowerAfter){
             lowerAfter = this.gameState.duration + this.gameState.uitloop;
@@ -284,6 +300,7 @@ export class GameDO {
         let stamps = [];
         while(time < this.gameState.duration){
             stamps.push(time);
+            console.log(lowerInterval, time, lowerInterval, lowerAfter);
             if(lowerInterval && time + lowerInterval >= lowerAfter){
                 interval = lowerInterval;
                 time += interval;
@@ -294,9 +311,11 @@ export class GameDO {
                 time += interval;
             }
         }
+        console.log("TIMESTAMPS:", stamps);
         this.gameState.locationUpdateTimeStamps = stamps.map(x => Date.now() + 1000 * x);
         for(let ring of this.gameState.RingTimeStamps){
-            ring.date = Date.now() + ring.after;
+            // console.log(ring);
+            ring.date = Date.now() + ring.after*1000;
         }
         await this.saveGameState(this.gameState);
     }

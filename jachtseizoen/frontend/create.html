@@ -43,17 +43,17 @@
             <button id="phaseOneButton">Volgende</button>
         </div>
         <div id="phaseTwoWrapper">
-            <p>Verhoogd interval?</p>
+            <p>Lager interval?</p>
             <input id="verhoogdIntervalCheckbox" value="false" type="checkbox">
             <div id="verhoogdInterval" style="display:none">
-                <p>Laatste <span id="laatstexMinutenText">5</span> minuten</p>
-                <input id="intervalAfterxMinutesSlider" value="5" min="3" max="20" step="1" type="range">
+                <p>Na <span id="laatstexMinutenText">5</span> minuten</p>
+                <input id="intervalAfterxMinutesSlider" value="5" min="1" max="20" step="1" type="range">
 
                 <p>Elke <span id="laatsteIntervalText">2</span> minuten</p>
                 <input id="laatsteIntervalSlider" value="120" min="30" max="300" step="30" type="range">
             </div>
             <br>
-            <input id="playerName" placeholder="Jouw naam">
+            <input id="playerName" placeholder="Jouw naam" pattern="\S*">
             <button id="phaseTwoButton">Volgende</button>
         </div>
         <div id="phaseThreeWrapper">

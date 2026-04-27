@@ -13,3 +13,11 @@ function fixIOSViewport() {
 fixIOSViewport();
 window.addEventListener('resize', fixIOSViewport);
 
+window.onerror = (msg, source, lineno) => {
+    alert(msg + source + lineno);
+}
+
+window.addEventListener("unhandledrejection", event => {
+  alert("Unhandled Promise Rejection:", event.reason);
+  event.preventDefault(); // optional: suppress console error
+})
