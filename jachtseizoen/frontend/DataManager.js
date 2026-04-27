@@ -238,7 +238,7 @@ class DataManager {
         n.querySelector(".playerListNodeCaughtText").style.display = displayValue(caughtTextDisplay);
         
         if(!n.classList.contains(playerInfo.role)){
-            n.classList.replace(oppositeRole(playerInfo.role), playerInfo.role);
+            n.classList.replace(DataManager.oppositeRole(playerInfo.role), playerInfo.role);
         }
     }
 
