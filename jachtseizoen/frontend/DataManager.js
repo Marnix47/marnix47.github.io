@@ -244,7 +244,7 @@ class DataManager {
 
     handleGameOver(){
         window.alert("Het spel is afgelopen");
-        window.location.replace("/jachtseizoen/backend/welcome.html");
+        window.location.replace("/jachtseizoen/frontend/welcome.html");
     }
 
     /**
