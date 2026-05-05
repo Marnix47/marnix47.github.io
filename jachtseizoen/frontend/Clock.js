@@ -79,13 +79,19 @@ class Clock {
         console.log(this.locationIntervals);
     }
 
+    /**
+     * Sets location update interval for zoeker
+     * @param {Function} handler 
+     * @param {ms} [time] Time in ms, defaults to 10000
+     */
     addLocationIntervalZoeker(handler, time = 10000){
         this.locationIntervalZoeker = setInterval(handler, time);
         // handler();
     }
 
     /**
-     * Clears all location update timeouts
+     * Clears all location update timeouts set for dates. 
+     * locationIntervalZoeker will not be cleared.
      */
     clearLocationIntervals(){
         for(let id of this.locationIntervals){
@@ -93,6 +99,9 @@ class Clock {
         }
     }
 
+    /**
+     * (Re)sets the interval for updating #nextLocationUpdateTimer.
+     */
     setLocationUpdateTimerInterval(){
         if(this.locationTimerUpdateInterval) clearInterval(this.locationTimerUpdateInterval);
         this.locationTimerUpdateInterval = setInterval(() => {
@@ -108,6 +117,9 @@ class Clock {
         }, 1000);
     }
 
+    /**
+     * (Re)sets the interval for updating #gameCountdown.
+     */
     setCountdownInterval(){
         if(this.countdownInterval) clearInterval(this.countdownInterval);
         this.countdownInterval = setInterval(() => {
@@ -120,6 +132,10 @@ class Clock {
         }, 1000);
     }
 
+    /**
+     * (Re)sets the interval for updating #nextShrinkTimer.
+     * @param {Function} handler Handler for when RingTimeStamp 1 takes effect.
+     */
     setShrinkInterval(handler){
         if(this.shrinkInterval) clearInterval(this.shrinkInterval);
         this.shrinkInterval = setInterval(() => {
@@ -135,7 +151,7 @@ class Clock {
 
     /**
      * Formats seconds into (m)m:ss
-     * @param {seconds} seconds 
+     * @param {seconds} seconds must be non-negative
      */
     static formatCountDown(seconds){
         let minutes = Math.floor(seconds/60);

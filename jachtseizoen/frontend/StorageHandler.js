@@ -7,7 +7,7 @@ const apiURL = inTesting ? testURL : "https://jachtseizoen.maxome7.workers.dev/"
 
 class StorageHandler {
     static GAMEKEY = "gameid"
-    /**s
+    /**
      * 
      * @param {Number} gameid 
      * @param {String} playerid name/id of player
@@ -17,6 +17,7 @@ class StorageHandler {
     static setGame(gameid, playerid, started, date){
         localStorage.setItem(this.GAMEKEY, JSON.stringify({gameid:gameid, playerid:playerid, started:started, date:date}));
     }
+
     /**
      * 
      * @returns {{gameid: Number, playerid: String, started: Boolean date:Date}}
@@ -25,6 +26,9 @@ class StorageHandler {
         return JSON.parse(localStorage.getItem(this.GAMEKEY));
     }
 
+    /**
+     * Clears the game info from localStorage
+     */
     static removeGame(){
         localStorage.removeItem(this.GAMEKEY);
     }

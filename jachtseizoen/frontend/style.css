@@ -6,7 +6,8 @@
 }
 
 :root {
-    --bg-color: lightgreen;
+    --bg-color: #20B2AA;
+    --button-color: mediumaquamarine;
 }
 
 /* :not(#map) div {
@@ -17,7 +18,7 @@ html,
 body {
     margin: 0;
     padding: 0;
-    background-color: lightgreen;
+    background-color: var(--bg-color);
 }
 
 .playerIcon {
@@ -27,7 +28,7 @@ body {
     border-style: solid;
     border-width: 2px;
     border-color: white;
-    background-color: lightgreen;
+    background-color: var(--button-color);
 }
 
 .playerIcon p {
@@ -118,7 +119,7 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    background-color: lightgreen;
+    background-color: var(--bg-color);
 }
 
 #gameWrapper #header h3 {
@@ -296,7 +297,7 @@ body {
 }
 
 #create-wrapper button{
-    width:70px;
+    width:100px;
     height:30px;
     background-color: var(--bg-color);
     /* box-shadow: 4px 2px 2px lightgrey;
@@ -392,4 +393,68 @@ body {
     font-size:14px;
 }
 
+/***********************/
+/*join.html*/
+/***********************/
 
+.join-body {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.join-app {
+    justify-self:center;
+    align-self:center;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    width:200px;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    height:min-content;
+}
+
+.join-app #idInput {
+    border-radius:7px;
+
+    width:50px;
+    height:30px;
+}
+
+.join-app #nameInput {
+    border-radius:7px;
+    width:180px;
+    height:30px;
+}
+
+.join-app input {
+    font-size:16px;
+    background-color:var(--button-color);
+    color:teal;
+    text-align:center;
+}
+
+.join-app input::placeholder {
+    color:teal;
+}
+
+.join-app button {
+    width:70px;
+    height:30px;
+}
+
+.app button {
+    /* width:70px; */
+    height:30px;
+    background-color: var(--button-color);
+    /* box-shadow: 4px 2px 2px lightgrey;
+     */
+    box-shadow: 0 0 10px 3px rgba(0, 122, 255, 0.25);
+    border-radius: 5px;
+    border-width:0;
+    color:teal;
+    font-size:16px;
+    font-weight:bold;
+}

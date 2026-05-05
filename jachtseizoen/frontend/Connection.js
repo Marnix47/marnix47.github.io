@@ -14,6 +14,10 @@ class Connection {
         this.queue = [];
     }
 
+    /**
+     * Clears the old WS, initializes a new one. 
+     * Sends any queued messages in the order they were meant to be sent
+     */
     initialize(){
         this.ws = new WebSocket(this.url);
         this.ws.onopen = ((event) => {
@@ -30,15 +34,26 @@ class Connection {
         this.handshakeInterval = setInterval(() => this.sendHandshake(), HANDSHAKE);
     }
 
+    /**
+     * Retry establishing a connection
+     */
     retry(){
         this.initialize();
     }
 
+    /**
+     * General close event handler. Retries after user confirms alert.
+     * @param {Event} event 
+     */
     onclose(event){
         alert("De verbinding met de server is verbroken: " + event.reason);
         this.retry();
     }
 
+    /**
+     * Sends message, if WS is ready to send. Otherwise msg gets queued.
+     * @param {*} msg 
+     */
     send(msg){
         if(this.ws.readyState != WebSocket.OPEN){
             this.queue.push(msg);
@@ -47,21 +62,35 @@ class Connection {
         this.ws.send(msg);
     }
 
+    /**
+     * Sends an empty handshake message to keep DO alive.
+     */
     sendHandshake(){
         if(this.ws.readyState != WebSocket.OPEN) return;
         console.log("sending handshake");
         this.ws.send(JSON.stringify({msgType:"handshake", content:{}}));
     }
 
+    /**
+     * 
+     * @param {Function} handler 
+     */
     setIncomingMessageHandler(handler){
         this.customMessageHandler = handler;
         this.ws.onmessage = handler;
     }
 
+    /**
+     * Closes the WS connection
+     */
     close(){
         this.ws.close();
     }
 
+    /**
+     * returns the WebSocket.readyState property of the websocket.
+     * @returns {Integer} readyState
+     */
     state(){
         return this.ws.readyState;
     }

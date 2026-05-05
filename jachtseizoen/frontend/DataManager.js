@@ -36,7 +36,8 @@ class DataManager {
             this.updatePlayerUI();
             if(data.speler == this.playerid){
                 clock.clearLocationIntervals();
-                clock.setLocationUpdateTimerInterval();
+                // clock.setLocationUpdateTimerInterval();
+                clock.addLocationIntervalZoeker(this.locationUpdateHandler.bind(this));
             }
             window.alert(`${data.speler} is gepakt door ${data.zoeker}.`);
         }
@@ -48,9 +49,10 @@ class DataManager {
         }
         if(data.msgType == "first"){
             //SET ALL LOCATIONUPDATETIMESTAMPS IN CLOCK
-            // console.log(data.uitloop, data.start, Date.now());
             document.querySelector("#gameWrapper").style.maxHeight = 0;
             document.querySelector("#map").style.maxHeight = 0;
+            document.querySelector("#playerListWrapper").style.display = "none";
+
             clock.setLocationUpdateTimerInterval();
             if(data.content.persons[this.playerid]?.role == "speler"){
                 clock.addLocationIntervals(data.content.locationUpdateTimeStamps, this.locationUpdateHandler.bind(this));
@@ -59,14 +61,11 @@ class DataManager {
             }
             let latestUpdateStamp = data.content.persons[this.playerid]?.lastKnownLocation?.date;
             if(!latestUpdateStamp) latestUpdateStamp = 0;
-            console.log(data.content);
-            console.log(latestUpdateStamp, Date.now());
             if(latestUpdateStamp < this.getLatestTimeStamp()){
                 this.locationUpdateHandler(this.getLatestTimeStamp());
             }
 
             if(data.content.uitloop * 1000 + data.content.start > Date.now()){
-                // console.log("SETTING UITLOOP");
                 clock.setUitloopUpdate(data.content.uitloop * 1000 + data.content.start, this.uitloopEndHandler.bind(this));
             } else {
                 this.uitloopEndHandler();
@@ -96,7 +95,6 @@ class DataManager {
             }
             clock.setCountdownInterval();
             this.updatePlayerUI();
-            //TODO: call handler for moving to play phase
         }
 
     }
@@ -147,9 +145,9 @@ class DataManager {
     }
 
     uitloopEndHandler(){
-        // console.log("DISABLING UITLOOP WRAPPER");
         document.querySelector("#gameWrapper").style.maxHeight = "unset";
         document.querySelector("#map").style.maxHeight = "unset";
+        document.querySelector("#playerListWrapper").style.display = "flex";
         document.querySelector("#uitloopWrapper").style.display = "none";
         document.querySelector("#uitloopWrapper").style.maxHeight = 0;
 
@@ -174,23 +172,17 @@ class DataManager {
             }
             
         }));
-        // navigator.geolocation.getCurrentPosition((position) => {
-        //     console.log("LOCATION ACQUIRED");
-            
-        // }, () => {
-        //     //on fail, retry in 5 seconds
-        //     console.warn("LOCATION ERROR");
-        //     setTimeout(this.locationUpdateHandler, 5000, date);
-        // });
     }
 
+    /**
+     * (Re)draws all players on the map
+     */
     updatePlayerUI(){
         let playerData = this.lastData.persons;
         for(let [player, value] of Object.entries(playerData)){
             if(!this.playerNodes.has(player)){
                 let n = this.createPlayerNode(value);
                 document.querySelector("#playerList").appendChild(n);
-                console.log(n);
                 document.querySelector("#playerList").appendChild(n);
             } else {
                 this.updatePlayerNode(this.playerNodes.get(player), value);
@@ -198,6 +190,11 @@ class DataManager {
         }
     }
 
+    /**
+     * Creates an HTMLEelement for a player on the map and adds it to the playerNodes Map
+     * @param {Person} playerInfo 
+     * @returns {HTMLDivElement}
+     */
     createPlayerNode(playerInfo){
         let n = document.querySelector("#dummyPlayerListNode").cloneNode(true);
         n.querySelector(".playerListNodeName").innerHTML = playerInfo.id;
@@ -211,7 +208,6 @@ class DataManager {
         let displayValue = q => q ? "inline" : "none";
 
         n.querySelector(".playerListNodeCaughtButton").addEventListener("click", (event) => {
-            console.log("CLICKED");
             let target = event.target.parentNode.parentNode.querySelector(".playerListNodeName").innerHTML;
             connection.send(JSON.stringify({msgType: "request-caught", content: {target: target, origin: this.playerid}}));
         });
@@ -224,6 +220,11 @@ class DataManager {
         return n;
     }
 
+    /**
+     * Updates the role, location and visibility on the map according to the provided playerInfo
+     * @param {HTMLDivElement} n 
+     * @param {Person} playerInfo 
+     */
     updatePlayerNode(n, playerInfo){
         n.querySelector(".playerListNodeRole").innerHTML = playerInfo.role;
         let caughtButtonDisplay = this.lastData.persons[this.playerid].role == "zoeker"
