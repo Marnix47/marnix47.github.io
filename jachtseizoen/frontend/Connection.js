@@ -28,9 +28,12 @@ class Connection {
         }).bind(this);
         this.ws.onclose = this.onclose.bind(this);
         this.setIncomingMessageHandler(this.customMessageHandler);
-        this.ws.addEventListener("message", (event) => {
-            console.log(event);
-        });
+        // this.ws.addEventListener("message", (event) => {
+        //     console.log(event);
+        //     const text = event.data; // string
+        //     const sizeBytes = new TextEncoder().encode(text).length;
+        //     console.log("WS message size:", sizeBytes, "bytes");
+        // });
         this.handshakeInterval = setInterval(() => this.sendHandshake(), HANDSHAKE);
     }
 
@@ -46,7 +49,7 @@ class Connection {
      * @param {Event} event 
      */
     onclose(event){
-        alert("De verbinding met de server is verbroken: " + event.reason);
+        // alert("De verbinding met de server is verbroken: " + event.reason);
         this.retry();
     }
 

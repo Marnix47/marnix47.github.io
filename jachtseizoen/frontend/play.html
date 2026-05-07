@@ -63,20 +63,6 @@
     let secondaryMapCircle;
     let compassHeading = null;
 
-    // window.addEventListener("touchstart", () => {
-    //     // alert(window.__askedCompassPermission);
-    //     if (window.__askedCompassPermission) return;
-    //     window.__askedCompassPermission = true;
-    //     if (typeof DeviceOrientationEvent.requestPermission === "function") {
-    //         DeviceOrientationEvent.requestPermission().then((result) => {
-    //             alert(result);
-    //         });
-    //     } else {
-    //         alert("ANDROID");
-    //     }
-                                                                                                                
-    // }, {once:true, passive:false})
-
     if(typeof DeviceOrientationEvent.requestPermission !== "function"){
         document.querySelector("#allow-compass-button").style.display = "none";
     }
@@ -85,7 +71,6 @@
         document.querySelector("#allow-compass-button").style.display = "none";
         if (typeof DeviceOrientationEvent.requestPermission === "function") {
             DeviceOrientationEvent.requestPermission().then((result) => {
-                // alert(result);
                 window.addEventListener("deviceorientation", (event) => {
                     document.querySelector("#allow-compass-button").style.display = "none";
                     if (event.webkitCompassHeading !== undefined) {
