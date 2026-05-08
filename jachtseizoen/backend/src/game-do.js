@@ -32,7 +32,6 @@ export class GameDO {
     async saveGameState(newState) {
         this.gameState = newState;
         await this.state.storage.put("state", this.gameState);
-        // console.log("Saved state:", this.gameState);
     }
 
     async fetch(request) {
@@ -70,7 +69,6 @@ export class GameDO {
         server.accept();
         this.sockets.add(server);
 
-        // console.log("TRYING TO SEND FIRST");
         server.send(JSON.stringify({msgType:"first", content: this.gameState}));
 
         server.addEventListener("close", () => {
@@ -90,13 +88,11 @@ export class GameDO {
                 console.log("Invalid JSON from WS");
                 return;
             }
-            // console.log(parsed);
 
             if(parsed.msgType == "handshake"){
                 server.send(JSON.stringify({msgType:"handshake", content:{}}));
             }
             if(parsed.msgType == "change-role"){
-                // console.log(parsed);
                 this.gameState.persons[parsed.content.playerid].role = parsed.content.newRole;
                 await this.saveGameState(this.gameState);
                 this.broadcastNewState("change-role");
@@ -115,14 +111,11 @@ export class GameDO {
                     date: parsed.content.date,
                     type: parsed.content.type // "stamp" or "live"
                 };
-                // console.log(locationObject);
                 this.gameState.persons[parsed.content.playerid].lastKnownLocation = locationObject;
                 await this.saveGameState(this.gameState);
-                console.log(this.gameState.persons[parsed.content.playerid])
                 this.broadcastNewState("location-update");
             }
             if(parsed.msgType == "request-caught"){
-                console.log(parsed);
                 for(const ws of this.sockets){
                     ws.send(JSON.stringify({msgType:"request-caught", content: this.gameState, target:parsed.content.target, origin: parsed.content.origin}));
                 }
@@ -132,18 +125,14 @@ export class GameDO {
                 this.gameState.persons[parsed.content.origin].caughtBy = parsed.content.origin;
                 this.gameState.persons[parsed.content.origin].role = "zoeker";
                 await this.saveGameState(this.gameState);
-                // this.broadcastNewState("caught");
-                let a = 1;;;
                 for(const ws of this.sockets){
                     ws.send(JSON.stringify({msgType:"caught", content: this.gameState, speler:parsed.content.origin, zoeker: parsed.content.target}));
                 }
             }
-
-            // await this.saveGameState(parsed);
-
-            // for (const ws of this.sockets) {
-            //     // try { ws.send(msg); } catch { }
-            // }
+            if(parsed.msgType == "random-zoekers"){
+                this.assignRandomZoekers(parsed.content.numberOfZoekers);
+                this.broadcastNewState("change-role");
+            }
         });
 
         return new Response(null, { status: 101, webSocket: client });
@@ -300,7 +289,6 @@ export class GameDO {
         let stamps = [];
         while(time < this.gameState.duration){
             stamps.push(time);
-            console.log(lowerInterval, time, lowerInterval, lowerAfter);
             if(lowerInterval && time + lowerInterval >= lowerAfter){
                 interval = lowerInterval;
                 time += interval;
@@ -311,12 +299,34 @@ export class GameDO {
                 time += interval;
             }
         }
-        console.log("TIMESTAMPS:", stamps);
         this.gameState.locationUpdateTimeStamps = stamps.map(x => Date.now() + 1000 * x);
         for(let ring of this.gameState.RingTimeStamps){
-            // console.log(ring);
             ring.date = Date.now() + ring.after*1000;
         }
+        await this.saveGameState(this.gameState);
+    }
+
+    /**
+     * @param {Number} numberOfZoekers
+     * @return {void}
+     */
+    async assignRandomZoekers(numberOfZoekers){
+        numberOfZoekers = Number(numberOfZoekers);
+        if(numberOfZoekers <= 0 || this.gameState.start != null || numberOfZoekers >= Object.values(this.gameState.persons).length){
+            //illegal argument or game has already started
+            return;
+        }
+        Object.values(this.gameState.persons).forEach(x => {
+            x.role = "speler"
+        })
+        let zoekerMap = new Map();
+        let entries = Object.entries(this.gameState.persons);
+        while(zoekerMap.size < numberOfZoekers){
+            let rand = Math.floor(Math.random() * entries.length);
+            zoekerMap.set(entries[rand][0], entries[rand][1]);
+            entries[rand][1].role = "zoeker";
+        }
+        console.log(zoekerMap);
         await this.saveGameState(this.gameState);
     }
 }

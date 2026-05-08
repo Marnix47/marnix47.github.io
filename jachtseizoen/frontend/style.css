@@ -24,16 +24,20 @@ body {
 .playerIcon {
     width: min-content;
     height: min-content;
-    padding: 5px 2px 5px 2px;
+    /* padding: 5px 2px 5px 2px; */
+    padding:2px;
     border-style: solid;
     border-width: 2px;
     border-color: white;
     background-color: var(--button-color);
+    border-radius:5px;
 }
 
 .playerIcon p {
     font-family: sans-serif;
-    color: seagreen;
+    font-size:14px;
+    /* font-weight:bold; */
+    color: darkgreen;
     margin-top: 0px;
     margin-bottom: 0px;
 }
@@ -170,9 +174,6 @@ body {
     font-size: 16px;
     font-weight:bold;
 }
-
-.playerListNodeName
-
 
 .user-location {
     position: relative;
@@ -348,7 +349,7 @@ body {
 
 
 /***********************/
-/*read.html*/
+/*ready.html*/
 /***********************/
 #qrcode {
     padding:15px;
@@ -391,6 +392,14 @@ body {
 
 .ready-wrapper .playerNode button {
     font-size:14px;
+}
+
+.ready-wrapper #buttonWrapper{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction: row;
+    gap:20px;
 }
 
 /***********************/

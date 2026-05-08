@@ -12,6 +12,7 @@ class Connection {
         this.customMessageHandler = messageHandler;
         this.initialize();
         this.queue = [];
+        this.handshakeInterval = setInterval(() => this.sendHandshake(), HANDSHAKE);
     }
 
     /**
@@ -34,7 +35,6 @@ class Connection {
         //     const sizeBytes = new TextEncoder().encode(text).length;
         //     console.log("WS message size:", sizeBytes, "bytes");
         // });
-        this.handshakeInterval = setInterval(() => this.sendHandshake(), HANDSHAKE);
     }
 
     /**
@@ -55,10 +55,12 @@ class Connection {
 
     /**
      * Sends message, if WS is ready to send. Otherwise msg gets queued.
-     * @param {*} msg 
+     * @param {*} msg
+     * @param {Boolean} queue indicates whether the message should be queued if connection is not open, defaults to true
      */
-    send(msg){
+    send(msg, queue = true){
         if(this.ws.readyState != WebSocket.OPEN){
+            if(!queue) return;
             this.queue.push(msg);
             return;
         }
@@ -71,7 +73,7 @@ class Connection {
     sendHandshake(){
         if(this.ws.readyState != WebSocket.OPEN) return;
         console.log("sending handshake");
-        this.ws.send(JSON.stringify({msgType:"handshake", content:{}}));
+        this.send(JSON.stringify({msgType:"handshake", content:{}}), false);
     }
 
     /**

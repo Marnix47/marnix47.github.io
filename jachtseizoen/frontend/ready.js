@@ -18,6 +18,11 @@ document.querySelector("#playButton").addEventListener("click", (event) => {
     connection.send(JSON.stringify({msgType: "start", content:{}}));
 });
 
+document.querySelector("#randomButton").addEventListener("click", event => {
+    let numberOfZoekers = window.prompt("Hoeveel zoekers?");
+    connection.send(JSON.stringify({msgType: "random-zoekers", content: {numberOfZoekers:numberOfZoekers}}));
+});
+
 function messageHandler(event){
     console.log(event.data);
     const data = JSON.parse(event.data);
