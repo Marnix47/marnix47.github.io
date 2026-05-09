@@ -131,6 +131,15 @@ body {
     margin-right: 10px;
 }
 
+#actionsWrapper {
+    margin-top:5px;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content: center;
+    gap:10px;
+}
+
 .playerListNode {
     display:flex;
     flex-direction:row;

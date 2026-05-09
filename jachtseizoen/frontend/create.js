@@ -2,8 +2,10 @@ const durationSlider = document.querySelector("#durationSlider");
 const intervalSlider = document.querySelector("#intervalSlider");
 const uitloopTijdSlider = document.querySelector("#uitloopTijdSlider");
 const verhoogdIntervalCheckbox = document.querySelector("#verhoogdIntervalCheckbox");
-const intervalAfterxMinutesSlider = document.querySelector("#intervalAfterxMinutesSlider")
-const laatsteIntervalSlider = document.querySelector("#laatsteIntervalSlider")
+const intervalAfterxMinutesSlider = document.querySelector("#intervalAfterxMinutesSlider");
+const laatsteIntervalSlider = document.querySelector("#laatsteIntervalSlider");
+const offlineCheckbox = document.querySelector("#offlineCheckbox");
+const offlineMinutesSlider = document.querySelector("#offlineMinutesSlider");
 const playerNameInput = document.querySelector("#playerName");
 const secondaryCircleTimeSlider = document.querySelector("#secondaryCircleTimeSlider");
 
@@ -53,6 +55,15 @@ document.querySelector("#intervalAfterxMinutesSlider").addEventListener("input",
 
 document.querySelector("#laatsteIntervalSlider").addEventListener("input", (event) => {
     document.querySelector("#laatsteIntervalText").innerHTML = event.target.value/60;
+});
+
+document.querySelector("#offlineCheckbox").addEventListener("input", (event) => {
+    // console.log(event.target.checked);
+    document.querySelector("#offline").style.display = !event.target.checked ? "none": "block";
+});
+
+document.querySelector("#offlineMinutesSlider").addEventListener("input", (event) => {
+    document.querySelector("#offlineMinutenText").innerHTML = event.target.value;
 });
 
 document.querySelector("#phaseOneButton").addEventListener("click", (event) => {
@@ -145,6 +156,11 @@ document.querySelector("#createGameButton").addEventListener("click", async (eve
         };
     } else {
         obj.lowerIntervalAfter = null;
+    }
+    if(offlineCheckbox.checked){
+        obj.offlineDuration = Number(offlineMinutesSlider.value) * 60;
+    } else {
+        obj.offlineDuration = null;
     }
     obj.player = playerNameInput.value.replaceAll(/\s/g, ""); //take out all white space
     obj.primaryCircle = {

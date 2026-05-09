@@ -133,6 +133,15 @@ export class GameDO {
                 this.assignRandomZoekers(parsed.content.numberOfZoekers);
                 this.broadcastNewState("change-role");
             }
+            if(parsed.msgType == "offline"){
+                let origin = parsed.origin;
+                if(this.gameState.persons[origin].offlineUntil != null) return;
+                this.gameState.persons[origin].offlineUntil = Date.now() + 1000 * this.gameState.offlineDuration;
+                for(const ws of this.sockets){
+                    ws.send(JSON.stringify({msgType:"offline", content: this.gameState, origin:origin}));
+                }
+                await this.saveGameState(this.gameState);
+            }
         });
 
         return new Response(null, { status: 101, webSocket: client });
@@ -201,6 +210,7 @@ export class GameDO {
         obj.uitloop = input.uitloop;
         obj.duration = input.duration + obj.uitloop;
         obj.lowerIntervalAfter = input.lowerIntervalAfter || null;
+        obj.offlineDuration = input.offlineDuration;
 
         obj.persons = {};
         obj.persons[input.player] = {
@@ -208,7 +218,8 @@ export class GameDO {
             lastKnownLocation: null,
             role: "speler",
             caughtAfter: null,
-            caughtBy: null
+            caughtBy: null,
+            offlineUntil: null
         };
         obj.creator = input.player;
 

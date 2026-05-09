@@ -14,6 +14,9 @@ class MapService {
     }
 
     renderPlayers(){
+        this.playerPoints.forEach((v, k) => {
+            v.remove();
+        });
         let players = this.dataManager.getDrawablePlayers();
         players.forEach(this.renderPlayer.bind(this));
     }
@@ -21,9 +24,9 @@ class MapService {
     renderPlayer(player){
         if(!player || Object.entries(player).length == 0) return;
         if(!player.lastKnownLocation || !player.lastKnownLocation.lng) return;
-        if(this.playerPoints.has(player.id)){
-            this.playerPoints.get(player.id).remove();
-        }
+        // if(this.playerPoints.has(player.id)){
+        //     this.playerPoints.get(player.id).remove();
+        // }
         console.log(player.lastKnownLocation);
         console.log(this.dataManager.getLatestTimeStamp());
         let coordinateInfo = player.lastKnownLocation;

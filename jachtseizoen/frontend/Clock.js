@@ -22,12 +22,12 @@ class Clock {
      */
     addTimeoutDelay(delay, fun, ...args){
         let t = setTimeout(delay, fun, ...args);
-        timeouts.push(t);
+        this.timeouts.push(t);
         return t;
     }
 
     addTimeoutDate(date, fun, ...args){
-        return this.addTimeoutDelay(dateDifference(Date.now(), date), fun, ...args);
+        return this.addTimeoutDelay(fun, Clock.dateDifference(Date.now(), date), ...args);
     }
 
     /**
@@ -37,7 +37,7 @@ class Clock {
      * @returns {Number} difference in ms
      */
     static dateDifference(date1, date2){
-        return Math.abs(date1.valueOf() - date2.valueOf());
+        return Math.abs(date1 - date2);
     }
 
     /**
@@ -74,9 +74,7 @@ class Clock {
         for(let date of dates){
             if(date < Date.now()) continue;
             this.locationIntervals.push(setTimeout(handler, date - Date.now(), date));
-            console.log(date - Date.now());
         }
-        console.log(this.locationIntervals);
     }
 
     /**

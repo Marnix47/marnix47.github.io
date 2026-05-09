@@ -47,11 +47,26 @@ class DataManager {
             }
             return;
         }
+        if(data.msgType == "offline"){
+            this.updatePlayerUI();
+            mapService.renderPlayers();
+            // clock.addTimeoutDate(data.content.persons[data.origin].offlineUntil, this.updatePlayerUI.bind(this));
+            if(data.origin == this.playerid){
+                this.updateBackgroundOffline();
+            }
+            console.log(Clock.dateDifference(data.content.persons[data.origin].offlineUntil, Date.now()))
+            clock.addTimeoutDate(data.content.persons[data.origin].offlineUntil + 1000, (() => {
+                this.updatePlayerUI();
+                mapService.renderPlayers();
+                this.updateBackgroundOffline();
+            }).bind(this));
+        }
         if(data.msgType == "first"){
             //SET ALL LOCATIONUPDATETIMESTAMPS IN CLOCK
             document.querySelector("#gameWrapper").style.maxHeight = 0;
             document.querySelector("#map").style.maxHeight = 0;
             document.querySelector("#playerListWrapper").style.display = "none";
+            this.updateBackgroundOffline();
 
             clock.setLocationUpdateTimerInterval();
             if(data.content.persons[this.playerid]?.role == "speler"){
@@ -78,6 +93,15 @@ class DataManager {
                     fillOpacity: .2
                 }).addTo(map);
             }
+
+            Object.values(this.lastData.persons).forEach(x => {
+                if(x.offlineUntil != null && x.offlineUntil > Date.now()){
+                    clock.addTimeoutDate(data.content.persons[x.id].offlineUntil, (() => {
+                        this.updatePlayerUI();
+                        this.updateBackgroundOffline();
+                    }).bind(this));
+                }
+            });
             
             if(this.lastData.RingTimeStamps.length > 1){
                 let secondaryCircleCoords = this.lastData.RingTimeStamps[1];
@@ -105,11 +129,12 @@ class DataManager {
      */
     getDrawablePlayers(){
         if(this.playerid == null || !this.lastPlayerData || !this.lastData) return [];
-        if(this.lastPlayerData.role == "zoeker") return Object.entries(this.lastData.persons).map(([x,y]) => y);
+        // if(this.lastPlayerData.role == "zoeker") return Object.entries(this.lastData.persons).map(([x,y]) => y);
         let ret = [];
         for(let [id, player] of Object.entries(this.lastData.persons)){
-            // let player = this.lastData.players[id];
-            if(player.role == "speler"){
+            let isOffline = player.offlineUntil != null && player.offlineUntil > Date.now();
+            console.log(isOffline, player.offlineUntil, Date.now());
+            if((player.role == "speler" && !isOffline) || (this.lastPlayerData.role == "zoeker" && player.role == "zoeker")){
                 ret.push(player);
             }
         }
@@ -160,7 +185,7 @@ class DataManager {
      */
     locationUpdateHandler(date){
         console.log("SENDING LOCATION");
-        if(USERLOCATION.lat == null) setTimeout(this.locationUpdateHandler, 5000, date);
+        if(USERLOCATION.lat == null) setTimeout(this.locationUpdateHandler.bind(this), 5000, date);
         this.connection.send(JSON.stringify({
             msgType: "location-update",
             content: {
@@ -188,6 +213,11 @@ class DataManager {
                 this.updatePlayerNode(this.playerNodes.get(player), value);
             }
         }
+        let offlineButtonDisplay = "unset";
+        if(this.lastPlayerData.role == "zoeker" || this.lastPlayerData.offlineUntil != null){
+            offlineButtonDisplay = "none";
+        }
+        document.querySelector("#offlineButton").style.display = offlineButtonDisplay;
     }
 
     /**
@@ -246,6 +276,16 @@ class DataManager {
     handleGameOver(){
         window.alert("Het spel is afgelopen");
         window.location.replace("/jachtseizoen/frontend/welcome.html");
+    }
+
+    updateBackgroundOffline(){
+        let id = StorageHandler.getGame().playerid;
+        let untill = this.lastData.persons[id].offlineUntil;
+        let color = "darkslategray";
+        if(!untill || untill <= Date.now()){
+            color = "#20B2AA";
+        }
+        document.querySelector(":root").style.setProperty("--bg-color", color);
     }
 
     /**
