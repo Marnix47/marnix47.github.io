@@ -27,3 +27,9 @@ document.querySelector("#offlineButton").addEventListener("click", event => {
     if(!window.confirm(`Weet je zeker dat je de eenmalige offline power-up wilt gebruiken? Je verdwijnt ${dataManager.lastData.offlineDuration/60} minuten van de map.`)) return;
     connection.send(JSON.stringify({msgType:"offline", origin:dataManager.playerid}));
 });
+
+document.querySelector("#zoekerLocationButton").addEventListener("click", event => {
+    // console.log("OFFLINE CLICKED");
+    if(!window.confirm(`Weet je zeker dat je de eenmalige zoeker locatie power-up wilt gebruiken? Je krijgt 10 seconde de locatie van de zoekers te zien.`)) return;
+    connection.send(JSON.stringify({msgType:"zoeker-location-powerup", origin:dataManager.playerid}));
+});

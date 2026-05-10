@@ -55,12 +55,14 @@
                     <p class="input-value-label">Elke <span id="laatsteIntervalText">2</span> minuten</p>
                     <input id="laatsteIntervalSlider" value="120" min="30" max="300" step="30" type="range">
                 </div>
-                <p class="input-definition-label">Offline</p>
+                <p class="input-definition-label">Offline power-up</p>
                 <input id="offlineCheckbox" value="false" type="checkbox">
                 <div id="offline" style="display:none">
                     <p class="input-value-label"><span id="offlineMinutenText">2</span> minuten</p>
                     <input id="offlineMinutesSlider" value="2" min="1" max="5" step="0.5" type="range">
                 </div>
+                <p class="input-definition-label">Zoeker locatie power-up</p>
+                <input id="zoekerLocationPowerupCheckbox" value="false" type="checkbox">
                 <br>
                 <input id="playerName" placeholder="Jouw naam" pattern="\S*" type="text">
                 <button id="phaseTwoButton">Volgende</button>

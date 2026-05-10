@@ -54,12 +54,20 @@ class DataManager {
             if(data.origin == this.playerid){
                 this.updateBackgroundOffline();
             }
-            console.log(Clock.dateDifference(data.content.persons[data.origin].offlineUntil, Date.now()))
-            clock.addTimeoutDate(data.content.persons[data.origin].offlineUntil + 1000, (() => {
+            // console.log(Clock.dateDifference(data.content.persons[data.origin].offlineUntil, Date.now()))
+            clock.addTimeoutDate(data.content.persons[data.origin].offlineUntil + 100, (() => {
                 this.updatePlayerUI();
                 mapService.renderPlayers();
                 this.updateBackgroundOffline();
             }).bind(this));
+        }
+        if(data.msgType == "zoeker-location-powerup"){
+            if(data.origin == this.playerid){
+                mapService.renderPlayers();
+                clock.addTimeoutDate(data.content.persons[data.origin].zoekerLocationUntil + 100, (() => {
+                    mapService.renderPlayers();
+                }).bind(this));
+            }
         }
         if(data.msgType == "first"){
             //SET ALL LOCATIONUPDATETIMESTAMPS IN CLOCK
@@ -102,6 +110,13 @@ class DataManager {
                     }).bind(this));
                 }
             });
+
+            let zoekerLocationUntil = this.lastData.persons[this.playerid].zoekerLocationUntil
+            if(zoekerLocationUntil != null && zoekerLocationUntil >= Date.now()){
+                clock.addTimeoutDate(zoekerLocationUntil + 100, (() => {
+                    mapService.renderPlayers();
+                }).bind(this));
+            }
             
             if(this.lastData.RingTimeStamps.length > 1){
                 let secondaryCircleCoords = this.lastData.RingTimeStamps[1];
@@ -131,10 +146,14 @@ class DataManager {
         if(this.playerid == null || !this.lastPlayerData || !this.lastData) return [];
         // if(this.lastPlayerData.role == "zoeker") return Object.entries(this.lastData.persons).map(([x,y]) => y);
         let ret = [];
+        let revealZoekerLocations = this.lastPlayerData.zoekerLocationUntil > Date.now();
         for(let [id, player] of Object.entries(this.lastData.persons)){
             let isOffline = player.offlineUntil != null && player.offlineUntil > Date.now();
             console.log(isOffline, player.offlineUntil, Date.now());
-            if((player.role == "speler" && !isOffline) || (this.lastPlayerData.role == "zoeker" && player.role == "zoeker")){
+            if( (player.role == "speler" && !isOffline) || 
+                (this.lastPlayerData.role == "zoeker" && player.role == "zoeker") || 
+                (this.lastPlayerData.role == "speler" && player.role == "zoeker" && revealZoekerLocations)
+            ){
                 ret.push(player);
             }
         }
@@ -218,6 +237,11 @@ class DataManager {
             offlineButtonDisplay = "none";
         }
         document.querySelector("#offlineButton").style.display = offlineButtonDisplay;
+        let zoekerLocationButtonDisplay = "unset";
+        if(this.lastPlayerData.role == "zoeker" || this.lastPlayerData.zoekerLocationUntil != null){
+            zoekerLocationButtonDisplay = "none";
+        }
+        document.querySelector("#zoekerLocationButton").style.display = zoekerLocationButtonDisplay;
     }
 
     /**

@@ -142,6 +142,18 @@ export class GameDO {
                 }
                 await this.saveGameState(this.gameState);
             }
+            if(parsed.msgType == "zoeker-location-powerup"){
+                let origin = parsed.origin;
+                if(!this.gameState.zoekerLocationPowerupEnabled || 
+                    this.gameState.persons[origin].role != "speler" || 
+                    this.gameState.persons[origin].zoekerLocationUntil != null) return;
+                
+                this.gameState.persons[origin].zoekerLocationUntil = Date.now() + 10000;
+                for(const ws of this.sockets){
+                    ws.send(JSON.stringify({msgType:"zoeker-location-powerup", content: this.gameState, origin:origin}));
+                }
+                await this.saveGameState(this.gameState);
+            }
         });
 
         return new Response(null, { status: 101, webSocket: client });
@@ -211,6 +223,7 @@ export class GameDO {
         obj.duration = input.duration + obj.uitloop;
         obj.lowerIntervalAfter = input.lowerIntervalAfter || null;
         obj.offlineDuration = input.offlineDuration;
+        obj.zoekerLocationPowerupEnabled = input.zoekerLocationPowerupEnabled;
 
         obj.persons = {};
         obj.persons[input.player] = {
@@ -219,7 +232,8 @@ export class GameDO {
             role: "speler",
             caughtAfter: null,
             caughtBy: null,
-            offlineUntil: null
+            offlineUntil: null,
+            zoekerLocationUntil: null
         };
         obj.creator = input.player;
 
@@ -269,7 +283,10 @@ export class GameDO {
             id: name,
             lastKnownLocation: null,
             role: "speler",
-            caughtAfter: null
+            caughtAfter: null,
+            caughtBy: null,
+            offlineUntil: null,
+            zoekerLocationUntil: null
         };
 
         await this.saveGameState(this.gameState);

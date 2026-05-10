@@ -6,6 +6,7 @@ const intervalAfterxMinutesSlider = document.querySelector("#intervalAfterxMinut
 const laatsteIntervalSlider = document.querySelector("#laatsteIntervalSlider");
 const offlineCheckbox = document.querySelector("#offlineCheckbox");
 const offlineMinutesSlider = document.querySelector("#offlineMinutesSlider");
+const zoekerLocationCheckbox = document.querySelector("#zoekerLocationPowerupCheckbox")
 const playerNameInput = document.querySelector("#playerName");
 const secondaryCircleTimeSlider = document.querySelector("#secondaryCircleTimeSlider");
 
@@ -147,7 +148,6 @@ document.querySelector("#createGameButton").addEventListener("click", async (eve
     // }
     obj.duration = durationSlider.value * 60;
     obj.interval = Number(intervalSlider.value);
-    console.log(uitloopTijdSlider.value);
     obj.uitloop = uitloopTijdSlider.value * 60;
     if(verhoogdIntervalCheckbox.checked){
         obj.lowerIntervalAfter = {
@@ -162,6 +162,7 @@ document.querySelector("#createGameButton").addEventListener("click", async (eve
     } else {
         obj.offlineDuration = null;
     }
+    obj.zoekerLocationPowerupEnabled = zoekerLocationCheckbox.checked;
     obj.player = playerNameInput.value.replaceAll(/\s/g, ""); //take out all white space
     obj.primaryCircle = {
         lat: primaryCircle.getLatLng().lat,
