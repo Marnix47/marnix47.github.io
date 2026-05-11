@@ -120,14 +120,30 @@ export class GameDO {
                     ws.send(JSON.stringify({msgType:"request-caught", content: this.gameState, target:parsed.content.target, origin: parsed.content.origin}));
                 }
             }
-            if(parsed.msgType == "caught"){
-                this.gameState.persons[parsed.content.origin].caughtAfter = Date.now() - this.gameState.start - this.gameState.uitloop * 1000;
-                this.gameState.persons[parsed.content.origin].caughtBy = parsed.content.origin;
-                this.gameState.persons[parsed.content.origin].role = "zoeker";
-                await this.saveGameState(this.gameState);
+            if(parsed.msgType == "request-freed"){
                 for(const ws of this.sockets){
-                    ws.send(JSON.stringify({msgType:"caught", content: this.gameState, speler:parsed.content.origin, zoeker: parsed.content.target}));
+                    ws.send(JSON.stringify({msgType:"request-freed", content: this.gameState, target:parsed.content.target, origin: parsed.content.origin}));
                 }
+            }
+            if(parsed.msgType == "freed"){
+                if(this.gameState.persons[parsed.content.origin].role == "zoeker") return;
+                this.gameState.persons[parsed.content.origin].caughtAfter = null;
+                this.gameState.persons[parsed.content.origin].caughtBy = null;
+                this.gameState.persons[parsed.content.origin].frozenUntil = null;
+                for(const ws of this.sockets){
+                    ws.send(JSON.stringify({msgType:"freed", content: this.gameState, speler:parsed.content.origin, bevrijder: parsed.content.target}));
+                }
+                await this.saveGameState(this.gameState);
+            }
+            if(parsed.msgType == "caught"){
+                // this.gameState.persons[parsed.content.origin].caughtAfter = Date.now() - this.gameState.start - this.gameState.uitloop * 1000;
+                // this.gameState.persons[parsed.content.origin].caughtBy = parsed.content.origin;
+                // this.gameState.persons[parsed.content.origin].role = "zoeker";
+                // await this.saveGameState(this.gameState);
+                // for(const ws of this.sockets){
+                //     ws.send(JSON.stringify({msgType:"caught", content: this.gameState, speler:parsed.content.origin, zoeker: parsed.content.target}));
+                // }
+                this.handleCaught(parsed);
             }
             if(parsed.msgType == "random-zoekers"){
                 this.assignRandomZoekers(parsed.content.numberOfZoekers);
@@ -224,6 +240,7 @@ export class GameDO {
         obj.lowerIntervalAfter = input.lowerIntervalAfter || null;
         obj.offlineDuration = input.offlineDuration;
         obj.zoekerLocationPowerupEnabled = input.zoekerLocationPowerupEnabled;
+        obj.freezeDuration = input.freezeDuration;
 
         obj.persons = {};
         obj.persons[input.player] = {
@@ -233,7 +250,8 @@ export class GameDO {
             caughtAfter: null,
             caughtBy: null,
             offlineUntil: null,
-            zoekerLocationUntil: null
+            zoekerLocationUntil: null,
+            frozenUntil: null
         };
         obj.creator = input.player;
 
@@ -286,7 +304,8 @@ export class GameDO {
             caughtAfter: null,
             caughtBy: null,
             offlineUntil: null,
-            zoekerLocationUntil: null
+            zoekerLocationUntil: null,
+            frozenUntil: null
         };
 
         await this.saveGameState(this.gameState);
@@ -356,5 +375,34 @@ export class GameDO {
         }
         console.log(zoekerMap);
         await this.saveGameState(this.gameState);
+    }
+
+    async handleCaught(msg){
+        let parsed = msg;
+        this.gameState.persons[parsed.content.origin].caughtAfter = Date.now() - this.gameState.start - this.gameState.uitloop * 1000;
+        this.gameState.persons[parsed.content.origin].caughtBy = parsed.content.origin;
+        if(this.gameState.freezeDuration != null){
+            this.gameState.persons[parsed.content.origin].frozenUntil = Date.now() + this.gameState.freezeDuration * 1000;
+            setTimeout((() => {
+                this.handleFrozenExpired(parsed.content.origin);
+            }).bind(this), this.gameState.freezeDuration * 1000 + 1);
+        } else {
+            this.gameState.persons[parsed.content.origin].role = "zoeker";
+        }
+        await this.saveGameState(this.gameState);
+        for(const ws of this.sockets){
+            ws.send(JSON.stringify({msgType:"caught", content: this.gameState, speler:parsed.content.origin, zoeker: parsed.content.target}));
+        }
+    }
+
+    async handleFrozenExpired(playerid){
+        if(this.gameState.persons[playerid].frozenUntil != null && this.gameState.persons[playerid].frozenUntil <= Date.now()){
+            this.gameState.persons[playerid].role = "zoeker";
+            this.gameState.persons[playerid].frozenUntil = null;
+            for(const ws of this.sockets){
+                ws.send(JSON.stringify({msgType:"freeze-over", content: this.gameState, speler:playerid}));
+            }
+            await this.saveGameState(this.gameState);
+        }
     }
 }

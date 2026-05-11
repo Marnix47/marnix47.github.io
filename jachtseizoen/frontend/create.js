@@ -6,6 +6,8 @@ const intervalAfterxMinutesSlider = document.querySelector("#intervalAfterxMinut
 const laatsteIntervalSlider = document.querySelector("#laatsteIntervalSlider");
 const offlineCheckbox = document.querySelector("#offlineCheckbox");
 const offlineMinutesSlider = document.querySelector("#offlineMinutesSlider");
+const freezeCheckbox = document.querySelector("#freezeCheckbox");
+const freezeMinutesSlider = document.querySelector("#freezeMinutesSlider");
 const zoekerLocationCheckbox = document.querySelector("#zoekerLocationPowerupCheckbox")
 const playerNameInput = document.querySelector("#playerName");
 const secondaryCircleTimeSlider = document.querySelector("#secondaryCircleTimeSlider");
@@ -65,6 +67,15 @@ document.querySelector("#offlineCheckbox").addEventListener("input", (event) => 
 
 document.querySelector("#offlineMinutesSlider").addEventListener("input", (event) => {
     document.querySelector("#offlineMinutenText").innerHTML = event.target.value;
+});
+
+document.querySelector("#freezeCheckbox").addEventListener("input", (event) => {
+    // console.log(event.target.checked);
+    document.querySelector("#freeze").style.display = !event.target.checked ? "none": "block";
+});
+
+document.querySelector("#freezeMinutesSlider").addEventListener("input", (event) => {
+    document.querySelector("#freezeMinutenText").innerHTML = event.target.value;
 });
 
 document.querySelector("#phaseOneButton").addEventListener("click", (event) => {
@@ -161,6 +172,11 @@ document.querySelector("#createGameButton").addEventListener("click", async (eve
         obj.offlineDuration = Number(offlineMinutesSlider.value) * 60;
     } else {
         obj.offlineDuration = null;
+    }
+    if(freezeCheckbox.checked){
+        obj.freezeDuration = Number(freezeMinutesSlider.value) * 60;
+    } else {
+        obj.freezeDuration = null;
     }
     obj.zoekerLocationPowerupEnabled = zoekerLocationCheckbox.checked;
     obj.player = playerNameInput.value.replaceAll(/\s/g, ""); //take out all white space

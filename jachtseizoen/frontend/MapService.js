@@ -2,6 +2,7 @@ class MapService {
     map;
     dataManager;
     playerPoints;
+    freezeInterval;
     /**
      * 
      * @param {*} map 
@@ -11,6 +12,9 @@ class MapService {
         this.map = map;
         this.dataManager = dataManager;
         this.playerPoints = new Map();
+        this.freezeInterval = setInterval((() => {
+            this.dataManager.getDrawablePlayers().forEach(x => this.frozenIntervalHandler(x.id));
+        }).bind(this), 1000);
     }
 
     renderPlayers(){
@@ -35,14 +39,31 @@ class MapService {
         if(player.role == "zoeker"){
             freshLocation = Date.now() - player.lastKnownLocation.date <= 1e4;
         }
-        console.log(freshLocation);
+        let frozenText = player.frozenUntil > Date.now() ? "frozen" : "";
         let icon = L.divIcon({
-            html: `<div class="playerIcon ${player.role} ${freshLocation ? "freshLocation" : "oldLocation"}">
+            html: `<div class="playerIcon ${player.id} ${player.role} ${frozenText} ${freshLocation ? "freshLocation" : "oldLocation"}">
                 <p>${player.id}</p>
             </div>`
         });
         let marker = L.marker(leafletPosition, {icon:icon});
         marker.addTo(this.map);
         this.playerPoints.set(player.id, marker);
+        this.frozenIntervalHandler(player.id);
+    }
+
+    frozenIntervalHandler(playerid){
+        if(!this.dataManager.lastData) return;
+        let frozenUntil = this.dataManager.lastData.persons[playerid].frozenUntil;
+        let node = document.querySelector(`.playerIcon.${playerid}`);
+        if(!node) return;
+        let textEl = node.querySelector(`p`);
+        if(frozenUntil == null){
+            textEl.innerHTML = playerid;
+            return;
+        }
+        let text = Clock.formatCountDown(
+            Math.floor(Clock.dateDifference(frozenUntil, Date.now()) / 1000)
+        );
+        textEl.innerHTML = text;
     }
 }

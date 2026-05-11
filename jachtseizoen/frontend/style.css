@@ -46,6 +46,10 @@ body {
     background-color: lightskyblue;
 }
 
+.playerIcon.frozen.speler {
+    background-color: orangered !important;
+}
+
 .playerIcon.oldLocation {
     border-color: lightcoral;
 }

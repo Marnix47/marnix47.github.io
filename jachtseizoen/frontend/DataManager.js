@@ -34,16 +34,47 @@ class DataManager {
         }
         if(data.msgType == "caught"){
             this.updatePlayerUI();
-            if(data.speler == this.playerid){
+            mapService.renderPlayers();
+            if(data.speler == this.playerid && data.content.persons[this.playerid].frozenUntil == null){
                 clock.clearLocationIntervals();
                 // clock.setLocationUpdateTimerInterval();
                 clock.addLocationIntervalZoeker(this.locationUpdateHandler.bind(this));
+                window.alert(`Je bent nu zoeker.`);
+            } else if(data.speler == this.playerid){
+                window.alert(`Je time-out van ${data.content.freezeDuration/60} minuten gaat nu in. Blijf staan.`);
+            } else {
+                window.alert(`${data.speler} is gepakt door ${data.zoeker}.`);
             }
-            window.alert(`${data.speler} is gepakt door ${data.zoeker}.`);
+        }
+        if(data.msgType == "freed"){
+            this.updatePlayerUI();
+            mapService.renderPlayers();
+            if(data.speler == this.playerid){
+                window.alert(`Je bent bevrijd. Je blijft speler en mag weer bewegen.`);
+            } else {
+                window.alert(`${data.speler} is bevrijd door ${data.bevrijder}.`);
+            }
+        }
+        if(data.msgType == "freeze-over"){
+            this.updatePlayerUI();
+            mapService.renderPlayers();
+            if(data.speler == this.playerid){
+                clock.clearLocationIntervals();
+                clock.addLocationIntervalZoeker(this.locationUpdateHandler.bind(this));
+                window.alert(`Je bent nu zoeker.`);
+            } else {
+                window.alert(`${data.speler} is nu zoeker.`);
+            }
         }
         if(data.msgType == "request-caught" && data.target == this.playerid){
             if(window.confirm(`Bevestig dat ${data.origin} je heeft gepakt.`)){
                 this.connection.send(JSON.stringify({msgType:"caught", content: {origin: this.playerid, target: data.origin}}));
+            }
+            return;
+        }
+        if(data.msgType == "request-freed" && data.target == this.playerid){
+            if(window.confirm(`Bevestig dat ${data.origin} je heeft bevrijd.`)){
+                this.connection.send(JSON.stringify({msgType:"freed", content: {origin: this.playerid, target: data.origin}}));
             }
             return;
         }
@@ -269,6 +300,11 @@ class DataManager {
         n.querySelector(".playerListNodeCaughtButton").style.display = displayValue(caughtButtonDisplay);
         n.querySelector(".playerListNodeCaughtText").style.display = displayValue(caughtTextDisplay);
         n.classList.add(playerInfo.role);
+
+        n.querySelector(".playerListNodeFreedButton").addEventListener("click", event => {
+            let target =  event.target.parentNode.parentNode.querySelector(".playerListNodeName").innerHTML;
+            this.connection.send(JSON.stringify({msgType: "request-freed", content: {target: target, origin: this.playerid}}));
+        })
         
         this.playerNodes.set(playerInfo.id, n);
         return n;
@@ -282,8 +318,14 @@ class DataManager {
     updatePlayerNode(n, playerInfo){
         n.querySelector(".playerListNodeRole").innerHTML = playerInfo.role;
         let caughtButtonDisplay = this.lastData.persons[this.playerid].role == "zoeker"
-            && playerInfo.role == "speler";
-        let caughtTextDisplay = playerInfo.caughtAfter !== null;
+            && playerInfo.role == "speler"
+            && playerInfo.frozenUntil == null;
+        let freedButtonDisplay = playerInfo.frozenUntil != null 
+            && this.lastData.persons[this.playerid].role == "speler"
+            && this.lastData.persons[this.playerid].frozenUntil == null
+            && playerInfo.id != this.playerid;
+        let caughtTextDisplay = playerInfo.caughtAfter !== null 
+            && playerInfo.frozenUntil == null;
         /**
          * @param {Boolean} q
          */
@@ -291,6 +333,7 @@ class DataManager {
 
         n.querySelector(".playerListNodeCaughtButton").style.display = displayValue(caughtButtonDisplay);
         n.querySelector(".playerListNodeCaughtText").style.display = displayValue(caughtTextDisplay);
+        n.querySelector(".playerListNodeFreedButton").style.display = displayValue(freedButtonDisplay);
         
         if(!n.classList.contains(playerInfo.role)){
             n.classList.replace(DataManager.oppositeRole(playerInfo.role), playerInfo.role);
