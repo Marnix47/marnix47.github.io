@@ -38,9 +38,11 @@ class DataManager {
             if(data.speler == this.playerid && data.content.persons[this.playerid].frozenUntil == null){
                 clock.clearLocationIntervals();
                 // clock.setLocationUpdateTimerInterval();
+                this.locationUpdateHandler();
                 clock.addLocationIntervalZoeker(this.locationUpdateHandler.bind(this));
                 window.alert(`Je bent nu zoeker.`);
             } else if(data.speler == this.playerid){
+                this.locationUpdateHandler();
                 window.alert(`Je time-out van ${data.content.freezeDuration/60} minuten gaat nu in. Blijf staan.`);
             } else {
                 window.alert(`${data.speler} is gepakt door ${data.zoeker}.`);
@@ -108,8 +110,13 @@ class DataManager {
             this.updateBackgroundOffline();
 
             clock.setLocationUpdateTimerInterval();
-            if(data.content.persons[this.playerid]?.role == "speler"){
+            if(data.content.persons[this.playerid]?.role == "speler" && (data.content.everyoneLiveAfter > Date.now() || data.content.everyoneLiveAfter == null)){
                 clock.addLocationIntervals(data.content.locationUpdateTimeStamps, this.locationUpdateHandler.bind(this));
+                clock.addTimeoutDate(data.content.everyoneLiveAfter, (() => {
+                    clock.clearLocationIntervals();
+                    this.locationUpdateHandler();
+                    clock.addLocationIntervalZoeker(this.locationUpdateHandler.bind(this));
+                }).bind(this));
             } else {
                 clock.addLocationIntervalZoeker(this.locationUpdateHandler.bind(this));
             }
@@ -153,7 +160,7 @@ class DataManager {
                 let secondaryCircleCoords = this.lastData.RingTimeStamps[1];
                 secondaryMapCircle = L.circle([secondaryCircleCoords.lat, secondaryCircleCoords.lng], {
                     radius: secondaryCircleCoords.rad,
-                    color: "lightskyblue",
+                    color: "dodgerblue",
                     fillOpacity: .25
                 }).addTo(map);
                 clock.setShrinkInterval(() => {
@@ -180,7 +187,7 @@ class DataManager {
         let revealZoekerLocations = this.lastPlayerData.zoekerLocationUntil > Date.now();
         for(let [id, player] of Object.entries(this.lastData.persons)){
             let isOffline = player.offlineUntil != null && player.offlineUntil > Date.now();
-            console.log(isOffline, player.offlineUntil, Date.now());
+            // console.log(isOffline, player.offlineUntil, Date.now());
             if( (player.role == "speler" && !isOffline) || 
                 (this.lastPlayerData.role == "zoeker" && player.role == "zoeker") || 
                 (this.lastPlayerData.role == "speler" && player.role == "zoeker" && revealZoekerLocations)
@@ -217,6 +224,16 @@ class DataManager {
         let latestTimeStamp = this.lastData.locationUpdateTimeStamps.find(el => Date.now() < el);
         if(!latestTimeStamp) return null;
         return latestTimeStamp;
+    }
+
+    /**
+     * @returns {seconds} seconds untill live
+     * @returns {null} iff gameState.everyoneLiveAfter is null OR time stamp has passed
+     */
+    getTimeUntilLive(){
+        if(!this.lastData || Object.entries(this.lastData).length == 0) return undefined;
+        if(this.lastData.everyoneLiveAfter == null || this.lastData.everyoneLiveAfter <= Date.now()) return null;
+        return Math.floor((this.lastData.everyoneLiveAfter - Date.now())/1000);
     }
 
     uitloopEndHandler(){
@@ -257,7 +274,6 @@ class DataManager {
         for(let [player, value] of Object.entries(playerData)){
             if(!this.playerNodes.has(player)){
                 let n = this.createPlayerNode(value);
-                document.querySelector("#playerList").appendChild(n);
                 document.querySelector("#playerList").appendChild(n);
             } else {
                 this.updatePlayerNode(this.playerNodes.get(player), value);
@@ -353,6 +369,10 @@ class DataManager {
             color = "#20B2AA";
         }
         document.querySelector(":root").style.setProperty("--bg-color", color);
+    }
+
+    isEveryoneLiveNow(){
+        return this.lastData.everyoneLiveAfter <= Date.now() && this.lastData.everyoneLiveAfter != null;
     }
 
     /**

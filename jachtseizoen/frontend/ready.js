@@ -57,8 +57,8 @@ function handleGameEnded(){
 function handleGameStart(){
     //write relevant game state to storage
     StorageHandler.setGame(
-        StorageHandler.getGame().id,
-        StorageHandler.getGame().player,
+        StorageHandler.getGame().gameid,
+        StorageHandler.getGame().playerid,
         gameState.start,
         gameState.end
     );

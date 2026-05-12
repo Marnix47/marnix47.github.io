@@ -103,13 +103,18 @@ class Clock {
     setLocationUpdateTimerInterval(){
         if(this.locationTimerUpdateInterval) clearInterval(this.locationTimerUpdateInterval);
         this.locationTimerUpdateInterval = setInterval(() => {
-            if(dataManager.getNextTimeStamp() == null){
+            if(dataManager.getNextTimeStamp() == null || dataManager.isEveryoneLiveNow()){
                 clearInterval(this.locationTimerUpdateInterval);
                 document.querySelector("#nextLocationHeader").style.display = "none";
                 return;
             }
             let diff = dataManager.getNextTimeStamp() - Date.now();
             diff = Math.floor(diff/1000);
+            let timeUntilLive = dataManager.getTimeUntilLive();
+            if(timeUntilLive <= diff){
+                diff = timeUntilLive;
+                document.querySelector("#nextLocationText").innerHTML = "Live over:"
+            }
             // console.log(dataManager.getNextTimeStamp(), diff, Clock.formatCountDown(diff));
             document.querySelector("#nextLocationUpdateTimer").innerHTML = Clock.formatCountDown(diff);
         }, 1000);

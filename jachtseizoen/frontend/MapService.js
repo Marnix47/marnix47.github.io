@@ -36,7 +36,7 @@ class MapService {
         let coordinateInfo = player.lastKnownLocation;
         let leafletPosition = L.latLng(coordinateInfo.lat, coordinateInfo.lng);
         let freshLocation = player.role == "speler" && player.lastKnownLocation.date >= this.dataManager.getLatestTimeStamp();
-        if(player.role == "zoeker"){
+        if(player.role == "zoeker" || this.dataManager.isEveryoneLiveNow()){
             freshLocation = Date.now() - player.lastKnownLocation.date <= 1e4;
         }
         let frozenText = player.frozenUntil > Date.now() ? "frozen" : "";

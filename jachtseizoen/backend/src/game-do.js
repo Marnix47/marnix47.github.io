@@ -241,6 +241,12 @@ export class GameDO {
         obj.offlineDuration = input.offlineDuration;
         obj.zoekerLocationPowerupEnabled = input.zoekerLocationPowerupEnabled;
         obj.freezeDuration = input.freezeDuration;
+        // obj.everyoneLiveLastMinutes = input.everyoneLiveLastMinutes;
+        if(input.everyoneLiveLastMinutes == null){
+            obj.everyoneLiveAfter = null;
+        } else {
+            obj.everyoneLiveAfter = obj.duration - input.everyoneLiveLastMinutes * 60;
+        }
 
         obj.persons = {};
         obj.persons[input.player] = {
@@ -324,6 +330,10 @@ export class GameDO {
     async startGameState(){
         this.gameState.start = Date.now();
         this.gameState.end = Date.now() + this.gameState.duration * 1000;
+        if(this.gameState.everyoneLiveAfter != null){
+            this.gameState.everyoneLiveAfter *= 1000;
+            this.gameState.everyoneLiveAfter += Date.now();
+        }
         let lowerAfter = this.gameState.lowerIntervalAfter?.after;
         if(!lowerAfter){
             lowerAfter = this.gameState.duration + this.gameState.uitloop;
@@ -380,7 +390,7 @@ export class GameDO {
     async handleCaught(msg){
         let parsed = msg;
         this.gameState.persons[parsed.content.origin].caughtAfter = Date.now() - this.gameState.start - this.gameState.uitloop * 1000;
-        this.gameState.persons[parsed.content.origin].caughtBy = parsed.content.origin;
+        this.gameState.persons[parsed.content.origin].caughtBy = parsed.content.target;
         if(this.gameState.freezeDuration != null){
             this.gameState.persons[parsed.content.origin].frozenUntil = Date.now() + this.gameState.freezeDuration * 1000;
             setTimeout((() => {
