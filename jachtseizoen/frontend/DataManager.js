@@ -16,7 +16,7 @@ class DataManager {
         this.lastData = {};
         this.playerid = StorageHandler.getGame()?.playerid;
         if(!this.playerid){
-            alert("Kon niet achterhalen welke speler je bent.");
+            Alert.alert("Kon niet achterhalen welke speler je bent.");
             window.location.replace("/jachtseizoen/frontend/welcome.html");
         }
     }
@@ -40,21 +40,21 @@ class DataManager {
                 // clock.setLocationUpdateTimerInterval();
                 this.locationUpdateHandler();
                 clock.addLocationIntervalZoeker(this.locationUpdateHandler.bind(this));
-                window.alert(`Je bent nu zoeker.`);
+                Alert.alert(`Je bent nu zoeker.`);
             } else if(data.speler == this.playerid){
                 this.locationUpdateHandler();
-                window.alert(`Je time-out van ${data.content.freezeDuration/60} minuten gaat nu in. Blijf staan.`);
+                Alert.alert(`Je time-out van ${data.content.freezeDuration/60} minuten gaat nu in. Blijf staan.`);
             } else {
-                window.alert(`${data.speler} is gepakt door ${data.zoeker}.`);
+                Alert.alert(`${data.speler} is gepakt door ${data.zoeker}.`);
             }
         }
         if(data.msgType == "freed"){
             this.updatePlayerUI();
             mapService.renderPlayers();
             if(data.speler == this.playerid){
-                window.alert(`Je bent bevrijd. Je blijft speler en mag weer bewegen.`);
+                Alert.alert(`Je bent bevrijd. Je blijft speler en mag weer bewegen.`);
             } else {
-                window.alert(`${data.speler} is bevrijd door ${data.bevrijder}.`);
+                Alert.alert(`${data.speler} is bevrijd door ${data.bevrijder}.`);
             }
         }
         if(data.msgType == "freeze-over"){
@@ -63,21 +63,24 @@ class DataManager {
             if(data.speler == this.playerid){
                 clock.clearLocationIntervals();
                 clock.addLocationIntervalZoeker(this.locationUpdateHandler.bind(this));
-                window.alert(`Je bent nu zoeker.`);
+                Alert.alert(`Je bent nu zoeker.`);
             } else {
-                window.alert(`${data.speler} is nu zoeker.`);
+                Alert.alert(`${data.speler} is nu zoeker.`);
             }
         }
         if(data.msgType == "request-caught" && data.target == this.playerid){
-            if(window.confirm(`Bevestig dat ${data.origin} je heeft gepakt.`)){
-                this.connection.send(JSON.stringify({msgType:"caught", content: {origin: this.playerid, target: data.origin}}));
-            }
+            // let confirmed = Alert.confirm(`Bevestig dat ${data.origin} je heeft gepakt.`);
+            // if(Alert.confirm(`Bevestig dat ${data.origin} je heeft gepakt.`)){
+            //     this.connection.send(JSON.stringify({msgType:"caught", content: {origin: this.playerid, target: data.origin}}));
+            // }
+            this.handleRequestCaught(data);
             return;
         }
         if(data.msgType == "request-freed" && data.target == this.playerid){
-            if(window.confirm(`Bevestig dat ${data.origin} je heeft bevrijd.`)){
-                this.connection.send(JSON.stringify({msgType:"freed", content: {origin: this.playerid, target: data.origin}}));
-            }
+            // if(Alert.confirm(`Bevestig dat ${data.origin} je heeft bevrijd.`)){
+            //     this.connection.send(JSON.stringify({msgType:"freed", content: {origin: this.playerid, target: data.origin}}));
+            // }
+            this.handleRequestFreed(data);
             return;
         }
         if(data.msgType == "offline"){
@@ -231,7 +234,7 @@ class DataManager {
      * @returns {null} iff gameState.everyoneLiveAfter is null OR time stamp has passed
      */
     getTimeUntilLive(){
-        if(!this.lastData || Object.entries(this.lastData).length == 0) return undefined;
+        if(!this.lastData || Object.entries(this.lastData).length == 0) return null;
         if(this.lastData.everyoneLiveAfter == null || this.lastData.everyoneLiveAfter <= Date.now()) return null;
         return Math.floor((this.lastData.everyoneLiveAfter - Date.now())/1000);
     }
@@ -309,6 +312,8 @@ class DataManager {
         let displayValue = q => q ? "inline" : "none";
 
         n.querySelector(".playerListNodeCaughtButton").addEventListener("click", (event) => {
+            if(event.target.lastPressed && event.target.lastPressed > Date.now() - 1e4) return;
+            event.target.lastPressed = Date.now();
             let target = event.target.parentNode.parentNode.querySelector(".playerListNodeName").innerHTML;
             connection.send(JSON.stringify({msgType: "request-caught", content: {target: target, origin: this.playerid}}));
         });
@@ -317,11 +322,18 @@ class DataManager {
         n.querySelector(".playerListNodeCaughtText").style.display = displayValue(caughtTextDisplay);
         n.classList.add(playerInfo.role);
 
+        let freedDisplay = playerInfo.role == "speler" 
+            && this.lastPlayerData.role == "speler" 
+            && playerInfo.frozenUntil != null 
+            && playerInfo.frozenUntil > Date.now()
+            && playerInfo.id != this.playerid;
         n.querySelector(".playerListNodeFreedButton").addEventListener("click", event => {
+            if(event.target.lastPressed && event.target.lastPressed > Date.now() - 1e4) return;
+            event.target.lastPressed = Date.now();
             let target =  event.target.parentNode.parentNode.querySelector(".playerListNodeName").innerHTML;
             this.connection.send(JSON.stringify({msgType: "request-freed", content: {target: target, origin: this.playerid}}));
-        })
-        
+        });
+        n.querySelector(".playerListNodeFreedButton").style.display = displayValue(freedDisplay)
         this.playerNodes.set(playerInfo.id, n);
         return n;
     }
@@ -337,6 +349,7 @@ class DataManager {
             && playerInfo.role == "speler"
             && playerInfo.frozenUntil == null;
         let freedButtonDisplay = playerInfo.frozenUntil != null 
+            && playerInfo.role == "speler"
             && this.lastData.persons[this.playerid].role == "speler"
             && this.lastData.persons[this.playerid].frozenUntil == null
             && playerInfo.id != this.playerid;
@@ -373,6 +386,18 @@ class DataManager {
 
     isEveryoneLiveNow(){
         return this.lastData.everyoneLiveAfter <= Date.now() && this.lastData.everyoneLiveAfter != null;
+    }
+
+    async handleRequestCaught(data){
+        if(await Alert.confirm(`Bevestig dat ${data.origin} je heeft gepakt.`)){
+            this.connection.send(JSON.stringify({msgType:"caught", content: {origin: this.playerid, target: data.origin}}));
+        }
+    }
+
+    async handleRequestFreed(data){
+        if(await Alert.confirm(`Bevestig dat ${data.origin} je heeft bevrijd.`)){
+            this.connection.send(JSON.stringify({msgType:"freed", content: {origin: this.playerid, target: data.origin}}));
+        }
     }
 
     /**

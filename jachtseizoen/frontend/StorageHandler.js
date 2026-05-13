@@ -1,7 +1,7 @@
 const testURL = "https://fictional-space-umbrella-9g79794jj9rc76qw-8787.app.github.dev/";
 const productionURL = "";
 // const apiURL = testURL;
-let inTesting = true;
+let inTesting = false;
 if(window.location.hostname == "marnix47.github.io") inTesting = false; 
 const apiURL = inTesting ? testURL : "https://jachtseizoen.maxome7.workers.dev/";
 

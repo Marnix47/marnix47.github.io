@@ -111,7 +111,7 @@ class Clock {
             let diff = dataManager.getNextTimeStamp() - Date.now();
             diff = Math.floor(diff/1000);
             let timeUntilLive = dataManager.getTimeUntilLive();
-            if(timeUntilLive <= diff){
+            if(timeUntilLive <= diff && dataManager.lastData.everyoneLiveAfter != null){
                 diff = timeUntilLive;
                 document.querySelector("#nextLocationText").innerHTML = "Live over:"
             }
