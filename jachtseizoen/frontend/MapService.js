@@ -18,6 +18,7 @@ class MapService {
     }
 
     renderPlayers(){
+        this.dataManager.updateBackgroundOffline();
         this.playerPoints.forEach((v, k) => {
             v.remove();
         });
@@ -28,11 +29,7 @@ class MapService {
     renderPlayer(player){
         if(!player || Object.entries(player).length == 0) return;
         if(!player.lastKnownLocation || !player.lastKnownLocation.lng) return;
-        // if(this.playerPoints.has(player.id)){
-        //     this.playerPoints.get(player.id).remove();
-        // }
-        console.log(player.lastKnownLocation);
-        console.log(this.dataManager.getLatestTimeStamp());
+
         let coordinateInfo = player.lastKnownLocation;
         let leafletPosition = L.latLng(coordinateInfo.lat, coordinateInfo.lng);
         let freshLocation = player.role == "speler" && player.lastKnownLocation.date >= this.dataManager.getLatestTimeStamp();

@@ -11,6 +11,8 @@
     <meta name="theme-color" content="lightgreen">
     <meta name="mobile-web-app-capable" content="yes" />
     <meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="./manifest.json"/>
+    <link rel="icon" href="./icon.png"/>
 </head>
 <body class="app">
     <button id="allow-compass-button">Kompas aanzetten</button>
@@ -33,11 +35,11 @@
             </div>
         </div>
         <div id="map" style="height:500px; width:var(--vw)"></div>
-        <div id="actionsWrapper">
-            <button id="offlineButton">✈️</button>
-            <button id="zoekerLocationButton">📍</button>
-        </div>
         <div id="playerListWrapper">
+            <div id="actionsWrapper">
+                <button id="offlineButton">✈️</button>
+                <button id="zoekerLocationButton">📍</button>
+            </div>
             <div id="playerList">
                 <div style="display:none" class="dummyWrapper">
                     <div id="dummyPlayerListNode" class="playerListNode">

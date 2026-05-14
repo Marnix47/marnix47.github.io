@@ -1,0 +1,10 @@
+{
+  "name": "Jachtseizoen",
+  "short_name": "Jachtseizoen",
+  "theme_color": "#66cdaa",
+  "background_color": "#20b2aa",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "scope": "/jachtseizoen/frontend",
+  "start_url": "/jachtseizoen/frontend/play.html"
+}

@@ -16,7 +16,6 @@ class Alert {
     }
 
     static async confirm(text){
-        // let fireResult;
         let result = await Swal.fire({
             html: Alert.textToHTML(text),
             showDenyButton: true,
@@ -28,19 +27,8 @@ class Alert {
                 confirmButton: "visible-swal-button"
             },
         });
-        console.log(result);
         return result.isConfirmed;
     }
 }
 
 window.Alert = Alert;
-
-async function testAlert(){
-    if(await Alert.confirm("HELLO?")){
-        console.log("HI");
-    } else {
-        console.log("NO");
-    }
-}
-
-// testAlert();

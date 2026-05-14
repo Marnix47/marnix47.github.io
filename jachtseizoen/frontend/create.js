@@ -45,12 +45,10 @@ document.querySelector("#intervalSlider").addEventListener("input", (event) => {
 });
 
 uitloopTijdSlider.addEventListener("input", (event) => {
-    console.log(event.target.value);
     document.querySelector("#uitloopText").innerHTML = event.target.value;
 })
 
 document.querySelector("#verhoogdIntervalCheckbox").addEventListener("input", (event) => {
-    // console.log(event.target.checked);
     document.querySelector("#verhoogdInterval").style.display = !event.target.checked ? "none": "block";
 });
 
@@ -63,7 +61,6 @@ document.querySelector("#laatsteIntervalSlider").addEventListener("input", (even
 });
 
 document.querySelector("#offlineCheckbox").addEventListener("input", (event) => {
-    // console.log(event.target.checked);
     document.querySelector("#offline").style.display = !event.target.checked ? "none": "block";
 });
 
@@ -72,7 +69,6 @@ document.querySelector("#offlineMinutesSlider").addEventListener("input", (event
 });
 
 document.querySelector("#freezeCheckbox").addEventListener("input", (event) => {
-    // console.log(event.target.checked);
     document.querySelector("#freeze").style.display = !event.target.checked ? "none": "block";
 });
 
@@ -81,7 +77,6 @@ document.querySelector("#freezeMinutesSlider").addEventListener("input", (event)
 });
 
 document.querySelector("#everyoneLiveCheckbox").addEventListener("input", (event) => {
-    // console.log(event.target.checked);
     document.querySelector("#everyoneLive").style.display = !event.target.checked ? "none": "block";
 });
 

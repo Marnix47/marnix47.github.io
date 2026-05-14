@@ -47,11 +47,9 @@ class Clock {
      */
     setUitloopUpdate(until, endHandler){
         this.uitloopUntil = until;
-        console.log(endHandler);
         if(this.uitloopInterval) clearInterval(this.uitloopInterval);
         this.uitloopInterval = setInterval(() => {
             if(this.uitloopUntil <= Date.now()){
-                console.log(endHandler);
                 clearInterval(this.uitloopInterval);
                 endHandler();
             }
@@ -84,7 +82,6 @@ class Clock {
      */
     addLocationIntervalZoeker(handler, time = 10000){
         this.locationIntervalZoeker = setInterval(handler, time);
-        // handler();
     }
 
     /**
@@ -115,7 +112,6 @@ class Clock {
                 diff = timeUntilLive;
                 document.querySelector("#nextLocationText").innerHTML = "Live over:"
             }
-            // console.log(dataManager.getNextTimeStamp(), diff, Clock.formatCountDown(diff));
             document.querySelector("#nextLocationUpdateTimer").innerHTML = Clock.formatCountDown(diff);
         }, 1000);
     }
@@ -143,7 +139,6 @@ class Clock {
         if(this.shrinkInterval) clearInterval(this.shrinkInterval);
         this.shrinkInterval = setInterval(() => {
             let time = Math.floor((dataManager.lastData.RingTimeStamps[1].date - Date.now())/1000);
-            // console.log(time);
             if(time <= 0){
                 clearInterval(this.shrinkInterval);
                 handler();

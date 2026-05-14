@@ -43,6 +43,7 @@ class DataManager {
                 Alert.alert(`Je bent nu zoeker.`);
             } else if(data.speler == this.playerid){
                 this.locationUpdateHandler();
+                this.updateBackgroundOffline();
                 Alert.alert(`Je time-out van ${data.content.freezeDuration/60} minuten gaat nu in. Blijf staan.`);
             } else {
                 Alert.alert(`${data.speler} is gepakt door ${data.zoeker}.`);
@@ -63,6 +64,7 @@ class DataManager {
             if(data.speler == this.playerid){
                 clock.clearLocationIntervals();
                 clock.addLocationIntervalZoeker(this.locationUpdateHandler.bind(this));
+                this.locationUpdateHandler();
                 Alert.alert(`Je bent nu zoeker.`);
             } else {
                 Alert.alert(`${data.speler} is nu zoeker.`);
@@ -86,11 +88,9 @@ class DataManager {
         if(data.msgType == "offline"){
             this.updatePlayerUI();
             mapService.renderPlayers();
-            // clock.addTimeoutDate(data.content.persons[data.origin].offlineUntil, this.updatePlayerUI.bind(this));
             if(data.origin == this.playerid){
                 this.updateBackgroundOffline();
             }
-            // console.log(Clock.dateDifference(data.content.persons[data.origin].offlineUntil, Date.now()))
             clock.addTimeoutDate(data.content.persons[data.origin].offlineUntil + 100, (() => {
                 this.updatePlayerUI();
                 mapService.renderPlayers();
@@ -100,6 +100,7 @@ class DataManager {
         if(data.msgType == "zoeker-location-powerup"){
             if(data.origin == this.playerid){
                 mapService.renderPlayers();
+                this.updatePlayerUI();
                 clock.addTimeoutDate(data.content.persons[data.origin].zoekerLocationUntil + 100, (() => {
                     mapService.renderPlayers();
                 }).bind(this));
@@ -190,8 +191,7 @@ class DataManager {
         let revealZoekerLocations = this.lastPlayerData.zoekerLocationUntil > Date.now();
         for(let [id, player] of Object.entries(this.lastData.persons)){
             let isOffline = player.offlineUntil != null && player.offlineUntil > Date.now();
-            // console.log(isOffline, player.offlineUntil, Date.now());
-            if( (player.role == "speler" && !isOffline) || 
+            if( (player.role == "speler" && (!isOffline || this.isEveryoneLiveNow())) || 
                 (this.lastPlayerData.role == "zoeker" && player.role == "zoeker") || 
                 (this.lastPlayerData.role == "speler" && player.role == "zoeker" && revealZoekerLocations)
             ){
@@ -283,12 +283,12 @@ class DataManager {
             }
         }
         let offlineButtonDisplay = "unset";
-        if(this.lastPlayerData.role == "zoeker" || this.lastPlayerData.offlineUntil != null){
+        if(this.lastPlayerData.role == "zoeker" || this.lastPlayerData.offlineUntil != null || this.lastData.offlineDuration == null){
             offlineButtonDisplay = "none";
         }
         document.querySelector("#offlineButton").style.display = offlineButtonDisplay;
         let zoekerLocationButtonDisplay = "unset";
-        if(this.lastPlayerData.role == "zoeker" || this.lastPlayerData.zoekerLocationUntil != null){
+        if(this.lastPlayerData.role == "zoeker" || this.lastPlayerData.zoekerLocationUntil != null || !this.lastData.zoekerLocationPowerupEnabled){
             zoekerLocationButtonDisplay = "none";
         }
         document.querySelector("#zoekerLocationButton").style.display = zoekerLocationButtonDisplay;
@@ -300,6 +300,7 @@ class DataManager {
      * @returns {HTMLDivElement}
      */
     createPlayerNode(playerInfo){
+        this.updateBackgroundOffline();
         let n = document.querySelector("#dummyPlayerListNode").cloneNode(true);
         n.querySelector(".playerListNodeName").innerHTML = playerInfo.id;
         n.querySelector(".playerListNodeRole").innerHTML = playerInfo.role;
@@ -377,8 +378,9 @@ class DataManager {
     updateBackgroundOffline(){
         let id = StorageHandler.getGame().playerid;
         let untill = this.lastData.persons[id].offlineUntil;
+        let isFrozen = this.lastData.persons[id].frozenUntil > Date.now();
         let color = "darkslategray";
-        if(!untill || untill <= Date.now()){
+        if(!untill || untill <= Date.now() || this.isEveryoneLiveNow() || isFrozen){
             color = "#20B2AA";
         }
         document.querySelector(":root").style.setProperty("--bg-color", color);

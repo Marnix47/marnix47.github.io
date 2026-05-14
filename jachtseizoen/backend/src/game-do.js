@@ -393,6 +393,9 @@ export class GameDO {
         this.gameState.persons[parsed.content.origin].caughtBy = parsed.content.target;
         if(this.gameState.freezeDuration != null){
             this.gameState.persons[parsed.content.origin].frozenUntil = Date.now() + this.gameState.freezeDuration * 1000;
+            if(this.gameState.persons[parsed.content.origin].offlineUntil > Date.now()){
+                this.gameState.persons[parsed.content.origin].offlineUntil = Date.now();
+            }
             setTimeout((() => {
                 this.handleFrozenExpired(parsed.content.origin);
             }).bind(this), this.gameState.freezeDuration * 1000 + 1);
@@ -406,7 +409,7 @@ export class GameDO {
     }
 
     async handleFrozenExpired(playerid){
-        if(this.gameState.persons[playerid].frozenUntil != null && this.gameState.persons[playerid].frozenUntil <= Date.now()){
+        if(this.gameState.persons[playerid].frozenUntil != null && this.gameState.persons[playerid].frozenUntil <= Date.now() && this.gameState.end > Date.now()){
             this.gameState.persons[playerid].role = "zoeker";
             this.gameState.persons[playerid].frozenUntil = null;
             for(const ws of this.sockets){

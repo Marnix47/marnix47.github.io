@@ -173,6 +173,13 @@ p.pop-up {
     gap:10px;
 }
 
+#playerListWrapper {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction: column;
+}
+
 .playerListNode {
     display:flex;
     flex-direction:row;
