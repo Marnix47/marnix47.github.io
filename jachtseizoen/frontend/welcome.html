@@ -22,7 +22,7 @@
         if(window.confirm(`Er is een mogelijk actieve game (id: ${lastGame.gameid}) gedetecteerd, wil je die joinen?`)){
             window.location.replace("/jachtseizoen/frontend/ready.html?gameId=" + lastGame.gameid);
         } else {
-            StorageHandler.removeGame();
+            // StorageHandler.removeGame();
         }
     }
 </script>

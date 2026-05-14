@@ -1,3 +1,6 @@
+if(!StorageHandler.getGame() || StorageHandler.getGame()?.end < Date.now()){
+    window.location.replace("/jachtseizoen/frontend/welcome.html");
+}
 const connection = new Connection(apiURL + "ws/" + StorageHandler.getGame().gameid, undefined);
 const dataManager = new DataManager(connection);
 const clock = new Clock();
