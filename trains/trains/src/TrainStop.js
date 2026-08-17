@@ -49,16 +49,16 @@ export function TrainStop({journeyData}){
     return (
         <div className={data.status + (stationIsCancelled() ? " CANCELLED" : "") + " TrainStop"}>
             <div className="TrainStopTimes">
-                <div className="ArrivalTime" style={{color:!arrivalData.cancelled ? "darkblue" : "lightslategray"}}>
-                    {(arrivalData) && (<p className="ArrivalTime">
+                <div className="ArrivalTime">
+                    {(arrivalData) && (<p className="ArrivalTime" style={{color:!arrivalData.cancelled ? "darkblue" : "lightslategray"}}>
                         {getTimeOfDay(arrivalData.plannedTime)}
                     </p>)}
                     {(arrivalData?.delayInSeconds) ? (<p className="ArrivalDelay">
                         +{getDelayString(arrivalData.delayInSeconds)}
                     </p>): null}
                 </div>
-                <div className="DepartureTime" style={{color:!departureData.cancelled ? "darkblue" : "lightslategray"}}>
-                    {(departureData && !isArrival) && (<p className="DepartureTime">
+                <div className="DepartureTime">
+                    {(departureData && !isArrival) && (<p className="DepartureTime" style={{color:!departureData.cancelled ? "darkblue" : "lightslategray"}}>
                         {getTimeOfDay(departureData.plannedTime)}
                     </p>)}
                     {(departureData?.delayInSeconds && !isArrival) ? (<p className="DepartureDelay">
