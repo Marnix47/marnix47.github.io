@@ -1,7 +1,6 @@
 name = "trains"
-main = "src/index.js"
+main = "worker.js"
 compatibility_date = "2024-01-01"
 
-# Disable Cloudflare Pages auto-assets behavior
 [assets]
-directory = ""
+directory = "./build"
