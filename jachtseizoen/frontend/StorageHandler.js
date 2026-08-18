@@ -2,7 +2,7 @@ const testURL = "https://bug-free-space-adventure-vj6v6v7q65w2wxw5-8787.app.gith
 const productionURL = "";
 // const apiURL = testURL;
 let inTesting = true;
-if(window.location.hostname == "marnix47.github.io") inTesting = false; 
+if(window.location.hostname == "marnix47.github.io" || window.location.hostname == "jachtseizoen.marnixvanvelzen.com" || window.location.hostname == "jachtseizoen-router.maxome7.workers.dev") inTesting = false; 
 const apiURL = inTesting ? testURL : "https://jachtseizoen.maxome7.workers.dev/";
 
 class StorageHandler {
