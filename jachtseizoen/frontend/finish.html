@@ -1,0 +1,62 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./icon.png"/>
+    <title>Jachtseizoen | Einde</title>
+    <style>
+        body {
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            text-align:center;
+        }
+
+        .resultContainer {
+            flex-direction:column;
+            align-items:center;
+        }
+
+        /* #wonContainer {
+            flex-direction:column;
+            align-items:center;
+        } */
+
+        #trumpdance {
+            height:auto;
+            width:100px;
+            display:block;
+        }
+
+        #nannanol {
+            width:300px;
+            height:auto;
+        }
+
+        #basketimg {
+            width:300px;
+            height:auto;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="teamWonText">Kon geen resultaat ophalen.</h1>
+    <div id="wonContainer" style="display:none" class="resultContainer">
+        <img id="trumpdance" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2VtZTdpbDA3aXc2ZThycG1tZno3OGpleGkxYW14YWFmcjg2MmhmOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/26FAMbSfNaxcAdj9DQ/giphy.gif">
+        <img id="nannanol" src="https://media.licdn.com/dms/image/v2/D4E22AQE4Jj5MsgOCWQ/feedshare-shrink_800/feedshare-shrink_800/0/1720901349965?e=2147483647&v=beta&t=xEaxcmP2s72IjjMbOR8v4I6PeBEzvNdZOiMcAq6NvLM">
+        <h3>Gefeliciteerd namens Nanna Nol!</h3>
+    </div>
+    <div id="caughtContainer" style="display:none" class="resultContainer">
+        <img id="basketimg" src="./img_caught.jpeg">
+    </div>
+    <div id="lostContainer" style="display:none" class="resultContainer">
+        <img id="cyringgif" src="https://media.tenor.com/ctO2QkhV05kAAAAM/crying-crying-meme.gif">
+        <!-- <img id="" -->
+        <h3>Helaas, volgende keer beter.</h3>
+    </div>
+</body>
+<script src="./StorageHandler.js"></script>
+<script src="./finish.js"></script>
+</html>

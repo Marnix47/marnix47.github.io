@@ -45,13 +45,14 @@ function messageHandler(event){
     if(data.msgType != "handshake"){
         gameState = data.content;
         updatePlayerUI();
+        document.querySelector("#buttonWrapper").style.display = gameState.creator == StorageHandler.getGame().playerid ? "flex" : "none";
     }
 }
 
 function handleGameEnded(){
     StorageHandler.removeGame();
     connection.close();
-    window.location.replace("/jachtseizoen/frontend/welcome.html");
+    window.location.replace("/jachtseizoen/frontend/finish.html");
 }
 
 function handleGameStart(){
@@ -103,13 +104,11 @@ function updatePlayerUI(){
  */
 function createNode(name, role){
     let n = document.querySelector("#dummyNode").cloneNode(true);
-    console.log(n.childNodes);
-    console.log(document.querySelector("#dummyNode").childNodes);
     n.querySelector(".playerName").innerHTML = name;
     n.querySelector(".playerRole").innerHTML = role;
     n.querySelector(".switchRoleButton").innerHTML = "Maak " + oppositeRole(role);
     n.querySelector(".switchRoleButton").style.display = (
-        gameState.creator == StorageHandler.getGame().playerid || name == StorageHandler.getGame().playerid
+        gameState.creator == StorageHandler.getGame().playerid
     ) ? "inline" : "none";
     playerNodes.set(name, n);
     n.querySelector(".switchRoleButton").addEventListener("click", (event) => {

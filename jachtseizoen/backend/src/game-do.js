@@ -59,6 +59,10 @@ export class GameDO {
             return this.handleWebSocket(request);
         }
 
+        if(url.pathname.startsWith("/game")){
+            return new Response(JSON.stringify(this.gameState), {headers: HEADERS});
+        }
+
         return new Response("GameDO alive", { headers: HEADERS });
     }
 
@@ -172,7 +176,7 @@ export class GameDO {
             }
         });
 
-        return new Response(null, { status: 101, webSocket: client });
+        return new Response(null, { status: 101, webSocket: client, headers: HEADERS });
     }
 
     broadcastNewState(msgType){
@@ -219,7 +223,7 @@ export class GameDO {
 
         let lowerIntervalAfter = input.lowerIntervalAfter;
         if (lowerIntervalAfter && (!lowerIntervalAfter.interval || lowerIntervalAfter.interval < 0 || lowerIntervalAfter < 0 || lowerIntervalAfter > input.duration)) {
-            return new Response("Higher interval has illegal properties", { status: 400 });
+            return new Response("Higher interval has illegal properties", { status: 400, headers: HEADERS });
         }
 
         const newState = this.buildGameStateFromInput(input, id);
@@ -229,6 +233,7 @@ export class GameDO {
     }
 
     buildGameStateFromInput(input, id) {
+        console.log("Building new game");
         const obj = {};
 
         obj.id = id;
@@ -396,11 +401,25 @@ export class GameDO {
             if(this.gameState.persons[parsed.content.origin].offlineUntil > Date.now()){
                 this.gameState.persons[parsed.content.origin].offlineUntil = Date.now();
             }
-            setTimeout((() => {
-                this.handleFrozenExpired(parsed.content.origin);
-            }).bind(this), this.gameState.freezeDuration * 1000 + 1);
+            let numberOfSpelers = Object.values(this.gameState.persons).filter(x => x.role == "speler").length;
+            if(numberOfSpelers == 1){
+                this.handleEveryoneCaught();
+                return;
+            } else {
+                setTimeout((() => {
+                    this.handleFrozenExpired(parsed.content.origin);
+                }).bind(this), this.gameState.freezeDuration * 1000 + 1);
+            }
         } else {
             this.gameState.persons[parsed.content.origin].role = "zoeker";
+            // console.log( Object.values(this.gameState.persons));
+            let numberOfSpelers = Object.values(this.gameState.persons).filter(x => x.role == "speler").length;
+            // console.log("Number of spelers: " + numberOfSpelers);
+            // if(numberOfSpelers == 0) setTimeout(this.handleEveryoneCaught, 0);
+            if(numberOfSpelers == 0){
+                this.handleEveryoneCaught();
+                return;
+            }
         }
         await this.saveGameState(this.gameState);
         for(const ws of this.sockets){
@@ -417,5 +436,13 @@ export class GameDO {
             }
             await this.saveGameState(this.gameState);
         }
+    }
+
+    async handleEveryoneCaught(){
+        this.gameState.end = Date.now();
+        for(const ws of this.sockets){
+            ws.send(JSON.stringify(JSON.stringify({msgType:"game-over", content: this.gameState})));
+        }
+        await this.saveGameState(this.gameState);
     }
 }

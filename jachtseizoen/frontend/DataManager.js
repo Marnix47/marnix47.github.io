@@ -106,6 +106,9 @@ class DataManager {
                 }).bind(this));
             }
         }
+        if(data.msgType == "game-over"){
+            this.handleGameOver();
+        }
         if(data.msgType == "first"){
             //SET ALL LOCATIONUPDATETIMESTAMPS IN CLOCK
             document.querySelector("#gameWrapper").style.maxHeight = 0;
@@ -371,8 +374,8 @@ class DataManager {
     }
 
     handleGameOver(){
-        window.alert("Het spel is afgelopen");
-        window.location.replace("/jachtseizoen/frontend/welcome.html");
+        // window.alert("Het spel is afgelopen");
+        window.location.replace("/jachtseizoen/frontend/finish.html");
     }
 
     updateBackgroundOffline(){

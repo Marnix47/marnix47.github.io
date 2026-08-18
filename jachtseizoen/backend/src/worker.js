@@ -37,7 +37,16 @@ export default {
             try {
                 return handleNewPlayer(request, env);
             } catch {
-                return new Response("", {status: 500, headers:HEADERS})
+                return new Response("", {status: 500, headers:HEADERS});
+            }
+        }
+
+        if(url.pathname.startsWith("/game")){
+            try {
+                let id = url.pathname.split("/")[2];
+                return getGame(id, env);
+            } catch {
+                return new Response("", {status: 500, headers:HEADERS});
             }
         }
 
@@ -130,6 +139,15 @@ async function initializeGameDO(data, env) {
         body: JSON.stringify(data)
     });
     console.log(resp);
+    return resp;
+}
+
+async function getGame(id, env){
+    const DOid = env.GAME_DO.idFromName(id);
+    const stub = env.GAME_DO.get(DOid);
+    const resp = await stub.fetch("https://internal.com/game", {
+        method: "GET"
+    });
     return resp;
 }
 

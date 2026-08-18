@@ -1,4 +1,4 @@
-const testURL = "https://fictional-space-umbrella-9g79794jj9rc76qw-8787.app.github.dev/";
+const testURL = "https://bug-free-space-adventure-vj6v6v7q65w2wxw5-8787.app.github.dev/";
 const productionURL = "";
 // const apiURL = testURL;
 let inTesting = true;
