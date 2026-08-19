@@ -5,10 +5,10 @@ export default function ScrollableTrain({units}){
         <div className="train-scroller">
             <div className="train-row">
                 {units.map((unit, i) => (
-                <div className="train-unit-wrapper" key={unit.stockIdentifier || i}>
+                <div className="train-unit-wrapper" key={unit?.stockIdentifier || i}>
                     <img
-                    src={unit.image.uri}
-                    alt={unit.stockIdentifier}
+                    src={unit?.image?.uri}
+                    alt={unit?.stockIdentifier}
                     className="train-unit-image-no-platform-data"
                     />
                 </div>
