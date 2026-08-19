@@ -1,7 +1,9 @@
 .station-container {
   display: flex;
-  flex-wrap: wrap;        /* allows wrapping on small screens */
+  flex-wrap: nowrap;        /* allows wrapping on small screens */
   gap: 0.5rem;            /* spacing between buttons */
+  width: 100vw;
+  overflow-x: scroll;
 }
 
 .station-btn {

@@ -4,9 +4,9 @@ import "./StationSelector.css";
 export default function StationSelector({onChange}) {
     const [selected, setSelected] = useState("NWK");
     const stations = [
-        {fullName: "RTD", code: "RTD"},
-        {fullName: "NWK", code: "NWK"},
-        {fullName: "DT", code: "DT"},
+        {fullname: "RTD", code: "RTD"},
+        {fullname: "NWK", code: "NWK"},
+        {fullname: "DT", code: "DT"},
         {fullname: "GD", code: "GD"},
         {fullname: "SDM", code: "SDM"},
         {fullname: "RTB", code: "RTB"},
@@ -28,7 +28,7 @@ export default function StationSelector({onChange}) {
                         }`}
                     onClick={() => {setSelected(station.code); onChange(station.code);}}
                 >
-                    {station.fullName}
+                    {station.fullname}
                 </button>
             ))}
         </div>
