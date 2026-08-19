@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="duckv5.png" type="image/x-icon"></link>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Flappy Bird | Downloads</title>
+	<style>
+		:root {
+			--ink: #252525;
+			--muted: #666;
+			--paper: #fff;
+			--line: #d9d4c9;
+			--theme-color: DodgerBlue;
+		}
+
+		* { box-sizing: border-box; }
+
+		body {
+			margin: 0;
+			min-width: 320px;
+			color: var(--ink);
+			background: var(--paper);
+			font-family: 'Helvetica Neue', Arial, sans-serif;
+		}
+
+		.page {
+			width: min(900px, calc(100% - 48px));
+			margin: 0 auto;
+			padding: 24px 0;
+		}
+
+		header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			border-bottom: 1px solid var(--theme-color);
+			padding-bottom: 16px;
+			font-size: 1rem;
+			font-weight: 600;
+		}
+		header a { color: var(--theme-color); font-size: .85rem; font-weight: 400; text-decoration: none; }
+		header a:hover, header a:focus-visible { text-decoration: underline; }
+
+		main { padding: 58px 0 40px; }
+		.intro-row { display: flex; align-items: center; gap: 24px; margin-bottom: 34px; }
+		.intro-copy h1 { margin: 0 0 10px; font-size: 1.8rem; font-weight: 600; }
+		.intro { margin: 0 0 34px; color: var(--muted); font-size: .95rem; }
+		.intro-row .intro { margin-bottom: 0; }
+		.duck-wrap { position: relative; width: 150px; height: 150px; flex: 0 0 auto; }
+		.duck-wrap::before { position: absolute; top: 5px; left: 5px; width: 140px; height: 140px; border-radius: 50%; background: #55FFFF; content: ''; }
+		.duck { position: absolute; z-index: 1; top: 15px; left: 15px; width: 120px; height: 120px; padding: 8px; object-fit: contain; image-rendering: pixelated; }
+
+		.downloads { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+		.download-card {
+			display: flex;
+			min-height: 175px;
+			flex-direction: column;
+			justify-content: space-between;
+			border: 1px solid var(--line);
+			padding: 18px;
+			color: var(--ink);
+			text-decoration: none;
+			transition: transform .25s ease, border-color .25s ease;
+		}
+		.download-card:hover, .download-card:focus-visible { transform: translateY(-4px); border-color: var(--theme-color); outline: none; }
+		.label { color: var(--theme-color); font-size: .78rem; text-transform: uppercase; }
+		h2 { margin: 16px 0 0; font-size: 1.25rem; font-weight: 500; }
+		p { margin: 0; color: var(--muted); font-size: .86rem; line-height: 1.5; }
+		.download-link { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; color: var(--theme-color); font-size: .85rem; }
+		.download-link strong { font-size: 1.35rem; font-weight: 400; transition: transform .2s ease; }
+		.download-card:hover .download-link strong, .download-card:focus-visible .download-link strong { transform: translateY(3px); }
+
+		footer { margin-top: 34px; border-top: 1px solid var(--theme-color); padding-top: 14px; color: var(--muted); font-size: .8rem; }
+
+		header, main, footer { opacity: 0; transform: translateY(16px); }
+		.page-ready header, .page-ready main, .page-ready footer { opacity: 1; transform: translateY(0); transition: opacity .65s ease, transform .65s ease; }
+		.page-ready .download-card:nth-child(2) { transition-delay: .1s; }
+
+		@media (max-width: 600px) {
+			.page { width: min(100% - 32px, 900px); }
+			.downloads { grid-template-columns: 1fr; }
+		}
+		@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+	</style>
+</head>
+<body>
+	<div class="page">
+		<header><span>Marnix van Velzen</span><a href="../">← Projecten</a></header>
+
+		<main>
+			<div class="intro-row">
+				<div class="duck-wrap"><img class="duck" src="duckv5.png" alt="Pixel-art eend"></div>
+				<div class="intro-copy">
+					<h1>Flappy Bird</h1>
+					<p class="intro">Hier vind je downloads van een Flappy Bird versie die ik heb gemaakt in x86-64 AT&T assembly voor het vak Computer Organisation (CSE1400).</p>
+				</div>
+			</div>
+
+			<section class="downloads" aria-label="Downloads">
+				<a class="download-card" href="files/FlappyBirdExecutable.zip" download>
+					<div>
+						<span class="label">Linux Executable</span>
+						<h2>Speelbare versie</h2>
+					</div>
+					<span class="download-link">Download folder <strong aria-hidden="true">↓</strong></span>
+				</a>
+
+				<a class="download-card" href="files/FlappyBirdAssembly.zip" download>
+					<div>
+						<span class="label">x86-64 Assembly</span>
+						<h2>Broncode</h2>
+					</div>
+					<span class="download-link">Download folder <strong aria-hidden="true">↓</strong></span>
+				</a>
+			</section>
+		</main>
+
+		<footer>© 2026 Marnix</footer>
+	</div>
+	<script>
+		window.addEventListener('load', function () {
+			document.body.classList.add('page-ready');
+		});
+	</script>
+</body>
+</html>

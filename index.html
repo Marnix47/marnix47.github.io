@@ -57,22 +57,25 @@
 		.project {
 			position: relative;
 			display: flex;
-			min-height: 310px;
+				min-height: 240px;
 			flex-direction: column;
 			justify-content: space-between;
 			border: 1px solid var(--line);
 			background: var(--panel);
-			padding: 20px;
+				padding: 16px;
 			color: var(--ink);
 			text-decoration: none;
 			overflow: hidden;
 			transition: transform .25s ease, border-color .25s ease, background .25s ease;
 		}
 		.project:hover, .project:focus-visible { transform: translateY(-4px); border-color: var(--theme-color); outline: none; }
-		.project-image { display: block; width: 100%; height: 125px; object-fit: contain; margin-bottom: 18px; }
-		.project h3 { margin: 15px 0 8px; font-size: 1.45rem; font-weight: 500; }
+		.project-image { display: block; width: 100%; height: 100px; object-fit: contain; margin-bottom: 12px; }
+		.project-duck { position: relative; display: flex; height: 100px; align-items: center; justify-content: center; margin-bottom: 12px; }
+		.project-duck::before { position: absolute; width: 90px; height: 90px; border-radius: 50%; background: #55FFFF; content: ''; }
+		.project-duck img { position: relative; z-index: 1; width: 78px; height: 78px; padding: 5px; object-fit: contain; image-rendering: pixelated; }
+		.project h3 { margin: 10px 0 6px; font-size: 1.35rem; font-weight: 500; }
 		.project-subtitle { max-width: 280px; margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.5; }
-		.project-action { display: flex; align-items: center; justify-content: space-between; margin-top: 28px; color: var(--accent); font-size: .8rem; }
+		.project-action { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; color: var(--theme-color); font-size: .8rem; }
 		.project-action strong { display: block; width: 14px; height: 14px; border-top: 2px solid currentColor; border-right: 2px solid currentColor; font-size: 0; transform: rotate(45deg); transition: transform .2s ease; }
 		.project:hover .project-action strong, .project:focus-visible .project-action strong { transform: translateX(3px) rotate(45deg); }
 
@@ -111,7 +114,7 @@
 						<span class="project-action"><strong>+</strong></span>
 					</a>
 					<a class="project school" href="https://4vsite.marnixvanvelzen.com">
-						<div><img class="project-image" src="afbeeldingen/logo-transparent.png" alt="Not A Cherry logo"><h3>4V Website</h3><p class="project-subtitle">HTML · CSS · JS</p></div>
+						<div><img class="project-image" src="site/afbeeldingen/logo-transparent.png" alt="Not A Cherry logo"><h3>4V Website</h3><p class="project-subtitle">HTML · CSS · JS</p></div>
 						<span class="project-action"><strong>+</strong></span>
 					</a>
 					<a class="project trains" href="https://trains.marnixvanvelzen.com">
@@ -120,6 +123,10 @@
 					</a>
 					<a class="project hunt" href="https://jachtseizoen.marnixvanvelzen.com">
 						<div><img class="project-image" src="jachtseizoen/frontend/icon.png" alt="Jachtseizoen icoon"><h3>Jachtseizoen</h3><p class="project-subtitle">JS · HTML · CSS · Leaflet.js · WebSocket · Cloudflare Durable Objects</p></div>
+						<span class="project-action"><strong>+</strong></span>
+					</a>
+					<a class="project flappy" href="flappybird/">
+						<div><div class="project-duck"><img src="flappybird/duckv5.png" alt="Flappy Bird eend"></div><h3>Flappy Bird</h3><p class="project-subtitle">x86-64 Assembly · Linux</p></div>
 						<span class="project-action"><strong>+</strong></span>
 					</a>
 				</div>
