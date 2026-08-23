@@ -73,6 +73,8 @@
 		.project-duck { position: relative; display: flex; height: 100px; align-items: center; justify-content: center; margin-bottom: 12px; }
 		.project-duck::before { position: absolute; width: 90px; height: 90px; border-radius: 50%; background: #55FFFF; content: ''; }
 		.project-duck img { position: relative; z-index: 1; width: 78px; height: 78px; padding: 5px; object-fit: contain; image-rendering: pixelated; }
+		.project-wordle { display: flex; height: 100px; align-items: center; justify-content: center; margin-bottom: 12px; }
+		.project-wordle img { display: block; width: min(100%, 200px); max-height: 100px; object-fit: contain; }
 		.project h3 { margin: 10px 0 6px; font-size: 1.35rem; font-weight: 500; }
 		.project-subtitle { max-width: 280px; margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.5; }
 		.project-action { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; color: var(--theme-color); font-size: .8rem; }
@@ -83,6 +85,7 @@
 		.school { --accent: #d95f45; }
 		.trains { --accent: #4287a1; }
 		.hunt { --accent: #8c65a8; }
+		.wordle { --accent: #6aaa64; }
 
 		.footer { display: flex; justify-content: space-between; margin-top: 34px; border-top: 1px solid var(--theme-color); padding-top: 14px; color: var(--muted); font-size: .8rem; }
 
@@ -126,7 +129,11 @@
 						<span class="project-action"><strong>+</strong></span>
 					</a>
 					<a class="project flappy" href="flappybird/">
-						<div><div class="project-duck"><img src="flappybird/duckv8.png" alt="Flappy Bird eend"></div><h3>Flappy Bird</h3><p class="project-subtitle">x86-64 Assembly · Linux</p></div>
+						<div><div class="project-duck"><img src="flappybird/duckv8.png" alt="Flappy Bird eend"></div><h3>Flappy Bird</h3><p class="project-subtitle">x86-64 Assembly · libc · Linux · ANSI</p></div>
+						<span class="project-action"><strong>+</strong></span>
+					</a>
+					<a class="project wordle" href="wordle/">
+						<div><div class="project-wordle"><img src="wordle/banner.png" alt="Wordle banner"></div><h3>Wordle</h3><p class="project-subtitle">x86-64 · Pure Assembly · Linux · ANSI</p></div>
 						<span class="project-action"><strong>+</strong></span>
 					</a>
 				</div>
